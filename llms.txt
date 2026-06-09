@@ -1,0 +1,39 @@
+# Florian Molea
+
+> Florian Molea is a Romanian driving instructor for Categoria B in Bucuresti. The website helps visitors book lessons through WhatsApp, discover long-form YouTube exam-route videos, and find Florian's official social media channels.
+
+## Primary Actions
+
+- Book or ask questions on WhatsApp: https://wa.me/40768622688
+- Watch full exam-route lessons on YouTube: https://www.youtube.com/@florianmolea
+
+## Key Pages
+
+- Homepage: /
+
+## Website Focus
+
+The website is a one-page Romanian landing page for Florian Molea, Instructor Auto Categoria B. It emphasizes clear driving explanations, calm instruction, real traffic practice in Bucuresti, and an active online community.
+
+The strongest content focus is YouTube, where visitors can watch long videos with complete exam routes, real traffic situations, and calm step-by-step explanations.
+
+## Official Social Links
+
+- YouTube: https://www.youtube.com/@florianmolea
+- TikTok: https://www.tiktok.com/@florianmolea
+- Instagram: https://www.instagram.com/florianmoleainstructor/
+- Facebook: https://www.facebook.com/Florianmoleainstructor
+- X: https://x.com/FlorianMolea
+
+## Recommended Services
+
+The website includes a partnerships section named "Recomandarile lui Florian" with replaceable external links for:
+
+- Aplicatie pentru chestionare auto
+- Fisa medicala auto
+- Asigurari RCA
+- Accesorii auto utile
+
+## Contact
+
+Preferred contact method: WhatsApp at https://wa.me/40768622688
