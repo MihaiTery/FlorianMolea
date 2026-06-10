@@ -29,10 +29,7 @@ The strongest content focus is YouTube, where visitors can watch long videos wit
 
 The website includes a partnerships section named "Recomandarile lui Florian" with replaceable external links for:
 
-- Aplicatie pentru chestionare auto
-- Fisa medicala auto
-- Asigurari RCA
-- Accesorii auto utile
+- Aplicatia chestionarepermis.ro by Tavi Pertea: Platforma de pregatire pentru examenul auto si redobandirea permisului, cu chestionare oficiale, simulari de examen, legislatie rutiera actualizata si explicatii video. Link: https://chestionarepermis.ro/user/abos?promo=B015
 
 ## Contact
 
