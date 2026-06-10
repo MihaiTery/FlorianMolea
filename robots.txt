@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# Add the production sitemap URL after deployment.
-# Sitemap: https://example.com/sitemap.xml
+Sitemap: https://florianmolea.ro/sitemap.xml
