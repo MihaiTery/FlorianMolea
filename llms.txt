@@ -10,12 +10,18 @@
 ## Key Pages
 
 - Homepage: https://florianmolea.ro/
+- Parteneriate / Media Kit: https://florianmolea.ro/parteneriate.html
+- Politica de confidentialitate: https://florianmolea.ro/privacy-policy.html
+- Politica Cookies: https://florianmolea.ro/cookies-policy.html
+- Termeni si conditii: https://florianmolea.ro/terms-and-conditions.html
 
 ## Website Focus
 
-The website is a one-page Romanian landing page for Florian Molea, Instructor Auto Categoria B. It emphasizes clear driving explanations, calm instruction, real traffic practice in Bucuresti, and an active online community.
+The website is a Romanian presentation website for Florian Molea, Instructor Auto Categoria B. It emphasizes clear driving explanations, calm instruction, real traffic practice in Bucuresti, and an active online community.
 
 The strongest content focus is YouTube, where visitors can watch long videos with complete exam routes, real traffic situations, and calm step-by-step explanations.
+
+The website also includes a premium partnerships page / media kit for brands interested in collaborations with Florian Molea. The media kit presents audience context, social platform statistics, top videos, collaboration formats, prior partnerships, and business contact options.
 
 ## Official Social Links
 
@@ -30,6 +36,14 @@ The strongest content focus is YouTube, where visitors can watch long videos wit
 The website includes a partnerships section named "Recomandarile lui Florian" with replaceable external links for:
 
 - Aplicatia chestionarepermis.ro by Tavi Pertea: Platforma de pregatire pentru examenul auto si redobandirea permisului, cu chestionare oficiale, simulari de examen, legislatie rutiera actualizata si explicatii video. Link: https://chestionarepermis.ro/user/abos?promo=B015
+
+## Legal Pages
+
+- Privacy policy: https://florianmolea.ro/privacy-policy.html
+- Cookies policy: https://florianmolea.ro/cookies-policy.html
+- Terms and conditions: https://florianmolea.ro/terms-and-conditions.html
+
+The website uses a cookie consent banner. Google Analytics 4 loads only after the visitor accepts analytics cookies.
 
 ## Contact
 
