@@ -2,6 +2,62 @@ const header = document.querySelector("[data-header]");
 const nav = document.querySelector("[data-nav]");
 const navToggle = document.querySelector("[data-nav-toggle]");
 const revealItems = document.querySelectorAll(".reveal");
+const trackedClickEvents = [
+  {
+    eventName: "click_whatsapp",
+    selector: 'a[href*="wa.me/40768622688"], a[href*="api.whatsapp.com/send"]'
+  },
+  {
+    eventName: "click_youtube",
+    selector: 'a[href*="youtube.com/@florianmolea"], a[href*="youtu.be/"]'
+  },
+  {
+    eventName: "click_tiktok",
+    selector: 'a[href*="tiktok.com/@florianmolea"]'
+  },
+  {
+    eventName: "click_instagram",
+    selector: 'a[href*="instagram.com/florianmoleainstructor"]'
+  },
+  {
+    eventName: "click_facebook",
+    selector: 'a[href*="facebook.com/Florianmoleainstructor"]'
+  },
+  {
+    eventName: "click_x",
+    selector: 'a[href*="x.com/FlorianMolea"]'
+  },
+  {
+    eventName: "click_partner",
+    selector: 'a.partner-card, a[data-ga-event="click_partner"]'
+  }
+];
+
+const trackEvent = (eventName) => {
+  if (typeof window.gtag !== "function") {
+    return;
+  }
+
+  window.gtag("event", eventName);
+};
+
+document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) {
+    return;
+  }
+
+  const clickedLink = event.target.closest("a");
+
+  if (!clickedLink) {
+    return;
+  }
+
+  const trackedEvent = trackedClickEvents.find(({ selector }) => clickedLink.matches(selector));
+
+  if (trackedEvent) {
+    trackEvent(trackedEvent.eventName);
+  }
+});
 
 const setHeaderState = () => {
   header.classList.toggle("is-scrolled", window.scrollY > 10);
