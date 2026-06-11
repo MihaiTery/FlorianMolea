@@ -1,0 +1,62 @@
+{
+  "lastUpdate": "Iunie 2026",
+  "hero": {
+    "views30": "3,416,500",
+    "engagement30": "268,017"
+  },
+  "social": {
+    "tiktok": {
+      "followers": "4,974",
+      "views30": "1,3M",
+      "engagement30": "93,817"
+    },
+    "instagram": {
+      "followers": "889",
+      "views30": "1M",
+      "engagement30": "163,000"
+    },
+    "facebook": {
+      "followers": "5,824",
+      "views30": "981,1K",
+      "engagement30": "11,200"
+    },
+    "youtube": {
+      "followers": "820",
+      "views30": "135,400"
+    }
+  },
+  "topVideos": [
+    {
+      "title": "Incredibil \uD83E\uDD23\uD83E\uDD23\uD83E\uDD23",
+      "platform": "TikTok",
+      "views": "748,800",
+      "engagement": "35,570",
+      "url": "https://www.tiktok.com/@florianmolea/video/7639998125570067734"
+    },
+    {
+      "title": "Circulatia in sens giratoriu cu mai multe benzi!",
+      "platform": "Facebook Reels",
+      "views": "140,318",
+      "engagement": "1,495",
+      "url": "https://www.facebook.com/reel/1190020676530986/"
+    },
+    {
+      "title": "Semnalizam sau nu semnalizam?",
+      "platform": "Meta Reels",
+      "views": "120,673",
+      "engagement": "704",
+      "url": "https://www.facebook.com/reel/4406479446293291/"
+    }
+  ],
+  "previousPartnerships": [
+    {
+      "brand": "Engleza Pentru Oricine",
+      "period": "Iunie 2026",
+      "type": "3x Tiktok Posts",
+      "platforms": "TikTok",
+      "views": "4,054",
+      "engagement": "193",
+      "url": "https://www.tiktok.com/@florianmolea/video/7636068962517716246"
+    }
+  ]
+}
