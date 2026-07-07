@@ -46,7 +46,7 @@ img {
 }
 
 picture {
-  display: contents;
+  display: block;
 }
 
 a {
@@ -92,10 +92,15 @@ a {
   min-width: 0;
 }
 
-.brand img {
+.brand picture {
   flex: 0 0 auto;
   width: 52px;
   height: 52px;
+}
+
+.brand picture img {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   box-shadow: 0 8px 22px rgba(23, 23, 23, 0.14);
 }
@@ -377,10 +382,15 @@ h3 {
   animation: spin 26s linear infinite;
 }
 
-.profile-orbit img {
+.profile-orbit picture {
   position: relative;
   width: 78%;
   height: 78%;
+}
+
+.profile-orbit picture img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 50%;
 }
@@ -481,7 +491,13 @@ h3 {
   pointer-events: none;
 }
 
-.youtube-preview img {
+.youtube-preview picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.youtube-preview picture img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -762,9 +778,14 @@ details p {
   box-shadow: var(--shadow);
 }
 
-.cta-panel img {
+.cta-panel picture {
   width: 96px;
   height: 96px;
+}
+
+.cta-panel picture img {
+  width: 100%;
+  height: 100%;
   border: 4px solid rgba(255, 255, 255, 0.32);
   border-radius: 50%;
 }
