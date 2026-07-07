@@ -45,6 +45,10 @@ img {
   max-width: 100%;
 }
 
+picture {
+  display: contents;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -531,6 +535,45 @@ h3 {
   font-weight: 950;
 }
 
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.testimonial-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 14px 32px rgba(23, 23, 23, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 122, 61, 0.35);
+  box-shadow: 0 22px 45px rgba(23, 23, 23, 0.12);
+}
+
+.testimonial-rating {
+  color: var(--yellow);
+  letter-spacing: 2px;
+}
+
+.testimonial-quote {
+  flex: 1;
+  color: var(--ink);
+  font-style: italic;
+}
+
+.testimonial-author {
+  font-weight: 700;
+}
+
 .social-section {
   background:
     linear-gradient(180deg, rgba(255, 244, 223, 0.72), rgba(255, 255, 255, 0.88)),
@@ -598,19 +641,22 @@ h3 {
 }
 
 .social-tiktok {
-  background-image: url("tiktok.png");
+  background-image: url("tiktok.jpg");
+  background-image: image-set(url("tiktok.webp") type("image/webp"), url("tiktok.jpg") type("image/jpeg"));
   background-position: center 42%;
 }
 
 .social-instagram {
-  background-image: url("instagram.png");
+  background-image: url("instagram.jpg");
+  background-image: image-set(url("instagram.webp") type("image/webp"), url("instagram.jpg") type("image/jpeg"));
   background-position: center 45%;
 }
 
 .social-youtube {
   grid-column: span 2;
   min-height: 230px;
-  background-image: url("youtube.png");
+  background-image: url("youtube.jpg");
+  background-image: image-set(url("youtube.webp") type("image/webp"), url("youtube.jpg") type("image/jpeg"));
   background-position: center 44%;
   border-color: rgba(255, 255, 255, 0.2);
 }
@@ -627,12 +673,14 @@ h3 {
 }
 
 .social-facebook {
-  background-image: url("facebook.png");
+  background-image: url("facebook.jpg");
+  background-image: image-set(url("facebook.webp") type("image/webp"), url("facebook.jpg") type("image/jpeg"));
   background-position: center 44%;
 }
 
 .social-x {
-  background-image: url("x.png");
+  background-image: url("x.jpg");
+  background-image: image-set(url("x.webp") type("image/webp"), url("x.jpg") type("image/jpeg"));
   background-position: center 42%;
 }
 
@@ -1177,7 +1225,10 @@ details p {
   color: #fff;
   background:
     linear-gradient(135deg, rgba(255, 42, 42, 0.86), rgba(23, 23, 23, 0.92)),
-    url("Youtube%20focus.png") center / cover;
+    url("youtube-focus.jpg") center / cover;
+  background:
+    linear-gradient(135deg, rgba(255, 42, 42, 0.86), rgba(23, 23, 23, 0.92)),
+    image-set(url("youtube-focus.webp") type("image/webp"), url("youtube-focus.jpg") type("image/jpeg")) center / cover;
   border-color: rgba(255, 255, 255, 0.18);
 }
 
@@ -1384,7 +1435,8 @@ details p {
   .platform-grid,
   .video-grid,
   .collab-grid,
-  .campaign-grid {
+  .campaign-grid,
+  .testimonial-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1478,7 +1530,8 @@ details p {
   .video-grid,
   .collab-grid,
   .campaign-grid,
-  .kpi-mini-grid {
+  .kpi-mini-grid,
+  .testimonial-grid {
     grid-template-columns: 1fr;
   }
 

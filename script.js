@@ -373,6 +373,51 @@ const initMediaKit = async () => {
 
 initMediaKit();
 
+const initTestimonials = async () => {
+  const section = document.querySelector("[data-testimonials]");
+
+  if (!section) {
+    return;
+  }
+
+  try {
+    const response = await fetch("testimonials-data.json", { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error("Testimonials request failed");
+    }
+
+    const data = await response.json();
+    const testimonials = data.testimonials || [];
+
+    if (testimonials.length === 0) {
+      return;
+    }
+
+    const list = section.querySelector("[data-testimonials-list]");
+    list.innerHTML = "";
+
+    testimonials.forEach((testimonial) => {
+      const rating = Math.max(0, Math.min(5, testimonial.rating || 5));
+      const card = document.createElement("article");
+      card.className = "testimonial-card reveal";
+      card.innerHTML = `
+        <span class="testimonial-rating" aria-label="${rating} din 5 stele">${"★".repeat(rating)}${"☆".repeat(5 - rating)}</span>
+        <p class="testimonial-quote">"${testimonial.quote}"</p>
+        <span class="testimonial-author">${testimonial.name}${testimonial.context ? ` — ${testimonial.context}` : ""}</span>
+      `;
+      list.appendChild(card);
+    });
+
+    section.hidden = false;
+    observeNewRevealItems(list);
+  } catch (error) {
+    // Section stays hidden when there is no testimonial data yet.
+  }
+};
+
+initTestimonials();
+
 document.querySelectorAll("details").forEach((details) => {
   details.addEventListener("toggle", () => {
     if (!details.open) {
