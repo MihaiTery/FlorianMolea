@@ -7,6 +7,7 @@
   --line: rgba(23, 23, 23, 0.1);
   --yellow: #ffc847;
   --orange: #ff7a3d;
+  --orange-text: #b8480f;
   --red: #ef2f2f;
   --green: #20c36a;
   --blue: #2f6df6;
@@ -78,7 +79,7 @@ a {
   border-radius: 999px;
   background: rgba(255, 250, 242, 0.82);
   box-shadow: 0 12px 38px rgba(23, 23, 23, 0.08);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(12px);
 }
 
 .site-header.is-scrolled {
@@ -240,7 +241,7 @@ a {
 
 .eyebrow {
   margin: 0 0 14px;
-  color: var(--orange);
+  color: var(--orange-text);
   font-size: 0.78rem;
   font-weight: 900;
   letter-spacing: 0;
@@ -440,7 +441,7 @@ h3 {
 .social-card span {
   display: block;
   margin-bottom: 6px;
-  color: var(--orange);
+  color: var(--orange-text);
   font-size: 0.76rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -510,10 +511,15 @@ h3 {
   margin-bottom: 32px;
 }
 
-.card-grid,
-.partner-grid {
+.card-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.partner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 18px;
 }
 
@@ -537,18 +543,6 @@ h3 {
 
 .feature-card {
   padding: 24px;
-}
-
-.card-icon {
-  display: inline-grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  margin-bottom: 28px;
-  border-radius: 50%;
-  color: var(--ink);
-  background: var(--yellow);
-  font-weight: 950;
 }
 
 .testimonial-grid {
@@ -706,6 +700,13 @@ h3 {
 
 .partner-card h3 {
   min-height: 58px;
+}
+
+.partner-logo {
+  display: block;
+  height: 28px;
+  width: auto;
+  margin-bottom: 14px;
 }
 
 .faq-section {
@@ -935,7 +936,7 @@ details p {
 
 .cookie-banner-actions a,
 .cookie-btn {
-  min-height: 42px;
+  min-height: 44px;
   padding: 11px 14px;
   border-radius: 999px;
   font: inherit;
@@ -1166,7 +1167,6 @@ details p {
   box-shadow: 0 24px 54px rgba(23, 23, 23, 0.13);
 }
 
-.media-card span,
 .collab-card > span {
   display: inline-grid;
   place-items: center;
@@ -1213,7 +1213,7 @@ details p {
 .platform-card > span {
   display: inline-flex;
   margin-bottom: 24px;
-  color: var(--orange);
+  color: var(--orange-text);
   font-size: 0.8rem;
   font-weight: 950;
   text-transform: uppercase;
@@ -1246,10 +1246,10 @@ details p {
   color: #fff;
   background:
     linear-gradient(135deg, rgba(255, 42, 42, 0.86), rgba(23, 23, 23, 0.92)),
-    url("youtube-focus.jpg") center / cover;
+    url("youtube-focus-sm.jpg") center / cover;
   background:
     linear-gradient(135deg, rgba(255, 42, 42, 0.86), rgba(23, 23, 23, 0.92)),
-    image-set(url("youtube-focus.webp") type("image/webp"), url("youtube-focus.jpg") type("image/jpeg")) center / cover;
+    image-set(url("youtube-focus-sm.webp") type("image/webp"), url("youtube-focus-sm.jpg") type("image/jpeg")) center / cover;
   border-color: rgba(255, 255, 255, 0.18);
 }
 
@@ -1449,7 +1449,6 @@ details p {
   }
 
   .card-grid,
-  .partner-grid,
   .media-card-grid,
   .media-card-grid.five,
   .media-card-grid.reasons,
@@ -1542,7 +1541,6 @@ details p {
   }
 
   .card-grid,
-  .partner-grid,
   .social-grid,
   .media-card-grid,
   .media-card-grid.five,
