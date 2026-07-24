@@ -29,11 +29,7 @@
   <link rel="sitemap" type="application/xml" href="https://florianmolea.ro/sitemap.xml">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
-  <link rel="preconnect" href="https://wa.me">
-  <link rel="preconnect" href="https://www.youtube.com">
-  <link rel="preconnect" href="https://www.googletagmanager.com">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="brandforge-badge.css">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -197,7 +193,7 @@
         <a class="youtube-preview reveal" href="https://www.youtube.com/@florianmolea" target="_blank" rel="noopener" aria-label="Deschide canalul YouTube Florian Molea">
           <picture>
             <source srcset="youtube-focus-sm.webp 800w, youtube-focus.webp 1600w" sizes="(max-width: 980px) 100vw, 560px" type="image/webp">
-            <img src="youtube-focus.jpg" srcset="youtube-focus-sm.jpg 800w, youtube-focus.jpg 1600w" sizes="(max-width: 980px) 100vw, 560px" alt="Preview canal YouTube Florian Molea cu trasee de examen explicate" width="1600" height="900" loading="lazy">
+            <img src="youtube-focus.jpg" srcset="youtube-focus-sm.jpg 800w, youtube-focus.jpg 1600w" sizes="(max-width: 980px) 100vw, 560px" alt="Preview canal YouTube Florian Molea cu trasee de examen explicate" width="1600" height="900" loading="lazy" decoding="async">
           </picture>
           <span class="youtube-play" aria-hidden="true">▶</span>
         </a>
@@ -298,13 +294,13 @@
             <p>Platformă de pregătire pentru examenul auto și redobândirea permisului, care oferă chestionare oficiale, simulări de examen, legislație rutieră actualizată și explicații video pentru o învățare mai eficientă.</p>
           </a>
           <a class="partner-card reveal" href="https://ro.cebia.com/?utm_campaign=FLORIAN35" target="_blank" rel="noopener">
-            <img class="partner-logo" src="cebia-logo.svg" alt="Cebia logo" width="130" height="41" loading="lazy">
+            <img class="partner-logo" src="cebia-logo.svg" alt="Cebia logo" width="130" height="41" loading="lazy" decoding="async">
             <span>Verificare istoric auto</span>
             <h3>Cebia – istoric vehicule second-hand</h3>
             <p>Serviciu european de verificare a istoricului mașinilor second-hand: kilometraj real, daune, leasing sau furt, direct din bazele de date oficiale europene, înainte de a cumpăra o mașină rulată.</p>
           </a>
           <a class="partner-card reveal" href="https://www.google.com/maps/search/?api=1&amp;query=Fifty%27s+Bulevardul+Nicolae+Grigorescu+1A+030431+Bucuresti+Romania" target="_blank" rel="noopener">
-            <img class="partner-logo" src="fiftys-logo.jpg" alt="Fifty's logo" width="1000" height="1000" loading="lazy">
+            <img class="partner-logo" src="fiftys-logo.jpg" alt="Fifty's logo" width="120" height="120" loading="lazy" decoding="async">
             <span>Fast-food</span>
             <h3>Fifty's</h3>
             <p>Restaurant fast-food pe Bulevardul Nicolae Grigorescu 1A din București, deschis non-stop pentru gustări rapide la orice oră din zi sau din noapte.</p>
@@ -346,7 +342,7 @@
         <div class="cta-panel reveal">
           <picture>
             <source srcset="image-sm.webp" type="image/webp">
-            <img src="image-sm.png" alt="Florian Molea" width="96" height="96" loading="lazy">
+            <img src="image-sm.png" alt="Florian Molea" width="96" height="96" loading="lazy" decoding="async">
           </picture>
           <div>
             <h2>Pregătit să înveți mai clar?</h2>
@@ -366,7 +362,7 @@
       <a class="brand footer-brand" href="#top" aria-label="Florian Molea acasa">
         <picture>
           <source srcset="image-sm.webp" type="image/webp">
-          <img src="image-sm.png" alt="Florian Molea logo" width="54" height="54" loading="lazy">
+          <img src="image-sm.png" alt="Florian Molea logo" width="54" height="54" loading="lazy" decoding="async">
         </picture>
         <span>
           <strong>Florian Molea</strong>
@@ -384,7 +380,10 @@
     <div class="container brandforge-partner-row">
       <a class="brandforge-badge" href="https://brandforge.digital" target="_blank" rel="noopener noreferrer" aria-label="Website partener BrandForge. Vizitează brandforge.digital">
         <span class="brandforge-glow" aria-hidden="true"></span>
-        <img class="brandforge-badge-img" src="/brandforge-badge.png" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+        <picture>
+          <source srcset="/brandforge-badge.webp" type="image/webp">
+          <img class="brandforge-badge-img" src="/brandforge-badge.png" alt="" width="840" height="560" loading="lazy" decoding="async">
+        </picture>
         <span class="brandforge-sparks" aria-hidden="true">
           <span class="brandforge-spark s1"></span>
           <span class="brandforge-spark s2"></span>
@@ -404,6 +403,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

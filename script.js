@@ -141,8 +141,22 @@ const setHeaderState = () => {
   header.classList.toggle("is-scrolled", window.scrollY > 10);
 };
 
+let headerStateTicking = false;
+
+const queueHeaderState = () => {
+  if (headerStateTicking) {
+    return;
+  }
+
+  headerStateTicking = true;
+  requestAnimationFrame(() => {
+    setHeaderState();
+    headerStateTicking = false;
+  });
+};
+
 setHeaderState();
-window.addEventListener("scroll", setHeaderState, { passive: true });
+window.addEventListener("scroll", queueHeaderState, { passive: true });
 
 navToggle.addEventListener("click", () => {
   const isOpen = nav.classList.toggle("is-open");

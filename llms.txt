@@ -1,50 +1,31 @@
 # Florian Molea
 
-> Florian Molea is a Romanian driving instructor for Categoria B in Bucuresti. The website helps visitors book lessons through WhatsApp, discover long-form YouTube exam-route videos, and find Florian's official social media channels.
+> Florian Molea is a Romanian category B driving instructor and educational content creator based in Bucharest, focused on driving education, exam routes and road safety. This site helps visitors book lessons through WhatsApp, discover long-form YouTube exam-route videos, and find Florian's official social media channels.
 
-## Primary Actions
+## Main pages (general visitors)
 
-- Book or ask questions on WhatsApp: https://wa.me/40768622688
-- Watch full exam-route lessons on YouTube: https://www.youtube.com/@florianmolea
+- [Homepage](https://florianmolea.ro/): driving lessons overview, YouTube spotlight, social hub and FAQ.
+- [Privacy Policy](https://florianmolea.ro/privacy-policy.html)
+- [Cookie Policy](https://florianmolea.ro/cookies-policy.html)
+- [Terms and Conditions](https://florianmolea.ro/terms-and-conditions.html)
 
-## Key Pages
+## Pages for brands and partners
 
-- Homepage: https://florianmolea.ro/
-- Parteneriate / Media Kit: https://florianmolea.ro/parteneriate.html
-- Politica de confidentialitate: https://florianmolea.ro/privacy-policy.html
-- Politica Cookies: https://florianmolea.ro/cookies-policy.html
-- Termeni si conditii: https://florianmolea.ro/terms-and-conditions.html
+- [Parteneriate / Live Media Kit](https://florianmolea.ro/parteneriate.html): audience data, platform statistics, top videos, collaboration formats and prior partnerships for brands interested in working with Florian Molea.
 
-## Website Focus
+## Official social profiles
 
-The website is a Romanian presentation website for Florian Molea, Instructor Auto Categoria B. It emphasizes clear driving explanations, calm instruction, real traffic practice in Bucuresti, and an active online community.
-
-The strongest content focus is YouTube, where visitors can watch long videos with complete exam routes, real traffic situations, and calm step-by-step explanations.
-
-The website also includes a premium partnerships page / media kit for brands interested in collaborations with Florian Molea. The media kit presents audience context, social platform statistics, top videos, collaboration formats, prior partnerships, and business contact options.
-
-## Official Social Links
-
-- YouTube: https://www.youtube.com/@florianmolea
-- TikTok: https://www.tiktok.com/@florianmolea
-- Instagram: https://www.instagram.com/florianmoleainstructor/
-- Facebook: https://www.facebook.com/Florianmoleainstructor
-- X: https://x.com/FlorianMolea
-
-## Recommended Services
-
-The website includes a partnerships section named "Recomandarile lui Florian" with replaceable external links for:
-
-- Aplicatia chestionarepermis.ro by Tavi Pertea: Platforma de pregatire pentru examenul auto si redobandirea permisului, cu chestionare oficiale, simulari de examen, legislatie rutiera actualizata si explicatii video. Link: https://chestionarepermis.ro/user/abos?promo=B015
-
-## Legal Pages
-
-- Privacy policy: https://florianmolea.ro/privacy-policy.html
-- Cookies policy: https://florianmolea.ro/cookies-policy.html
-- Terms and conditions: https://florianmolea.ro/terms-and-conditions.html
-
-The website uses a cookie consent banner. Google Analytics 4 loads only after the visitor accepts analytics cookies.
+- [YouTube](https://www.youtube.com/@florianmolea)
+- [TikTok](https://www.tiktok.com/@florianmolea)
+- [Instagram](https://www.instagram.com/florianmoleainstructor/)
+- [Facebook](https://www.facebook.com/Florianmoleainstructor)
+- [X](https://x.com/FlorianMolea)
 
 ## Contact
 
-Preferred contact method: WhatsApp at https://wa.me/40768622688
+- [WhatsApp](https://wa.me/40768622688)
+- [Email](mailto:molea.florian@gmail.com)
+
+## Notes
+
+Google Analytics 4 loads only after a visitor accepts analytics cookies via the on-site consent banner. This file is provided for informational purposes and does not impose crawling or training restrictions beyond those already stated in [robots.txt](https://florianmolea.ro/robots.txt).
