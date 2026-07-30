@@ -22,6 +22,7 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="shop.css">
 </head>
 <body>
   <header class="site-header" data-header>
@@ -36,6 +37,15 @@
       </span>
     </a>
 
+    <button type="button" class="cart-toggle" data-cart-toggle aria-haspopup="dialog" aria-controls="cart-drawer" aria-label="Deschide coșul">
+      <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <circle cx="9" cy="20" r="1.6"></circle>
+        <circle cx="18" cy="20" r="1.6"></circle>
+        <path d="M2.5 3h2.4l2.36 12.4a2.2 2.2 0 0 0 2.18 1.8h7.52a2.2 2.2 0 0 0 2.16-1.76L20.5 7.5H6.16"></path>
+      </svg>
+      <span class="cart-badge" data-cart-badge hidden>0</span>
+    </button>
+
     <button class="nav-toggle" type="button" aria-label="Deschide meniul" aria-expanded="false" data-nav-toggle>
       <span></span>
       <span></span>
@@ -47,6 +57,7 @@
       <a href="/#de-ce">Despre mine</a>
       <a href="/#social">Social</a>
       <a href="/#recomandari">Recomandari</a>
+      <a href="/magazin.html">Magazin</a>
       <a class="nav-whatsapp" href="https://wa.me/40768622688?text=Bun%C4%83%20Florian%21%20Reprezint%20un%20brand%20interesat%20de%20o%20colaborare." target="_blank" rel="noopener">WhatsApp</a>
     </nav>
   </header>

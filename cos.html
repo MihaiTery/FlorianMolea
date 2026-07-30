@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coșul tău | Florian Molea</title>
+  <meta name="description" content="Verifică produsele din coș, ajustează cantitățile și continuă către checkout pe florianmolea.ro.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="theme-color" content="#111827">
+  <link rel="canonical" href="https://florianmolea.ro/cos.html">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="shop.css">
+</head>
+<body>
+  <header class="site-header" data-header>
+    <a class="brand" href="/" aria-label="Florian Molea acasa">
+      <picture>
+        <source srcset="image-sm.webp" type="image/webp">
+        <img src="image-sm.png" alt="Florian Molea logo" width="52" height="52">
+      </picture>
+      <span>
+        <strong>Florian Molea</strong>
+        <small>Instructor Auto Categoria B</small>
+      </span>
+    </a>
+
+    <button type="button" class="cart-toggle" data-cart-toggle aria-haspopup="dialog" aria-controls="cart-drawer" aria-label="Deschide coșul">
+      <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <circle cx="9" cy="20" r="1.6"></circle>
+        <circle cx="18" cy="20" r="1.6"></circle>
+        <path d="M2.5 3h2.4l2.36 12.4a2.2 2.2 0 0 0 2.18 1.8h7.52a2.2 2.2 0 0 0 2.16-1.76L20.5 7.5H6.16"></path>
+      </svg>
+      <span class="cart-badge" data-cart-badge hidden>0</span>
+    </button>
+
+    <button class="nav-toggle" type="button" aria-label="Deschide meniul" aria-expanded="false" data-nav-toggle>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="main-nav" aria-label="Navigatie principala" data-nav>
+      <a href="/#youtube">YouTube</a>
+      <a href="/#de-ce">Despre mine</a>
+      <a href="/#social">Social</a>
+      <a href="/#recomandari">Recomandari</a>
+      <a href="/magazin.html">Magazin</a>
+      <a class="nav-whatsapp" href="https://wa.me/40768622688?text=Bun%C4%83%20Florian%21%20A%C8%99%20vrea%20s%C4%83%20aflu%20mai%20multe%20despre%20lec%C8%9Biile%20de%20condus." target="_blank" rel="noopener">WhatsApp</a>
+    </nav>
+  </header>
+
+  <nav class="shop-breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Acasă</a>
+    <span aria-hidden="true">/</span>
+    <a href="/magazin.html">Magazin</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">Coș</span>
+  </nav>
+
+  <main id="top" class="cart-page" data-cart-page>
+    <div class="container">
+      <div class="section-heading">
+        <h1>Coșul tău</h1>
+      </div>
+
+      <p class="shop-error-state" data-cart-error hidden role="alert">
+        Nu am putut încărca produsele momentan. Reîncarcă pagina sau revino mai târziu.
+      </p>
+
+      <div class="cart-empty-page" data-cart-empty hidden>
+        <p>Coșul tău este gol momentan. Aruncă un ochi în magazin ca să găsești aroma potrivită.</p>
+        <a class="btn btn-primary" href="/magazin.html">Vezi magazinul</a>
+      </div>
+
+      <div class="cart-page-layout" data-cart-layout hidden>
+        <ul class="cart-page-list" data-cart-page-list></ul>
+
+        <aside class="cart-summary" aria-label="Rezumat comandă">
+          <h2>Rezumat</h2>
+          <dl>
+            <div>
+              <dt>Subtotal</dt>
+              <dd data-summary-subtotal>0,00 RON</dd>
+            </div>
+            <div>
+              <dt>Transport</dt>
+              <dd data-summary-shipping>0,00 RON</dd>
+            </div>
+            <div class="cart-summary-total">
+              <dt>Total estimativ</dt>
+              <dd data-summary-total>0,00 RON</dd>
+            </div>
+          </dl>
+
+          <div class="shipping-progress">
+            <div class="shipping-progress-track">
+              <div class="shipping-progress-fill" data-shipping-progress-fill></div>
+            </div>
+            <p data-shipping-progress-note></p>
+          </div>
+
+          <div class="cart-summary-actions">
+            <a class="btn btn-outline" href="/magazin.html">Continuă cumpărăturile</a>
+            <a class="btn btn-primary" href="/checkout.html">Continuă către checkout</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <a class="brand footer-brand" href="/" aria-label="Florian Molea acasa">
+        <picture>
+          <source srcset="image-sm.webp" type="image/webp">
+          <img src="image-sm.png" alt="Florian Molea logo" width="54" height="54" loading="lazy" decoding="async">
+        </picture>
+        <span>
+          <strong>Florian Molea</strong>
+          <small>Instructor Auto Categoria B</small>
+        </span>
+      </a>
+      <div class="footer-links" aria-label="Linkuri social media">
+        <a href="https://www.youtube.com/@florianmolea" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://www.tiktok.com/@florianmolea" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://www.instagram.com/florianmoleainstructor/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/Florianmoleainstructor" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://x.com/FlorianMolea" target="_blank" rel="noopener">X</a>
+      </div>
+    </div>
+    <div class="container brandforge-partner-row">
+      <a class="brandforge-badge" href="https://brandforge.digital" target="_blank" rel="noopener noreferrer" aria-label="Website partener BrandForge. Vizitează brandforge.digital">
+        <span class="brandforge-glow" aria-hidden="true"></span>
+        <picture>
+          <source srcset="/brandforge-badge.webp" type="image/webp">
+          <img class="brandforge-badge-img" src="/brandforge-badge.png" alt="" width="840" height="560" loading="lazy" decoding="async">
+        </picture>
+        <span class="brandforge-sparks" aria-hidden="true">
+          <span class="brandforge-spark s1"></span>
+          <span class="brandforge-spark s2"></span>
+          <span class="brandforge-spark s3"></span>
+          <span class="brandforge-spark s4"></span>
+          <span class="brandforge-spark s5"></span>
+          <span class="brandforge-spark s6"></span>
+        </span>
+      </a>
+    </div>
+    <div class="footer-legal" aria-label="Linkuri juridice">
+      <a href="/privacy-policy.html">Politica de confidențialitate</a>
+      <a href="/cookies-policy.html">Politica Cookies</a>
+      <a href="/terms-and-conditions.html">Termeni și condiții</a>
+      <a href="/parteneriate.html">Parteneriate</a>
+      <p>© 2026 Florian Molea. Toate drepturile rezervate.</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+  <script src="shop.js" defer></script>
+</body>
+</html>

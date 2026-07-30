@@ -30,6 +30,7 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="shop.css">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -127,6 +128,15 @@
       </span>
     </a>
 
+    <button type="button" class="cart-toggle" data-cart-toggle aria-haspopup="dialog" aria-controls="cart-drawer" aria-label="Deschide coșul">
+      <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <circle cx="9" cy="20" r="1.6"></circle>
+        <circle cx="18" cy="20" r="1.6"></circle>
+        <path d="M2.5 3h2.4l2.36 12.4a2.2 2.2 0 0 0 2.18 1.8h7.52a2.2 2.2 0 0 0 2.16-1.76L20.5 7.5H6.16"></path>
+      </svg>
+      <span class="cart-badge" data-cart-badge hidden>0</span>
+    </button>
+
     <button class="nav-toggle" type="button" aria-label="Deschide meniul" aria-expanded="false" data-nav-toggle>
       <span></span>
       <span></span>
@@ -138,6 +148,7 @@
       <a href="#de-ce">Despre mine</a>
       <a href="#social">Social</a>
       <a href="#recomandari">Recomandari</a>
+      <a href="/magazin.html">Magazin</a>
       <a class="nav-whatsapp" href="https://wa.me/40768622688?text=Bun%C4%83%20Florian%21%20A%C8%99%20vrea%20s%C4%83%20aflu%20mai%20multe%20despre%20lec%C8%9Biile%20de%20condus." target="_blank" rel="noopener">WhatsApp</a>
     </nav>
   </header>
@@ -337,6 +348,22 @@
       </div>
     </section>
 
+    <section class="shop-promo section-pad">
+      <div class="container shop-promo-grid">
+        <div class="shop-promo-copy reveal">
+          <p class="eyebrow">Noutate FlorianMolea</p>
+          <h2>Un drum bun merită și o atmosferă pe măsură.</h2>
+          <p>Descoperă parfumurile auto FlorianMolea și alege aroma potrivită pentru fiecare drum.</p>
+          <a class="btn btn-primary" href="/magazin.html">Descoperă parfumurile</a>
+        </div>
+        <div class="shop-promo-visual reveal" aria-hidden="true">
+          <img src="images/products/placeholder-vanilie.svg" alt="" width="220" height="220" loading="lazy" decoding="async">
+          <img src="images/products/placeholder-ocean.svg" alt="" width="220" height="220" loading="lazy" decoding="async">
+          <img src="images/products/placeholder-bubble-gum.svg" alt="" width="220" height="220" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </section>
+
     <section class="final-cta section-pad">
       <div class="container">
         <div class="cta-panel reveal">
@@ -404,5 +431,6 @@
   </footer>
 
   <script src="script.js" defer></script>
+  <script src="shop.js" defer></script>
 </body>
 </html>
