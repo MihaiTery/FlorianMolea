@@ -1,0 +1,107 @@
+PRE-RELEASE: eliminarea funcționalității de slider "Pregătesc ceva nou"
+========================================================================
+
+Context
+-------
+Funcționalitatea de mai jos este TEMPORARĂ, adăugată doar pentru perioada de
+testare. Ea ascunde elementul de shop din header (iconița de coș +
+linkul "Magazin") pe TOATE paginile, și acoperă secțiunea de promo shop de pe
+front page (index.html) cu un cover pe care scrie "Pregătesc ceva nou.",
+însoțit de un slider ("Trage pentru a dezvălui"). Trăgând slider-ul până la
+capăt pe front page, coverul dispare și iconița de coș + linkul "Magazin"
+devin vizibile din nou — dar NUMAI pentru pagina curentă, fără nicio
+persistență (localStorage/sessionStorage). La orice reload sau navigare pe
+altă pagină, totul revine la starea ascunsă implicită.
+
+Înainte de release, urmează pașii de mai jos ca să elimini complet
+funcționalitatea și să revii la comportamentul normal (shop vizibil peste
+tot, fără cover).
+
+Pasul 1 — Șterge fișierul JS dedicat
+-------------------------------------
+Șterge complet fișierul:
+  pre-release.js
+
+Pasul 2 — Elimină tag-ul de script din index.html
+---------------------------------------------------
+În index.html, chiar înainte de </body>, elimină aceste două linii
+(inclusiv comentariul):
+
+  <!-- PRE-RELEASE TEMPORARY: remove before release, see pre-release.txt -->
+  <script src="pre-release.js" defer></script>
+
+Pasul 3 — Elimină blocul CSS din shop.css
+--------------------------------------------
+În shop.css, la finalul fișierului, există un bloc delimitat clar între:
+
+  /* ============================================================
+     PRE-RELEASE TEMPORARY — teaser cover + header shop lock.
+     Remove this entire block before release.
+     See pre-release.txt for the full removal checklist.
+     ============================================================ */
+
+și
+
+  /* ============================================================
+     /PRE-RELEASE TEMPORARY
+     ============================================================ */
+
+Șterge tot blocul, inclusiv cele două comentarii de delimitare (conține
+regulile .pre-release-locked, .pre-release-teaser, .pre-release-cover și
+tot ce ține de stilizarea slider-ului).
+
+Pasul 4 — Elimină cover-ul + slider-ul din index.html
+---------------------------------------------------------
+În index.html, în secțiunea "shop-promo" (căutați `data-pre-release-teaser`),
+elimină blocul dintre comentarii:
+
+  <!-- PRE-RELEASE TEMPORARY: teaser cover, see pre-release.txt -->
+  ...
+  <!-- /PRE-RELEASE TEMPORARY -->
+
+(acesta conține div-ul `.pre-release-cover` cu textul "Pregătesc ceva nou."
+și input-ul de tip range).
+
+Apoi, pe tag-ul `<section>` al aceleiași secțiuni, elimină clasa
+`pre-release-teaser` și atributul `data-pre-release-teaser`, astfel încât
+linia să revină la forma inițială:
+
+  <section class="shop-promo section-pad">
+
+Pasul 5 — Elimină clasa "pre-release-locked" din header (4 fișiere)
+------------------------------------------------------------------------
+În fiecare din următoarele fișiere: index.html, magazin.html, cos.html,
+checkout.html — caută în header:
+
+  a) Pe butonul de coș:
+     class="cart-toggle pre-release-locked"
+     → înlocuiește cu:
+     class="cart-toggle"
+
+  b) Pe linkul "Magazin" din <nav class="main-nav">:
+     class="pre-release-locked"
+     → elimină complet atributul class de pe acel link
+     (pe magazin.html linkul are și `aria-current="page"` — păstrează doar
+     acel atribut, elimină doar class="pre-release-locked").
+
+Pasul 6 — Verificare finală
+-------------------------------
+Rulează o căutare în tot proiectul (exceptând worker/ și node_modules) după
+textul "pre-release" / "pre_release" / "Pregătesc ceva nou" / "shop-teaser"
+și confirmă că nu mai există nicio referință în index.html, magazin.html,
+cos.html, checkout.html, shop.css. Fișierul pre-release.js nu trebuie să mai
+existe pe disc.
+
+Pasul 7 — Testare manuală
+-----------------------------
+- Deschide index.html: iconița de coș și linkul "Magazin" trebuie să fie
+  vizibile direct în header, fără niciun cover peste secțiunea de promo shop.
+- Deschide magazin.html, cos.html, checkout.html: iconița de coș și linkul
+  "Magazin" trebuie să fie vizibile normal în header.
+- Verifică în consola browserului că nu apar erori 404 legate de
+  pre-release.js.
+
+Notă
+----
+Acest fișier (pre-release.txt) poate fi șters după ce toți pașii de mai sus
+au fost aplicați și verificați.

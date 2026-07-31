@@ -994,3 +994,151 @@ body.cart-open {
     transition: none !important;
   }
 }
+
+/* ============================================================
+   PRE-RELEASE TEMPORARY — teaser cover + header shop lock.
+   Remove this entire block before release.
+   See pre-release.txt for the full removal checklist.
+   ============================================================ */
+
+.pre-release-locked {
+  display: none !important;
+}
+
+body.shop-teaser-unlocked .cart-toggle.pre-release-locked {
+  display: inline-grid !important;
+}
+
+body.shop-teaser-unlocked .main-nav a.pre-release-locked {
+  display: initial !important;
+}
+
+.pre-release-teaser {
+  position: relative;
+  overflow: hidden;
+}
+
+.pre-release-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 244, 223, 0.94), rgba(255, 255, 255, 0.97)),
+    repeating-linear-gradient(90deg, transparent 0 38px, rgba(23, 23, 23, 0.035) 38px 40px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: opacity 320ms ease, visibility 320ms ease;
+}
+
+.pre-release-cover.is-unlocked {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.pre-release-cover-panel {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 380px;
+  padding: 28px 32px;
+  border-radius: var(--radius-lg);
+  background: #fff;
+  box-shadow: 0 20px 46px rgba(23, 23, 23, 0.14);
+}
+
+.pre-release-cover-text {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.pre-release-slider {
+  position: relative;
+  width: 100%;
+  display: grid;
+  gap: 8px;
+}
+
+.pre-release-slider-input {
+  --pre-release-progress: 0%;
+  width: 100%;
+  height: 46px;
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.pre-release-slider-input::-webkit-slider-runnable-track {
+  height: 46px;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    var(--yellow) 0%, var(--yellow) var(--pre-release-progress),
+    rgba(23, 23, 23, 0.08) var(--pre-release-progress), rgba(23, 23, 23, 0.08) 100%);
+}
+
+.pre-release-slider-input::-moz-range-track {
+  height: 46px;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    var(--yellow) 0%, var(--yellow) var(--pre-release-progress),
+    rgba(23, 23, 23, 0.08) var(--pre-release-progress), rgba(23, 23, 23, 0.08) 100%);
+}
+
+.pre-release-slider-input::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 0;
+  background: linear-gradient(135deg, var(--yellow), var(--green));
+  box-shadow: 0 8px 18px rgba(23, 23, 23, 0.22);
+  cursor: grab;
+}
+
+.pre-release-slider-input::-moz-range-thumb {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 0;
+  background: linear-gradient(135deg, var(--yellow), var(--green));
+  box-shadow: 0 8px 18px rgba(23, 23, 23, 0.22);
+  cursor: grab;
+}
+
+.pre-release-slider-input:disabled {
+  cursor: default;
+}
+
+.pre-release-slider-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--muted);
+  transition: opacity 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pre-release-cover,
+  .pre-release-slider-hint {
+    transition: none !important;
+  }
+}
+
+/* ============================================================
+   /PRE-RELEASE TEMPORARY
+   ============================================================ */

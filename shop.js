@@ -3,8 +3,8 @@
 const SHOP_CONFIG = {
   currency: "RON",
   locale: "ro-RO",
-  shippingCost: 19,
-  freeShippingThreshold: 150,
+  shippingCost: 25,
+  freeShippingMinQuantity: 2,
   maxQuantityPerProduct: 20,
   cartStorageKey: "florianmolea_cart_v1"
 };
@@ -184,11 +184,12 @@ const getCartSubtotal = () => cart.reduce((total, entry) => {
 
 const getShippingInfo = () => {
   const subtotal = getCartSubtotal();
-  const isFree = subtotal >= SHOP_CONFIG.freeShippingThreshold;
-  const remaining = Math.max(0, SHOP_CONFIG.freeShippingThreshold - subtotal);
+  const quantity = getCartCount();
+  const isFree = quantity >= SHOP_CONFIG.freeShippingMinQuantity;
+  const remainingQuantity = Math.max(0, SHOP_CONFIG.freeShippingMinQuantity - quantity);
   const shippingCost = cart.length === 0 ? 0 : (isFree ? 0 : SHOP_CONFIG.shippingCost);
 
-  return { subtotal, isFree, remaining, shippingCost, total: subtotal + shippingCost };
+  return { subtotal, quantity, isFree, remainingQuantity, shippingCost, total: subtotal + shippingCost };
 };
 
 const addToCart = (productId, quantity = 1) => {
@@ -506,8 +507,8 @@ const renderCartDrawer = () => {
   const shipping = getShippingInfo();
   subtotalEl.textContent = formatMoney(shipping.subtotal);
   shippingNote.textContent = shipping.isFree
-    ? "Ai transport gratuit la această comandă."
-    : `Mai adaugă ${formatMoney(shipping.remaining)} pentru transport gratuit.`;
+    ? "Ai transport gratuit."
+    : "Mai adaugă un produs pentru transport gratuit.";
 };
 
 const openCartDrawer = () => {
@@ -773,12 +774,12 @@ const renderCartPage = () => {
 
   const progressFill = page.querySelector("[data-shipping-progress-fill]");
   const progressNote = page.querySelector("[data-shipping-progress-note]");
-  const progressRatio = Math.min(1, shipping.subtotal / SHOP_CONFIG.freeShippingThreshold);
+  const progressRatio = Math.min(1, shipping.quantity / SHOP_CONFIG.freeShippingMinQuantity);
 
   progressFill.style.transform = `scaleX(${progressRatio})`;
   progressNote.textContent = shipping.isFree
-    ? "Ai transport gratuit la această comandă."
-    : `Mai adaugă ${formatMoney(shipping.remaining)} pentru transport gratuit.`;
+    ? "Ai transport gratuit."
+    : "Mai adaugă un produs pentru transport gratuit.";
 
   if (!page.dataset.viewCartTracked) {
     page.dataset.viewCartTracked = "true";
