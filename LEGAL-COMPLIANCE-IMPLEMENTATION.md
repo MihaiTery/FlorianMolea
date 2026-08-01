@@ -15,6 +15,16 @@ O trecere de audit separată a verificat implementarea de mai jos prin citire de
 
 Verificat și confirmat corect, fără corecții necesare: rolurile juridice (WORLDWIDE = vânzător/operator/parte contractuală; VANESICA = producător, niciodată vânzător; Florian Molea persoană fizică explicit exclus ca vânzător/producător; `manufacturerId` rezolvat per produs, fără presupunere globală), textul butonului final de checkout, placeholderul SAL (marcat vizibil ca atare, fără referire SOL/ODR, link către domeniul oficial anpc.ro fără sub-pagină ghicită), regula de transport gratuit în cod (`getCartCount()` însumează cantități, nu produse distincte).
 
+### 0.1 Pictogramă SAL oficială (etapă ulterioară)
+
+Utilizatorul a furnizat activul oficial ANPC (`pictograma-oficiala-SAL-ANPC-250x50.png`, 500×124 px reali). Placeholderul text (`images/legal/sal-anpc-badge.svg`) a fost șters și înlocuit cu activul oficial:
+
+- Optimizat cu Pillow: PNG recomprimat (`optimize=True`) + variantă WebP fără pierderi (`lossless=True`), redenumite `images/legal/sal-anpc-badge.png` / `.webp` — 8,7 KB WebP față de ~19,9 KB PNG.
+- Servite prin `<picture><source type="image/webp">…<img …></picture>`, cu `loading="lazy"`, `decoding="async"`, pe `index.html` și `contact-si-reclamatii.html`.
+- Dimensiunea reală a activului oficial este ~4:1 (500×124), nu 5:1 (250×50) cum indica ghidul generic din cerința inițială. S-a ales afișarea la 250×62 px (proporție reală păstrată exact) în loc de a forța 250×50, ceea ce ar fi distorsionat sigla oficială — nu s-a redesenat sau modificat grafic activul.
+- `data/legal-config.json` → `consumerProtection.salBadgeIsOfficial` este acum `true`, cu `salBadgeWidth/Height` actualizate la 250×62 și `salBadgeNote` explicând discrepanța de proporție.
+- `COMPLIANCE-TODO.md` actualizat: item-ul „înlocuiește placeholderul SAL” este bifat ca rezolvat; a rămas deschis doar confirmarea URL-ului exact al platformei SAL (deocamdată `https://anpc.ro/`, domeniul oficial, fără sub-pagină ghicită).
+
 ## 1. Ce a fost implementat
 
 - Sursă unică de adevăr pentru datele juridice: `data/legal-config.json` (vânzător WORLDWIDE) și `data/manufacturers.json` (producători, inițial VANESICA FRESH SRL).

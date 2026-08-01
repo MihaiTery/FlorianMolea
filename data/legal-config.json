@@ -29,9 +29,11 @@
     "salPlatformUrl": "https://anpc.ro/",
     "salPlatformName": "Platforma SAL – ANPC",
     "salBadgeWidth": 250,
-    "salBadgeHeight": 50,
-    "salBadgeAsset": "images/legal/sal-anpc-badge.svg",
-    "salBadgeIsOfficial": false,
+    "salBadgeHeight": 62,
+    "salBadgeAsset": "images/legal/sal-anpc-badge.png",
+    "salBadgeAssetWebp": "images/legal/sal-anpc-badge.webp",
+    "salBadgeIsOfficial": true,
+    "salBadgeNote": "Activul oficial furnizat de utilizator, dimensiune nativă 500×124 px (raport ~4:1, nu 5:1 ca în ghidul generic 250×50). Afișat la 250×62 px pentru a păstra proporția reală fără a distorsiona sigla.",
     "anpcComplaintFormNote": "Formularul oficial de reclamații ANPC este disponibil pe anpc.ro."
   },
   "commerce": {

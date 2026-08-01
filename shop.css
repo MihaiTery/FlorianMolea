@@ -1300,9 +1300,20 @@ body.cart-open {
   margin: 24px 0;
 }
 
+.sal-anpc-link {
+  display: inline-block;
+  line-height: 0;
+  border-radius: 6px;
+}
+
+.sal-anpc-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
 .sal-anpc img {
   width: 250px;
-  height: 50px;
+  height: auto;
   border-radius: 6px;
 }
 

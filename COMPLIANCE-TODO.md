@@ -56,7 +56,7 @@ Pentru fiecare din cele 5 produse active (`parfum-first-drive`, `parfum-cuban-le
 
 ## 4. SAL / ANPC
 
-- [ ] Înlocuiește `images/legal/sal-anpc-badge.svg` (placeholder text-based, marcat explicit ca atare) cu pictograma oficială SAL furnizată de ANPC, păstrând dimensiunea 250×50 px.
+- [x] Pictograma oficială SAL furnizată de utilizator, integrată în `images/legal/sal-anpc-badge.png` + `.webp` (index.html, contact-si-reclamatii.html). Rezoluție nativă 500×124 px; afișată la 250×62 px pentru a păstra proporția reală (ghidul generic cere 250×50 / raport 5:1, dar activul oficial primit are raport ~4:1 — s-a preferat proporția corectă, nedistorsionată, față de forțarea cifrei „50”). Nu s-a redesenat sigla.
 - [ ] Confirmă/verifică link-ul exact către platforma SAL curentă a ANPC. În prezent website-ul trimite către `https://anpc.ro/` (domeniul oficial cunoscut), fără o pagină internă specifică — verifică dacă ANPC publică un URL dedicat platformei SAL și actualizează `data/legal-config.json` → `consumerProtection.salPlatformUrl`, apoi propagă în `terms-and-conditions.html` și `contact-si-reclamatii.html`.
 
 ## 5. Stripe / Oblio / Worker
