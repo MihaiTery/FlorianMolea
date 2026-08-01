@@ -3,21 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Plată anulată | Florian Molea</title>
-  <meta name="description" content="Pagină de anulare a plății pentru magazinul FlorianMolea.">
-  <meta name="robots" content="noindex, nofollow">
+  <title>Livrare și plată | Florian Molea</title>
+  <meta name="description" content="Condițiile de livrare și plată pentru comenzile din magazinul online florianmolea.ro.">
+  <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#111827">
-  <link rel="canonical" href="https://florianmolea.ro/plata-anulata.html">
+  <link rel="canonical" href="https://florianmolea.ro/livrare-si-plata.html">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="shop.css">
 </head>
 <body>
-  <!--
-    Stripe (viitoare etapă): această pagină va deveni activă (cancel_url) după
-    integrarea Stripe Checkout. Coșul rămâne neschimbat aici — nu este golit.
-  -->
   <header class="site-header" data-header>
     <a class="brand" href="/" aria-label="Florian Molea acasa">
       <picture>
@@ -55,24 +51,56 @@
     </nav>
   </header>
 
-  <main id="top" class="status-page">
-    <div class="container">
-      <div class="status-panel">
-        <span class="status-icon cancelled" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
-        </span>
-        <h1>Plata a fost anulată</h1>
-        <p>Nu a fost efectuată nicio plată. Produsele rămân în continuare în coșul tău, așa că poți relua comanda oricând.</p>
-        <div class="status-actions">
-          <a class="btn btn-outline" href="/cos.html">Vezi coșul</a>
-          <a class="btn btn-primary" href="/magazin.html">Vezi magazinul</a>
-        </div>
-        <ul class="product-detail-policy-links status-legal-links">
-          <li><a href="/contact-si-reclamatii.html">Ai nevoie de ajutor? Contact și reclamații</a></li>
-        </ul>
-      </div>
-    </div>
-  </main>
+  <main id="top" class="legal-page">
+    <article class="container legal-document">
+      <h1>Livrare și plată</h1>
+      <p class="legal-updated">Ultima actualizare: 1 august 2026 · Versiune document: 1.0.0</p>
+
+      <h2>1. Teritoriul de livrare</h2>
+      <p>Comenzile se livrează pe teritoriul României.</p>
+
+      <h2>2. Curierul</h2>
+      <p>Denumirea curierului partener va fi publicată aici după confirmarea contractului de curierat.</p>
+
+      <h2>3. Timpul de procesare</h2>
+      <p>Timpul de procesare a comenzilor (intervalul dintre confirmarea comenzii/plății și predarea coletului către curier) va fi publicat aici după confirmare.</p>
+
+      <h2>4. Timpul estimat de livrare</h2>
+      <p>Termenul estimativ de livrare va fi publicat aici după confirmarea acestuia împreună cu curierul partener.</p>
+
+      <h2>5. Costul transportului</h2>
+      <p>Transport 25 RON pentru o comandă cu un singur produs. <strong>Transport gratuit la minimum două produse în comandă, inclusiv două bucăți ale aceluiași produs.</strong></p>
+
+      <h2>6. Metoda de calcul afișată în coș</h2>
+      <p>Costul de transport este calculat automat în coș, în funcție de numărul total de produse (bucăți) din comandă, și este afișat înainte de finalizarea comenzii, în coș și la checkout.</p>
+
+      <h2>7. Modalitățile de plată</h2>
+      <p>Plata online cu cardul bancar se realizează exclusiv prin procesatorul Stripe. Alte modalități de plată vor fi comunicate distinct pe website, dacă vor fi introduse.</p>
+
+      <h2>8. Plățile Stripe</h2>
+      <p>Datele cardului nu sunt introduse, procesate sau stocate de florianmolea.ro. Plata este procesată integral de Stripe, iar confirmarea acesteia se realizează server-side, printr-o notificare (webhook) transmisă de Stripe.</p>
+
+      <h2>9. Facturarea</h2>
+      <p>Facturile se emit prin serviciul Oblio, după confirmarea plății, și se transmit clientului conform datelor furnizate la comandă.</p>
+
+      <h2>10. Colete deteriorate</h2>
+      <p>Dacă coletul prezintă semne vizibile de deteriorare la livrare, vă recomandăm să notați acest lucru pe procesul-verbal de predare al curierului (dacă este disponibil) și să ne contactați imediat prin pagina <a href="/contact-si-reclamatii.html">Contact și reclamații</a>, cu fotografii ale coletului și ale produsului.</p>
+
+      <h2>11. Date greșite de livrare</h2>
+      <p>Răspunderea pentru corectitudinea datelor de livrare introduse la comandă revine clientului. Dacă observați o eroare înainte de expediere, ne puteți contacta pentru corectare. Costurile suplimentare generate de date de livrare incorecte, comunicate cu întârziere, pot fi suportate de client.</p>
+
+      <h2>12. Produse indisponibile</h2>
+      <p>Dacă un produs comandat devine indisponibil după plasarea comenzii, veți fi informat, iar produsul respectiv sau întreaga comandă poate fi anulată, cu rambursarea sumelor achitate, dacă este cazul.</p>
+
+      <h2>13. Întârzieri</h2>
+      <p>În caz de întârzieri față de termenul estimativ de livrare, veți fi informat prin datele de contact furnizate la comandă.</p>
+
+      <h2>14. Comenzile refuzate</h2>
+      <p>Dacă un colet este refuzat la livrare sau nu poate fi predat din motive care nu țin de Vânzător, comanda poate fi anulată, iar eventualele costuri de transport suportate de Vânzător pot fi reținute din suma rambursată, în limitele legii.</p>
+
+      <h2>15. Contact pentru livrare</h2>
+      <p>Pentru orice întrebare legată de livrare, ne puteți contacta prin pagina <a href="/contact-si-reclamatii.html">Contact și reclamații</a>.</p>
+      </main>
 
   <footer class="site-footer">
     <div class="container footer-grid">
@@ -131,6 +159,5 @@
   </footer>
 
   <script src="script.js" defer></script>
-  <script src="shop.js" defer></script>
 </body>
 </html>

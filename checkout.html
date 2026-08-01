@@ -176,22 +176,19 @@
             <div class="checkout-consent">
               <div class="checkout-checkbox-row">
                 <input type="checkbox" id="checkout-terms" name="acceptTerms" required>
-                <label for="checkout-terms">Sunt de acord cu <a href="/terms-and-conditions.html" target="_blank" rel="noopener">Termenii și condițiile</a>.</label>
-              </div>
-              <div class="checkout-checkbox-row">
-                <input type="checkbox" id="checkout-privacy" name="acceptPrivacy" required>
-                <label for="checkout-privacy">Am citit <a href="/privacy-policy.html" target="_blank" rel="noopener">Politica de confidențialitate</a>.</label>
+                <label for="checkout-terms">Am citit și accept <a href="/terms-and-conditions.html" target="_blank" rel="noopener">Termenii și condițiile</a> și <a href="/retur-si-retragere.html" target="_blank" rel="noopener">Politica de retur</a>.</label>
               </div>
               <div class="checkout-checkbox-row">
                 <input type="checkbox" id="checkout-marketing" name="acceptMarketing">
                 <label for="checkout-marketing">Sunt de acord să primesc oferte și noutăți FlorianMolea <span class="optional-tag">(opțional)</span>.</label>
               </div>
             </div>
+            <p class="checkout-privacy-note">Datele personale sunt prelucrate pentru procesarea și livrarea comenzii, conform <a href="/privacy-policy.html" target="_blank" rel="noopener">Politicii de confidențialitate</a>.</p>
           </fieldset>
 
-          <p class="checkout-payment-note">Plata online cu cardul va fi activată în etapa următoare.</p>
+          <p class="checkout-payment-note">Vânzător: WORLDWIDE CONSULTING LINE SRL. Plata online cu cardul (Stripe) și facturarea (Oblio) vor fi activate în etapa următoare — momentan comanda nu poate fi transmisă.</p>
 
-          <button type="submit" class="btn btn-primary checkout-submit" disabled>Plata online va fi disponibilă în curând</button>
+          <button type="submit" class="btn btn-primary checkout-submit" disabled>Comandă cu obligație de plată</button>
         </form>
 
         <aside class="cart-summary" aria-label="Rezumat comandă">
@@ -211,6 +208,12 @@
               <dd data-checkout-total>0,00 RON</dd>
             </div>
           </dl>
+          <p class="checkout-summary-meta">Metodă de plată: card online (Stripe), în etapa următoare. Livrare: curier, în România.</p>
+          <ul class="product-detail-policy-links">
+            <li><a href="/terms-and-conditions.html">Termeni și condiții</a></li>
+            <li><a href="/retur-si-retragere.html">Politica de retur</a></li>
+            <li><a href="/privacy-policy.html">Politica de confidențialitate</a></li>
+          </ul>
         </aside>
       </div>
     </div>
@@ -254,11 +257,21 @@
       </a>
     </div>
     <div class="footer-legal" aria-label="Linkuri juridice">
-      <a href="/privacy-policy.html">Politica de confidențialitate</a>
-      <a href="/cookies-policy.html">Politica Cookies</a>
-      <a href="/terms-and-conditions.html">Termeni și condiții</a>
-      <a href="/parteneriate.html">Parteneriate</a>
-      <p>© 2026 Florian Molea. Toate drepturile rezervate.</p>
+      <p class="footer-legal-identity">Magazinul online florianmolea.ro este operat de WORLDWIDE CONSULTING LINE SRL, CUI 44398383, J29/1422/2021, cu sediul social în Str. Mircea cel Bătrân nr. 85, Ploiești, județul Prahova, cod poștal 100426. FlorianMolea și Eau de Floryan sunt denumiri comerciale.</p>
+      <div class="footer-legal-links">
+        <a href="/terms-and-conditions.html">Termeni și condiții</a>
+        <a href="/livrare-si-plata.html">Livrare și plată</a>
+        <a href="/retur-si-retragere.html">Retur și retragere</a>
+        <a href="/formular-retragere.html">Formular de retragere</a>
+        <a href="/conformitatea-produselor.html">Conformitatea produselor</a>
+        <a href="/privacy-policy.html">Politica de confidențialitate</a>
+        <a href="/cookies-policy.html">Politica Cookies</a>
+        <button type="button" class="footer-legal-link-btn" data-cookie-settings-open>Setări cookies</button>
+        <a href="/informatii-legale.html">Informații legale</a>
+        <a href="/contact-si-reclamatii.html">Contact și reclamații</a>
+        <a href="/parteneriate.html">Parteneriate</a>
+      </div>
+      <p>© 2026 WORLDWIDE CONSULTING LINE SRL. Toate drepturile rezervate.</p>
     </div>
   </footer>
 

@@ -1,0 +1,18 @@
+{
+  "_comment": "Registrul producătorilor. Fiecare produs din products.json trebuie să refere un manufacturerId existent aici. Adăugarea unui producător nou pentru produse viitoare nu necesită nicio altă modificare a infrastructurii juridice a site-ului.",
+  "vanesica-fresh": {
+    "legalName": "VANESICA FRESH SRL",
+    "cui": "10702673",
+    "tradeRegisterNumber": "J15/188/1998",
+    "euid": "ROONRC.J15/188/1998",
+    "incorporationDate": "1998-06-17",
+    "postalAddress": {
+      "locality": "Sat Speriețeni",
+      "county": "Dâmbovița",
+      "postalCode": "137246",
+      "country": "România"
+    },
+    "electronicAddress": null,
+    "role": "Producător"
+  }
+}

@@ -3,21 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Plată anulată | Florian Molea</title>
-  <meta name="description" content="Pagină de anulare a plății pentru magazinul FlorianMolea.">
-  <meta name="robots" content="noindex, nofollow">
+  <title>Produs | Parfumuri auto FlorianMolea</title>
+  <meta name="description" content="Detalii comerciale, informații despre producător și siguranța produsului pentru parfumurile auto Eau de Floryan by FlorianMolea.">
+  <meta name="robots" content="noindex, follow">
   <meta name="theme-color" content="#111827">
-  <link rel="canonical" href="https://florianmolea.ro/plata-anulata.html">
+  <link rel="canonical" href="https://florianmolea.ro/produs.html">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="shop.css">
 </head>
 <body>
-  <!--
-    Stripe (viitoare etapă): această pagină va deveni activă (cancel_url) după
-    integrarea Stripe Checkout. Coșul rămâne neschimbat aici — nu este golit.
-  -->
   <header class="site-header" data-header>
     <a class="brand" href="/" aria-label="Florian Molea acasa">
       <picture>
@@ -30,7 +26,7 @@
       </span>
     </a>
 
-    <button type="button" class="cart-toggle" data-cart-toggle aria-haspopup="dialog" aria-controls="cart-drawer" aria-label="Deschide coșul">
+    <button type="button" class="cart-toggle pre-release-locked" data-cart-toggle aria-haspopup="dialog" aria-controls="cart-drawer" aria-label="Deschide coșul">
       <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
         <circle cx="9" cy="20" r="1.6"></circle>
         <circle cx="18" cy="20" r="1.6"></circle>
@@ -50,27 +46,74 @@
       <a href="/#de-ce">Despre mine</a>
       <a href="/#social">Social</a>
       <a href="/#recomandari">Recomandari</a>
-      <a href="/magazin.html">Magazin</a>
+      <a href="/magazin.html" class="pre-release-locked">Magazin</a>
       <a class="nav-whatsapp" href="https://wa.me/40768622688?text=Bun%C4%83%20Florian%21%20A%C8%99%20vrea%20s%C4%83%20aflu%20mai%20multe%20despre%20lec%C8%9Biile%20de%20condus." target="_blank" rel="noopener">WhatsApp</a>
     </nav>
   </header>
 
-  <main id="top" class="status-page">
+  <nav class="shop-breadcrumb" aria-label="Breadcrumb" data-product-breadcrumb hidden>
+    <a href="/">Acasă</a>
+    <span aria-hidden="true">/</span>
+    <a href="/magazin.html">Magazin</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page" data-product-breadcrumb-name></span>
+  </nav>
+
+  <main id="top" class="product-page" data-product-page>
     <div class="container">
-      <div class="status-panel">
-        <span class="status-icon cancelled" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
-        </span>
-        <h1>Plata a fost anulată</h1>
-        <p>Nu a fost efectuată nicio plată. Produsele rămân în continuare în coșul tău, așa că poți relua comanda oricând.</p>
-        <div class="status-actions">
-          <a class="btn btn-outline" href="/cos.html">Vezi coșul</a>
-          <a class="btn btn-primary" href="/magazin.html">Vezi magazinul</a>
+      <p class="shop-error-state" data-product-error hidden role="alert">
+        Produsul căutat nu a fost găsit sau nu mai este disponibil. Poți vedea toate produsele în
+        <a href="/magazin.html">magazin</a>.
+      </p>
+
+      <div class="product-detail" data-product-detail hidden>
+        <div class="product-detail-media">
+          <img data-product-image src="" alt="" width="480" height="480" loading="eager" decoding="async">
         </div>
-        <ul class="product-detail-policy-links status-legal-links">
-          <li><a href="/contact-si-reclamatii.html">Ai nevoie de ajutor? Contact și reclamații</a></li>
-        </ul>
+        <div class="product-detail-info">
+          <p class="eyebrow" data-product-brand></p>
+          <h1 data-product-name></h1>
+          <p class="product-detail-scent" data-product-scent hidden></p>
+          <p class="product-detail-price" data-product-price></p>
+          <p class="product-detail-stock" data-product-stock></p>
+          <p class="product-detail-net-qty" data-product-net-qty hidden></p>
+          <p class="product-detail-desc" data-product-description></p>
+
+          <div class="product-detail-controls" data-product-controls hidden>
+            <div class="qty-input" role="group" aria-label="Cantitate">
+              <button type="button" class="qty-btn" data-qty-decrease aria-label="Scade cantitatea">−</button>
+              <input type="number" inputmode="numeric" class="qty-value" data-qty-input min="1" step="1" value="1" aria-label="Cantitate">
+              <button type="button" class="qty-btn" data-qty-increase aria-label="Crește cantitatea">+</button>
+            </div>
+            <button type="button" class="btn btn-primary shop-add-btn" data-add-to-cart>Adaugă în coș</button>
+          </div>
+          <p class="shop-card-feedback" data-add-feedback role="status" hidden>
+            <span data-add-feedback-text>Adăugat în coș.</span>
+            <a href="/cos.html" class="shop-feedback-link">Vezi coșul</a>
+          </p>
+          <p class="product-detail-note" data-product-note hidden></p>
+
+          <ul class="product-detail-policy-links">
+            <li>Transport 25 lei; gratuit la minimum două produse în comandă. <a href="/livrare-si-plata.html">Vezi livrare și plată</a>.</li>
+            <li><a href="/retur-si-retragere.html">Politica de retur și dreptul de retragere</a></li>
+          </ul>
+        </div>
       </div>
+
+      <section class="product-safety" data-product-safety hidden aria-labelledby="product-safety-heading">
+        <h2 id="product-safety-heading">Producător și siguranța produsului</h2>
+        <div class="accordion" data-product-accordion>
+          <h3 class="accordion-heading">
+            <button type="button" class="accordion-trigger" id="product-safety-trigger" aria-expanded="false" aria-controls="product-safety-panel" data-accordion-trigger>
+              <span>Informații despre producător și siguranță</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+          </h3>
+          <div id="product-safety-panel" class="accordion-panel" role="region" aria-labelledby="product-safety-trigger" data-accordion-panel hidden>
+            <dl class="product-safety-list" data-product-safety-list></dl>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 

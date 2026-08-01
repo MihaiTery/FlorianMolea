@@ -12,7 +12,30 @@
     "image": "images/products/placeholder-first-drive.svg",
     "stock": 40,
     "active": true,
-    "featured": true
+    "featured": true,
+    "manufacturerId": "vanesica-fresh",
+    "sellerId": "worldwide-consulting-line",
+    "commercialBrand": "Eau de Floryan",
+    "productType": "Parfum auto",
+    "productIdentifier": null,
+    "netQuantity": null,
+    "safety": {
+      "documentationStatus": "pending",
+      "usageInstructions": [],
+      "storageInstructions": [],
+      "warnings": [],
+      "clp": {
+        "applicable": null,
+        "isHazardous": null,
+        "ufi": null,
+        "signalWord": null,
+        "pictograms": [],
+        "hazardStatements": [],
+        "supplementalHazardStatements": [],
+        "precautionaryStatements": [],
+        "pcnConfirmedForRomania": null
+      }
+    }
   },
   {
     "id": "parfum-cuban-leaf",
@@ -27,7 +50,30 @@
     "image": "images/products/placeholder-cuban-leaf.svg",
     "stock": 40,
     "active": true,
-    "featured": true
+    "featured": true,
+    "manufacturerId": "vanesica-fresh",
+    "sellerId": "worldwide-consulting-line",
+    "commercialBrand": "Eau de Floryan",
+    "productType": "Parfum auto",
+    "productIdentifier": null,
+    "netQuantity": null,
+    "safety": {
+      "documentationStatus": "pending",
+      "usageInstructions": [],
+      "storageInstructions": [],
+      "warnings": [],
+      "clp": {
+        "applicable": null,
+        "isHazardous": null,
+        "ufi": null,
+        "signalWord": null,
+        "pictograms": [],
+        "hazardStatements": [],
+        "supplementalHazardStatements": [],
+        "precautionaryStatements": [],
+        "pcnConfirmedForRomania": null
+      }
+    }
   },
   {
     "id": "parfum-crispy",
@@ -42,7 +88,30 @@
     "image": "images/products/placeholder-crispy.svg",
     "stock": 40,
     "active": true,
-    "featured": false
+    "featured": false,
+    "manufacturerId": "vanesica-fresh",
+    "sellerId": "worldwide-consulting-line",
+    "commercialBrand": "Eau de Floryan",
+    "productType": "Parfum auto",
+    "productIdentifier": null,
+    "netQuantity": null,
+    "safety": {
+      "documentationStatus": "pending",
+      "usageInstructions": [],
+      "storageInstructions": [],
+      "warnings": [],
+      "clp": {
+        "applicable": null,
+        "isHazardous": null,
+        "ufi": null,
+        "signalWord": null,
+        "pictograms": [],
+        "hazardStatements": [],
+        "supplementalHazardStatements": [],
+        "precautionaryStatements": [],
+        "pcnConfirmedForRomania": null
+      }
+    }
   },
   {
     "id": "parfum-bubblegum",
@@ -57,7 +126,30 @@
     "image": "images/products/placeholder-bubblegum.svg",
     "stock": 40,
     "active": true,
-    "featured": false
+    "featured": false,
+    "manufacturerId": "vanesica-fresh",
+    "sellerId": "worldwide-consulting-line",
+    "commercialBrand": "Eau de Floryan",
+    "productType": "Parfum auto",
+    "productIdentifier": null,
+    "netQuantity": null,
+    "safety": {
+      "documentationStatus": "pending",
+      "usageInstructions": [],
+      "storageInstructions": [],
+      "warnings": [],
+      "clp": {
+        "applicable": null,
+        "isHazardous": null,
+        "ufi": null,
+        "signalWord": null,
+        "pictograms": [],
+        "hazardStatements": [],
+        "supplementalHazardStatements": [],
+        "precautionaryStatements": [],
+        "pcnConfirmedForRomania": null
+      }
+    }
   },
   {
     "id": "parfum-octopus",
@@ -72,6 +164,29 @@
     "image": "images/products/placeholder-octopus.svg",
     "stock": 40,
     "active": true,
-    "featured": false
+    "featured": false,
+    "manufacturerId": "vanesica-fresh",
+    "sellerId": "worldwide-consulting-line",
+    "commercialBrand": "Eau de Floryan",
+    "productType": "Parfum auto",
+    "productIdentifier": null,
+    "netQuantity": null,
+    "safety": {
+      "documentationStatus": "pending",
+      "usageInstructions": [],
+      "storageInstructions": [],
+      "warnings": [],
+      "clp": {
+        "applicable": null,
+        "isHazardous": null,
+        "ufi": null,
+        "signalWord": null,
+        "pictograms": [],
+        "hazardStatements": [],
+        "supplementalHazardStatements": [],
+        "precautionaryStatements": [],
+        "pcnConfirmedForRomania": null
+      }
+    }
   }
 ]

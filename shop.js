@@ -9,6 +9,17 @@ const SHOP_CONFIG = {
   cartStorageKey: "florianmolea_cart_v1"
 };
 
+// Comutator central al modului live al comerțului. Rămâne "false" până când
+// documentația de siguranță VANESICA FRESH SRL este confirmată ("documentationStatus":
+// "confirmed") pentru toate produsele active — vezi COMPLIANCE-TODO.md. În modul live,
+// produsele cu date critice incomplete nu mai pot fi adăugate în coș (secțiunea 17).
+const IS_LIVE_COMMERCE = false;
+
+const LEGAL_DATA_URLS = {
+  legalConfig: "data/legal-config.json",
+  manufacturers: "data/manufacturers.json"
+};
+
 // NOTĂ PENTRU INTEGRAREA STRIPE (etapă viitoare):
 // - Prețurile, stocul și totalurile din acest fișier sunt doar pentru afișarea în frontend.
 // - La checkout real, un backend va recalcula produsele, prețurile, stocul, transportul și totalul —
@@ -28,6 +39,11 @@ let products = [];
 let productsError = false;
 let productsPromise = null;
 let cart = [];
+
+let legalConfig = null;
+let manufacturers = {};
+let legalDataError = false;
+let legalDataPromise = null;
 
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
   "&": "&amp;",
@@ -95,7 +111,126 @@ const loadProducts = () => {
 
 const getProductById = (productId) => products.find((product) => product.id === productId);
 
+const getProductBySlug = (slug) => products.find((product) => product.slug === slug);
+
 const getActiveProducts = () => products.filter((product) => product.active);
+
+/* ---------- Date juridice: vânzător + producători ---------- */
+
+const loadLegalData = () => {
+  if (legalDataPromise) {
+    return legalDataPromise;
+  }
+
+  const fetchJson = (url) => fetch(url, { cache: "no-store" }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`${url} request failed`);
+    }
+    return response.json();
+  });
+
+  legalDataPromise = Promise.all([
+    fetchJson(LEGAL_DATA_URLS.legalConfig),
+    fetchJson(LEGAL_DATA_URLS.manufacturers)
+  ])
+    .then(([configData, manufacturersData]) => {
+      legalConfig = configData && typeof configData === "object" ? configData : null;
+      manufacturers = manufacturersData && typeof manufacturersData === "object" ? manufacturersData : {};
+      legalDataError = !legalConfig;
+    })
+    .catch(() => {
+      legalConfig = null;
+      manufacturers = {};
+      legalDataError = true;
+    });
+
+  return legalDataPromise;
+};
+
+const getManufacturer = (manufacturerId) => (manufacturerId && manufacturers[manufacturerId]) || null;
+
+/* ---------- Conformitate comercială (secțiunea 17) ---------- */
+
+const validateCommerceCompliance = (product, config, manufacturersRegistry) => {
+  const missing = [];
+
+  if (!config || !config.seller || !config.seller.legalName) {
+    missing.push("vânzător configurat");
+  }
+
+  const manufacturer = product && manufacturersRegistry ? manufacturersRegistry[product.manufacturerId] : null;
+
+  if (!product || !product.manufacturerId || !manufacturer) {
+    missing.push("producător configurat");
+    return { compliant: false, missing };
+  }
+
+  const address = manufacturer.postalAddress;
+
+  if (!address || !address.locality || !address.county || !address.postalCode || !address.country) {
+    missing.push("adresă poștală a producătorului");
+  }
+
+  if (!manufacturer.electronicAddress) {
+    missing.push("adresă electronică a producătorului");
+  }
+
+  if (!product.productIdentifier) {
+    missing.push("identificator de produs");
+  }
+
+  if (!product.netQuantity) {
+    missing.push("cantitate netă");
+  }
+
+  const safety = product.safety || {};
+
+  if (!Array.isArray(safety.usageInstructions) || safety.usageInstructions.length === 0) {
+    missing.push("instrucțiuni de utilizare");
+  }
+
+  if (!Array.isArray(safety.warnings) || safety.warnings.length === 0) {
+    missing.push("avertismente");
+  }
+
+  const clp = safety.clp || {};
+
+  if (clp.applicable === null || clp.applicable === undefined) {
+    missing.push("status CLP explicit (aplicabil/neaplicabil)");
+  }
+
+  if (safety.documentationStatus !== "confirmed") {
+    missing.push("confirmarea documentației producătorului");
+  }
+
+  return { compliant: missing.length === 0, missing };
+};
+
+const logComplianceWarning = (product, result) => {
+  if (typeof console === "undefined" || !result || result.compliant) {
+    return;
+  }
+
+  console.warn(
+    `[conformitate comercială] Produsul "${product.id}" are date lipsă: ${result.missing.join(", ")}.` +
+    (IS_LIVE_COMMERCE ? " Cumpărarea este blocată în modul live." : " Vizibil doar în mediul de dezvoltare/test.")
+  );
+};
+
+const isProductPurchasable = (product) => {
+  if (!product || !product.active || product.stock <= 0) {
+    return false;
+  }
+
+  const result = validateCommerceCompliance(product, legalConfig, manufacturers);
+  logComplianceWarning(product, result);
+
+  if (!IS_LIVE_COMMERCE) {
+    return true;
+  }
+
+  return result.compliant;
+};
 
 /* ---------- Coș: persistență ---------- */
 
@@ -118,7 +253,10 @@ const sanitizeCart = (rawCart) => {
   return rawCart.reduce((cleaned, entry) => {
     const product = getProductById(entry.productId);
 
-    if (!product || !product.active || product.stock <= 0) {
+    // Un produs poate fi salvat în coș dintr-o sesiune anterioară (mod dev/test)
+    // și devine neconform ulterior în modul live — nu presupune că doar addToCart()
+    // controlează ce ajunge în coș; verifică din nou aici la fiecare încărcare.
+    if (!product || !isProductPurchasable(product)) {
       return cleaned;
     }
 
@@ -197,6 +335,14 @@ const addToCart = (productId, quantity = 1) => {
 
   if (!product || !product.active || product.stock <= 0) {
     return { ok: false, reason: "unavailable" };
+  }
+
+  // Reverifică regula de conformitate comercială aici, nu doar la randare: UI-ul
+  // ascunde butonul pentru produse neconforme în modul live, dar cineva ar putea
+  // apela addToCart() direct (consolă, DOM modificat manual) — funcția trebuie să
+  // rămână sursa de adevăr pentru blocarea comercială, nu doar markup-ul cardului.
+  if (!isProductPurchasable(product)) {
+    return { ok: false, reason: "not-compliant" };
   }
 
   const requestedQuantity = Math.trunc(Number(quantity));
@@ -593,11 +739,13 @@ const injectItemListStructuredData = (activeProducts) => {
 
 const buildProductCardMarkup = (product) => {
   const inStock = product.stock > 0;
+  const purchasable = isProductPurchasable(product);
   const maxAllowed = Math.min(product.stock, SHOP_CONFIG.maxQuantityPerProduct);
   const name = escapeHtml(product.name);
   const shortName = escapeHtml(product.shortName || product.name);
   const scent = escapeHtml(product.scent || "");
   const description = escapeHtml(product.description || "");
+  const detailsHref = `/produs.html?slug=${encodeURIComponent(product.slug)}`;
 
   return `
     <article class="shop-card" id="${escapeHtml(product.slug)}" data-product-card data-product-id="${escapeHtml(product.id)}">
@@ -611,7 +759,8 @@ const buildProductCardMarkup = (product) => {
         <p class="shop-card-desc">${description}</p>
         <p class="shop-card-price">${formatMoney(product.price)}</p>
         <p class="shop-card-stock ${inStock ? "in-stock" : "out-of-stock"}">${inStock ? "În stoc" : "Stoc epuizat"}</p>
-        ${inStock ? `
+        <a class="shop-card-details-link" href="${detailsHref}">Detalii produs și siguranță</a>
+        ${purchasable ? `
           <div class="shop-card-controls">
             <div class="qty-input" role="group" aria-label="Cantitate ${shortName}">
               <button type="button" class="qty-btn" data-qty-decrease aria-label="Scade cantitatea">−</button>
@@ -625,7 +774,7 @@ const buildProductCardMarkup = (product) => {
             <a href="/cos.html" class="shop-feedback-link">Vezi coșul</a>
           </p>
         ` : `
-          <p class="shop-card-note">Acest produs nu poate fi adăugat momentan în coș.</p>
+          <p class="shop-card-note">${inStock ? "Produs în curs de pregătire." : "Acest produs nu poate fi adăugat momentan în coș."}</p>
         `}
       </div>
     </article>
@@ -891,6 +1040,268 @@ const initCheckoutForm = () => {
   }
 };
 
+/* ---------- Randare: produs.html ---------- */
+
+const buildSafetyListMarkup = (product) => {
+  const manufacturer = getManufacturer(product.manufacturerId);
+  const safety = product.safety || {};
+  const clp = safety.clp || {};
+  const rows = [];
+
+  const addRow = (term, value) => {
+    if (!value) {
+      return;
+    }
+    rows.push(`<div class="product-safety-row"><dt>${escapeHtml(term)}</dt><dd>${value}</dd></div>`);
+  };
+
+  const addListRow = (term, items) => {
+    if (!Array.isArray(items) || items.length === 0) {
+      return;
+    }
+    addRow(term, `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`);
+  };
+
+  if (manufacturer) {
+    addRow("Producător", escapeHtml(manufacturer.legalName));
+
+    const address = manufacturer.postalAddress;
+    if (address && address.locality && address.county && address.postalCode && address.country) {
+      addRow("Adresă producător", escapeHtml(`${address.locality}, județul ${address.county}, cod poștal ${address.postalCode}, ${address.country}`));
+    }
+
+    if (manufacturer.electronicAddress) {
+      addRow("Adresă electronică producător", `<a href="mailto:${escapeHtml(manufacturer.electronicAddress)}">${escapeHtml(manufacturer.electronicAddress)}</a>`);
+    }
+
+    if (manufacturer.postalAddress && manufacturer.postalAddress.country) {
+      addRow("Țară de origine", escapeHtml(manufacturer.postalAddress.country));
+    }
+  }
+
+  addRow("Identificator produs", product.productIdentifier ? escapeHtml(product.productIdentifier) : "");
+  addRow("Cantitate netă", product.netQuantity ? escapeHtml(product.netQuantity) : "");
+  addListRow("Instrucțiuni de utilizare", safety.usageInstructions);
+  addListRow("Instrucțiuni de depozitare", safety.storageInstructions);
+  addListRow("Avertismente", safety.warnings);
+
+  if (clp.applicable === true) {
+    addRow("Clasificare CLP", clp.isHazardous ? "Amestec periculos" : "Neclasificat ca periculos");
+    addRow("Cuvânt de avertizare", clp.signalWord ? escapeHtml(clp.signalWord) : "");
+    addListRow("Fraze de pericol (H)", clp.hazardStatements);
+    addListRow("Fraze de pericol suplimentare (EUH)", clp.supplementalHazardStatements);
+    addListRow("Fraze de precauție (P)", clp.precautionaryStatements);
+    addRow("UFI", clp.ufi ? escapeHtml(clp.ufi) : "");
+  } else if (clp.applicable === false) {
+    addRow("Clasificare CLP", "Nu este aplicabilă acestui produs.");
+  }
+
+  return rows.join("");
+};
+
+const initProductAccordion = (container, openByDefault) => {
+  const trigger = container.querySelector("[data-accordion-trigger]");
+  const panel = container.querySelector("[data-accordion-panel]");
+
+  if (!trigger || !panel) {
+    return;
+  }
+
+  const setOpen = (isOpen) => {
+    trigger.setAttribute("aria-expanded", String(isOpen));
+    panel.hidden = !isOpen;
+    container.classList.toggle("is-open", isOpen);
+  };
+
+  setOpen(Boolean(openByDefault));
+
+  trigger.addEventListener("click", () => {
+    setOpen(trigger.getAttribute("aria-expanded") !== "true");
+  });
+};
+
+const injectProductStructuredData = (product) => {
+  const existing = document.querySelector("script[data-product-jsonld]");
+
+  if (existing) {
+    existing.remove();
+  }
+
+  const manufacturer = getManufacturer(product.manufacturerId);
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    sku: product.sku,
+    brand: { "@type": "Brand", name: product.commercialBrand || "Eau de Floryan" },
+    image: `https://florianmolea.ro/${product.image}`,
+    offers: {
+      "@type": "Offer",
+      price: product.price,
+      priceCurrency: product.currency || "RON",
+      availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      url: `https://florianmolea.ro/produs.html?slug=${encodeURIComponent(product.slug)}`
+    }
+  };
+
+  if (manufacturer && manufacturer.legalName) {
+    data.manufacturer = { "@type": "Organization", name: manufacturer.legalName };
+  }
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.dataset.productJsonld = "true";
+  script.textContent = JSON.stringify(data);
+  document.head.appendChild(script);
+};
+
+const renderProductDetailPage = () => {
+  const page = document.querySelector("[data-product-page]");
+
+  if (!page) {
+    return;
+  }
+
+  const errorState = page.querySelector("[data-product-error]");
+  const detail = page.querySelector("[data-product-detail]");
+  const safetySection = page.querySelector("[data-product-safety]");
+  // Breadcrumb-ul este plasat ca element frate al <main>, nu în interiorul lui
+  // (aceeași convenție ca în magazin.html/checkout.html/cos.html) — trebuie
+  // căutat în document, altfel page.querySelector returnează null.
+  const breadcrumb = document.querySelector("[data-product-breadcrumb]");
+
+  if (productsError || legalDataError) {
+    errorState.hidden = false;
+    detail.hidden = true;
+    safetySection.hidden = true;
+    return;
+  }
+
+  const slug = new URLSearchParams(window.location.search).get("slug");
+  const product = slug ? getProductBySlug(slug) : null;
+
+  if (!product || !product.active) {
+    errorState.hidden = false;
+    detail.hidden = true;
+    safetySection.hidden = true;
+    document.title = "Produs indisponibil | Florian Molea";
+    return;
+  }
+
+  errorState.hidden = true;
+  detail.hidden = false;
+  safetySection.hidden = false;
+  breadcrumb.hidden = false;
+  breadcrumb.querySelector("[data-product-breadcrumb-name]").textContent = product.shortName || product.name;
+
+  document.title = `${product.name} | Florian Molea`;
+
+  const image = detail.querySelector("[data-product-image]");
+  image.src = product.image;
+  image.alt = product.name;
+
+  detail.querySelector("[data-product-brand]").textContent = product.commercialBrand || "Eau de Floryan";
+  detail.querySelector("[data-product-name]").textContent = product.name;
+
+  const scentEl = detail.querySelector("[data-product-scent]");
+  scentEl.textContent = product.scent || "";
+  scentEl.hidden = !product.scent;
+
+  detail.querySelector("[data-product-price]").textContent = formatMoney(product.price);
+
+  const inStock = product.stock > 0;
+  const stockEl = detail.querySelector("[data-product-stock]");
+  stockEl.textContent = inStock ? "În stoc" : "Stoc epuizat";
+  stockEl.className = `product-detail-stock ${inStock ? "in-stock" : "out-of-stock"}`;
+
+  const netQtyEl = detail.querySelector("[data-product-net-qty]");
+  if (product.netQuantity) {
+    netQtyEl.hidden = false;
+    netQtyEl.textContent = `Cantitate netă: ${product.netQuantity}`;
+  } else {
+    netQtyEl.hidden = true;
+  }
+
+  detail.querySelector("[data-product-description]").textContent = product.description || "";
+
+  const purchasable = isProductPurchasable(product);
+  const controls = detail.querySelector("[data-product-controls]");
+  const noteEl = detail.querySelector("[data-product-note]");
+  const maxAllowed = Math.min(product.stock, SHOP_CONFIG.maxQuantityPerProduct);
+
+  if (purchasable) {
+    controls.hidden = false;
+    noteEl.hidden = true;
+    const qtyInput = controls.querySelector("[data-qty-input]");
+    qtyInput.max = String(maxAllowed);
+    qtyInput.value = "1";
+  } else {
+    controls.hidden = true;
+    noteEl.hidden = false;
+    noteEl.textContent = inStock ? "Produs în curs de pregătire." : "Acest produs nu poate fi adăugat momentan în coș.";
+  }
+
+  const safetyList = safetySection.querySelector("[data-product-safety-list]");
+  safetyList.innerHTML = buildSafetyListMarkup(product);
+
+  const hasCriticalWarnings = Array.isArray(product.safety?.warnings) && product.safety.warnings.length > 0;
+
+  if (!safetySection.dataset.accordionWired) {
+    safetySection.dataset.accordionWired = "true";
+    initProductAccordion(safetySection.querySelector("[data-product-accordion]"), hasCriticalWarnings);
+  }
+
+  if (!page.dataset.eventsWired) {
+    page.dataset.eventsWired = "true";
+
+    controls.addEventListener("click", (event) => {
+      const qtyInput = controls.querySelector("[data-qty-input]");
+
+      if (event.target.closest("[data-qty-increase]")) {
+        const max = Number(qtyInput.max) || SHOP_CONFIG.maxQuantityPerProduct;
+        qtyInput.value = String(Math.min(max, (Number(qtyInput.value) || 1) + 1));
+        return;
+      }
+
+      if (event.target.closest("[data-qty-decrease]")) {
+        qtyInput.value = String(Math.max(1, (Number(qtyInput.value) || 1) - 1));
+        return;
+      }
+
+      if (event.target.closest("[data-add-to-cart]")) {
+        const quantity = Math.max(1, Math.trunc(Number(qtyInput.value)) || 1);
+        const currentSlug = new URLSearchParams(window.location.search).get("slug");
+        const currentProduct = getProductBySlug(currentSlug);
+
+        if (!currentProduct) {
+          return;
+        }
+
+        const result = addToCart(currentProduct.id, quantity);
+        const feedback = detail.querySelector("[data-add-feedback]");
+        const feedbackText = detail.querySelector("[data-add-feedback-text]");
+        feedback.hidden = false;
+
+        if (result.ok) {
+          feedbackText.textContent = "Adăugat în coș.";
+          announce(`${currentProduct.shortName || currentProduct.name} a fost adăugat în coș.`);
+        } else {
+          feedbackText.textContent = "Cantitatea maximă disponibilă este deja în coș.";
+        }
+      }
+    });
+  }
+
+  injectProductStructuredData(product);
+
+  trackShopEvent("view_item", {
+    currency: SHOP_CONFIG.currency,
+    value: product.price,
+    items: [{ item_id: product.id, item_name: product.name, price: product.price }]
+  });
+};
+
 /* ---------- Init ---------- */
 
 const renderAll = () => {
@@ -901,13 +1312,14 @@ const renderAll = () => {
 };
 
 const initShop = async () => {
-  await loadProducts();
+  await Promise.all([loadProducts(), loadLegalData()]);
   loadCart();
   saveCart();
 
   injectCartDrawer();
   renderShopGrid();
   renderAll();
+  renderProductDetailPage();
   initCheckoutForm();
 
   document.addEventListener("click", (event) => {

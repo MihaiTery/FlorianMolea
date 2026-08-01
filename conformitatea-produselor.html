@@ -3,21 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Plată anulată | Florian Molea</title>
-  <meta name="description" content="Pagină de anulare a plății pentru magazinul FlorianMolea.">
-  <meta name="robots" content="noindex, nofollow">
+  <title>Conformitatea produselor | Florian Molea</title>
+  <meta name="description" content="Drepturile consumatorului privind conformitatea produselor comercializate în magazinul online florianmolea.ro.">
+  <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#111827">
-  <link rel="canonical" href="https://florianmolea.ro/plata-anulata.html">
+  <link rel="canonical" href="https://florianmolea.ro/conformitatea-produselor.html">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="shop.css">
 </head>
 <body>
-  <!--
-    Stripe (viitoare etapă): această pagină va deveni activă (cancel_url) după
-    integrarea Stripe Checkout. Coșul rămâne neschimbat aici — nu este golit.
-  -->
   <header class="site-header" data-header>
     <a class="brand" href="/" aria-label="Florian Molea acasa">
       <picture>
@@ -55,24 +51,35 @@
     </nav>
   </header>
 
-  <main id="top" class="status-page">
-    <div class="container">
-      <div class="status-panel">
-        <span class="status-icon cancelled" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
-        </span>
-        <h1>Plata a fost anulată</h1>
-        <p>Nu a fost efectuată nicio plată. Produsele rămân în continuare în coșul tău, așa că poți relua comanda oricând.</p>
-        <div class="status-actions">
-          <a class="btn btn-outline" href="/cos.html">Vezi coșul</a>
-          <a class="btn btn-primary" href="/magazin.html">Vezi magazinul</a>
-        </div>
-        <ul class="product-detail-policy-links status-legal-links">
-          <li><a href="/contact-si-reclamatii.html">Ai nevoie de ajutor? Contact și reclamații</a></li>
-        </ul>
-      </div>
-    </div>
-  </main>
+  <main id="top" class="legal-page">
+    <article class="container legal-document">
+      <h1>Conformitatea produselor</h1>
+      <p class="legal-updated">Ultima actualizare: 1 august 2026 · Versiune document: 1.0.0</p>
+
+      <h2>1. Cine răspunde pentru conformitate</h2>
+      <p>Reclamațiile privind conformitatea produselor achiziționate din magazinul florianmolea.ro se adresează <strong>WORLDWIDE CONSULTING LINE SRL</strong>, în calitate de vânzător, prin pagina <a href="/contact-si-reclamatii.html">Contact și reclamații</a>. Datele producătorului efectiv al fiecărui produs (VANESICA FRESH SRL, pentru parfumurile Eau de Floryan) sunt disponibile individual pe pagina fiecărui produs, în secțiunea „Producător și siguranța produsului”.</p>
+
+      <h2>2. Drepturile consumatorului pentru produse neconforme</h2>
+      <p>Conform legislației privind vânzarea de bunuri către consumatori, aveți dreptul la produse conforme cu contractul. În cazul unei neconformități apărute în termenul legal de garanție, aveți dreptul, în ordinea și condițiile prevăzute de lege, la:</p>
+      <ul>
+        <li>repararea produsului;</li>
+        <li>înlocuirea produsului;</li>
+        <li>o reducere proporțională de preț; sau</li>
+        <li>rezoluțiunea contractului (rambursare), atunci când repararea sau înlocuirea nu sunt posibile sau nu sunt realizate într-un termen rezonabil.</li>
+      </ul>
+
+      <h2>3. Cum se face sesizarea</h2>
+      <p>Sesizarea unei neconformități se face prin pagina <a href="/contact-si-reclamatii.html">Contact și reclamații</a>, indicând numărul comenzii, produsul afectat și o descriere a problemei; fotografiile sau materialele video ale problemei semnalate ne ajută să analizăm rapid situația.</p>
+
+      <h2>4. Identificarea comenzii</h2>
+      <p>Pentru procesarea rapidă a sesizării, vă rugăm să aveți la îndemână numărul comenzii, transmis la finalizarea acesteia sau prezent pe factura emisă prin Oblio.</p>
+
+      <h2>5. Neconformitate vs. preferință olfactivă</h2>
+      <p>O neconformitate presupune un produs diferit de descrierea de pe website, deteriorat, cu defecte de fabricație sau care nu corespunde caracteristicilor declarate. Faptul că aroma unui parfum auto nu corespunde preferinței personale a clientului nu reprezintă, prin el însuși, o neconformitate — pentru această situație se aplică dreptul de retragere descris în <a href="/retur-si-retragere.html">Retur și retragere</a>, în termenul legal aplicabil.</p>
+
+      <h2>6. Remedii și rambursare</h2>
+      <p>În funcție de natura neconformității, WORLDWIDE CONSULTING LINE SRL va propune remedierea, înlocuirea produsului sau, acolo unde este cazul, rambursarea integrală sau parțială, conform legii. Nu promitem termene sau garanții comerciale suplimentare față de cele impuse de legislația aplicabilă, decât dacă sunt comunicate explicit și în scris.</p>
+      </main>
 
   <footer class="site-footer">
     <div class="container footer-grid">
@@ -131,6 +138,5 @@
   </footer>
 
   <script src="script.js" defer></script>
-  <script src="shop.js" defer></script>
 </body>
 </html>

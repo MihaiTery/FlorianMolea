@@ -36,7 +36,42 @@ const trackedClickEvents = [
   }
 ];
 
-const hasAcceptedAnalytics = () => localStorage.getItem(cookieConsentKey) === "accepted";
+const readConsent = () => {
+  try {
+    const raw = localStorage.getItem(cookieConsentKey);
+
+    if (!raw) {
+      return null;
+    }
+
+    // Compatibilitate cu formatul vechi (string simplu "accepted"/"rejected").
+    if (raw === "accepted") {
+      return { analytics: true, decidedAt: null, version: 1 };
+    }
+
+    if (raw === "rejected") {
+      return { analytics: false, decidedAt: null, version: 1 };
+    }
+
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch (error) {
+    return null;
+  }
+};
+
+const writeConsent = (analyticsAccepted) => {
+  localStorage.setItem(cookieConsentKey, JSON.stringify({
+    analytics: Boolean(analyticsAccepted),
+    decidedAt: new Date().toISOString(),
+    version: 1
+  }));
+};
+
+const hasAcceptedAnalytics = () => {
+  const consent = readConsent();
+  return Boolean(consent && consent.analytics);
+};
 
 const loadGoogleAnalytics = () => {
   if (isGoogleAnalyticsLoaded || !hasAcceptedAnalytics()) {
@@ -66,42 +101,188 @@ const trackEvent = (eventName, params = {}) => {
   window.gtag("event", eventName, params);
 };
 
+/* ---------- Consimțământ cookies: banner + panou de personalizare ---------- */
+
+let cookieUiPreviousFocus = null;
+
+const getCookieBanner = () => document.querySelector("[data-cookie-banner]");
+const getCookieModalOverlay = () => document.querySelector("[data-cookie-settings-overlay]");
+
+const removeCookieBanner = () => {
+  const banner = getCookieBanner();
+  if (banner) {
+    banner.remove();
+  }
+};
+
+const trapCookieUiFocus = (event, container) => {
+  const focusable = Array.from(
+    container.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])')
+  ).filter((el) => el.offsetParent !== null);
+
+  if (focusable.length === 0) {
+    return;
+  }
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+};
+
+const closeCookieSettings = () => {
+  const overlay = getCookieModalOverlay();
+
+  if (!overlay) {
+    return;
+  }
+
+  overlay.remove();
+
+  if (cookieUiPreviousFocus instanceof HTMLElement) {
+    cookieUiPreviousFocus.focus();
+  }
+};
+
+const openCookieSettings = () => {
+  if (getCookieModalOverlay()) {
+    return;
+  }
+
+  cookieUiPreviousFocus = document.activeElement;
+
+  const current = readConsent();
+  const analyticsChecked = current ? current.analytics : false;
+
+  const overlay = document.createElement("div");
+  overlay.className = "cookie-settings-overlay";
+  overlay.setAttribute("data-cookie-settings-overlay", "");
+
+  overlay.innerHTML = `
+    <div class="cookie-settings-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-settings-title">
+      <h2 id="cookie-settings-title">Setări cookies</h2>
+      <p>Alege ce categorii de cookies pot fi folosite pe florianmolea.ro. Poți reveni oricând la această fereastră din linkul „Setări cookies” din subsolul paginii.</p>
+
+      <div class="cookie-category">
+        <div class="cookie-category-copy">
+          <h3>Necesare</h3>
+          <p>Necesare pentru funcționarea website-ului și a coșului de cumpărături. Nu pot fi dezactivate.</p>
+        </div>
+        <span class="cookie-switch">
+          <input type="checkbox" id="cookie-cat-necessary" checked disabled>
+          <span class="cookie-switch-track" aria-hidden="true"></span>
+        </span>
+      </div>
+
+      <div class="cookie-category">
+        <div class="cookie-category-copy">
+          <h3>Analiză / statistică</h3>
+          <p>Google Analytics 4 — ne ajută să înțelegem traficul și utilizarea website-ului. Se activează doar cu acordul tău.</p>
+        </div>
+        <span class="cookie-switch">
+          <input type="checkbox" id="cookie-cat-analytics" data-cookie-analytics-toggle ${analyticsChecked ? "checked" : ""}>
+          <span class="cookie-switch-track" aria-hidden="true"></span>
+        </span>
+      </div>
+
+      <p><a href="/cookies-policy.html">Vezi Politica de Cookies completă</a></p>
+
+      <div class="cookie-settings-actions">
+        <button type="button" class="btn btn-outline" data-cookie-cancel>Anulează</button>
+        <button type="button" class="btn btn-primary" data-cookie-save>Salvează preferințele</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  const modal = overlay.querySelector(".cookie-settings-modal");
+  const analyticsToggle = overlay.querySelector("[data-cookie-analytics-toggle]");
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) {
+      closeCookieSettings();
+    }
+  });
+
+  overlay.querySelector("[data-cookie-cancel]").addEventListener("click", closeCookieSettings);
+
+  overlay.querySelector("[data-cookie-save]").addEventListener("click", () => {
+    writeConsent(analyticsToggle.checked);
+
+    if (analyticsToggle.checked) {
+      loadGoogleAnalytics();
+    }
+
+    removeCookieBanner();
+    closeCookieSettings();
+  });
+
+  overlay.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeCookieSettings();
+      return;
+    }
+
+    if (event.key === "Tab") {
+      trapCookieUiFocus(event, modal);
+    }
+  });
+
+  window.requestAnimationFrame(() => {
+    analyticsToggle.focus();
+  });
+};
+
 const createCookieBanner = () => {
+  if (getCookieBanner()) {
+    return;
+  }
+
   const banner = document.createElement("section");
   banner.className = "cookie-banner";
+  banner.setAttribute("data-cookie-banner", "");
   banner.setAttribute("aria-label", "Preferințe cookies");
   banner.innerHTML = `
-    <p>Folosim cookies pentru a analiza traficul și pentru a îmbunătăți experiența pe website. Poți accepta sau refuza cookies de analiză.</p>
+    <p>Folosim cookies necesare pentru funcționarea website-ului și, doar cu acordul tău, cookies de analiză pentru a înțelege traficul. <a href="/cookies-policy.html">Află mai multe</a>.</p>
     <div class="cookie-banner-actions">
-      <a href="/cookies-policy.html">Află mai multe</a>
-      <button class="cookie-btn cookie-btn-secondary" type="button" data-cookie-reject>Refuz</button>
-      <button class="cookie-btn cookie-btn-primary" type="button" data-cookie-accept>Accept</button>
+      <button class="cookie-btn" type="button" data-cookie-customize>Personalizează</button>
+      <button class="cookie-btn cookie-btn-secondary" type="button" data-cookie-reject>Refuză opționale</button>
+      <button class="cookie-btn cookie-btn-primary" type="button" data-cookie-accept>Acceptă toate</button>
     </div>
   `;
 
   document.body.appendChild(banner);
 
   banner.querySelector("[data-cookie-accept]").addEventListener("click", () => {
-    localStorage.setItem(cookieConsentKey, "accepted");
+    writeConsent(true);
     loadGoogleAnalytics();
     banner.remove();
   });
 
   banner.querySelector("[data-cookie-reject]").addEventListener("click", () => {
-    localStorage.setItem(cookieConsentKey, "rejected");
+    writeConsent(false);
     banner.remove();
+  });
+
+  banner.querySelector("[data-cookie-customize]").addEventListener("click", () => {
+    openCookieSettings();
   });
 };
 
 const initCookieConsent = () => {
-  const savedPreference = localStorage.getItem(cookieConsentKey);
+  const consent = readConsent();
 
-  if (savedPreference === "accepted") {
-    loadGoogleAnalytics();
-    return;
-  }
-
-  if (savedPreference === "rejected") {
+  if (consent) {
+    if (consent.analytics) {
+      loadGoogleAnalytics();
+    }
     return;
   }
 
@@ -109,6 +290,17 @@ const initCookieConsent = () => {
 };
 
 initCookieConsent();
+
+document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) {
+    return;
+  }
+
+  if (event.target.closest("[data-cookie-settings-open]")) {
+    event.preventDefault();
+    openCookieSettings();
+  }
+});
 
 document.addEventListener("click", (event) => {
   if (!(event.target instanceof Element)) {
