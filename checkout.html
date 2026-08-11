@@ -186,9 +186,11 @@
             <p class="checkout-privacy-note">Datele personale sunt prelucrate pentru procesarea și livrarea comenzii, conform <a href="/privacy-policy.html" target="_blank" rel="noopener">Politicii de confidențialitate</a>.</p>
           </fieldset>
 
-          <p class="checkout-payment-note">Vânzător: WORLDWIDE CONSULTING LINE SRL. Plata online cu cardul (Stripe) și facturarea (Oblio) vor fi activate în etapa următoare — momentan comanda nu poate fi transmisă.</p>
+          <p class="checkout-payment-note" data-checkout-payment-note>Comenzile online vor fi disponibile în curând.</p>
 
-          <button type="submit" class="btn btn-primary checkout-submit" disabled>Comandă cu obligație de plată</button>
+          <p class="checkout-submit-error" data-checkout-submit-error hidden role="alert"></p>
+
+          <button type="submit" class="btn btn-primary checkout-submit" data-checkout-submit disabled>Comandă cu obligație de plată</button>
         </form>
 
         <aside class="cart-summary" aria-label="Rezumat comandă">
@@ -276,11 +278,12 @@
   </footer>
 
   <!--
-    Stripe (viitoare etapă): la activare, acest formular va trimite doar identificatorii
-    coșului către un backend, care va recalcula produsele/prețurile/stocul/transportul,
-    va crea Stripe Checkout Session server-side și va apela API-ul Oblio pentru
-    facturare după confirmarea plății printr-un webhook Stripe. Niciun calcul de preț
-    din acest fișier nu va fi folosit ca sursă de adevăr la plata reală.
+    Fluxul de plată (Worker staging + Stripe Checkout, implementat în shop.js) este
+    complet din punct de vedere al codului, dar dezactivat public prin comutatorul
+    SHOP_CHECKOUT_ENABLED = false din shop.js. Formularul trimite doar identificatorii
+    coșului către Worker, care recalculează produsele/prețurile/stocul/transportul și
+    creează sesiunea Stripe server-side. Niciun calcul de preț din acest fișier nu este
+    folosit ca sursă de adevăr la plata reală. Oblio (facturare) nu este încă integrat.
   -->
   <script src="script.js" defer></script>
   <script src="shop.js" defer></script>

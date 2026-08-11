@@ -15,6 +15,20 @@ const SHOP_CONFIG = {
 // produsele cu date critice incomplete nu mai pot fi adăugate în coș (secțiunea 17).
 const IS_LIVE_COMMERCE = false;
 
+// Comutator separat pentru fluxul de plată online (Stripe, mediul de staging).
+// Nu are legătură cu IS_LIVE_COMMERCE (acela gestionează conformitatea datelor de
+// produs). Cât timp rămâne "false": butonul de comandă rămâne dezactivat, NU se
+// trimite niciun POST /checkout/session, iar niciun vizitator public nu poate crea
+// o comandă — restul interfeței (magazin, coș, formularul de checkout) rămâne
+// testabil vizual. Singurul mod de a-l activa este să editezi manual valoarea de mai
+// jos, local — nu există niciun query parameter, flag din localStorage sau alt
+// mecanism public care îl poate activa de la distanță.
+const SHOP_CHECKOUT_ENABLED = false;
+
+// URL-ul API-ului Worker de staging. Relevant doar când SHOP_CHECKOUT_ENABLED = true.
+// Înlocuiește cu URL-ul real după primul `wrangler deploy --env staging`.
+const SHOP_CHECKOUT_API_BASE = "https://florianmolea-shop-api-staging.florianmolea.workers.dev";
+
 const LEGAL_DATA_URLS = {
   legalConfig: "data/legal-config.json",
   manufacturers: "data/manufacturers.json"
@@ -1008,6 +1022,121 @@ const renderCheckoutSummary = () => {
       }).filter(Boolean)
     });
   }
+
+  setCheckoutSubmitButtonState(page);
+};
+
+// Protecție dublă trimitere: verificată sincron, înainte de orice `await`, ca două
+// declanșări aproape simultane ale submit-ului (dublu-click, Enter + click) să nu
+// poată porni două cereri către Worker.
+let checkoutSubmitInFlight = false;
+
+const setCheckoutSubmitButtonState = (page) => {
+  const button = page.querySelector("[data-checkout-submit]");
+
+  if (!button || checkoutSubmitInFlight) {
+    return;
+  }
+
+  button.disabled = !SHOP_CHECKOUT_ENABLED || cart.length === 0;
+};
+
+const setCheckoutSubmitting = (page, isSubmitting) => {
+  const button = page.querySelector("[data-checkout-submit]");
+
+  checkoutSubmitInFlight = isSubmitting;
+
+  if (button) {
+    button.disabled = isSubmitting || !SHOP_CHECKOUT_ENABLED || cart.length === 0;
+    button.textContent = isSubmitting ? "Se trimite comanda…" : "Comandă cu obligație de plată";
+  }
+
+  const errorEl = page.querySelector("[data-checkout-submit-error]");
+
+  if (isSubmitting && errorEl) {
+    errorEl.hidden = true;
+  }
+};
+
+const showCheckoutSubmitError = (page, message) => {
+  const errorEl = page.querySelector("[data-checkout-submit-error]");
+
+  if (errorEl) {
+    errorEl.textContent = message;
+    errorEl.hidden = false;
+  }
+};
+
+// Construiește payload-ul EXACT pe forma validată de Worker (`POST /checkout/session`):
+// items[], customer{type,name,email,phone}, shippingAddress{...}, billingSameAsShipping.
+// Nu trimite preț/total — acelea sunt recalculate integral server-side. Nu trimite câmpurile
+// de firmă (companyName/companyCui/...): Worker-ul nu le validează/persistă încă (confirmat
+// pe backend-ul de staging), deci nu are rost să le trimitem ca sursă falsă de adevăr.
+// Formularul nu are un toggle de adresă de facturare diferită, deci billingSameAsShipping
+// e mereu `true`, aliniat cu presupunerea hardcodată din backend.
+const buildCheckoutPayload = (form) => {
+  const data = new FormData(form);
+  const isCompany = Boolean(form.querySelector("[data-company-toggle]")?.checked);
+  const get = (name) => String(data.get(name) ?? "").trim();
+
+  return {
+    items: cart.map((entry) => ({ productId: entry.productId, quantity: entry.quantity })),
+    customer: {
+      type: isCompany ? "company" : "individual",
+      name: `${get("firstName")} ${get("lastName")}`.trim(),
+      email: get("email"),
+      phone: get("phone")
+    },
+    shippingAddress: {
+      line1: get("address"),
+      line2: get("addressDetails"),
+      city: get("city"),
+      county: get("county"),
+      postalCode: get("postalCode"),
+      country: "RO"
+    },
+    billingSameAsShipping: true
+  };
+};
+
+const submitCheckout = async (form) => {
+  const page = form.closest("[data-checkout-page]");
+
+  if (!page || checkoutSubmitInFlight) {
+    return;
+  }
+
+  setCheckoutSubmitting(page, true);
+
+  let response;
+  let body;
+
+  try {
+    response = await fetch(`${SHOP_CHECKOUT_API_BASE}/checkout/session`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(buildCheckoutPayload(form))
+    });
+    body = await response.json().catch(() => null);
+  } catch {
+    showCheckoutSubmitError(page, "Nu am putut contacta serverul de plăți. Verifică conexiunea și încearcă din nou.");
+    setCheckoutSubmitting(page, false);
+    return;
+  }
+
+  if (!response.ok || !body?.ok || !body.data?.checkoutUrl) {
+    showCheckoutSubmitError(
+      page,
+      body?.error?.message || "Nu am putut trimite comanda. Te rugăm să încerci din nou."
+    );
+    setCheckoutSubmitting(page, false);
+    return;
+  }
+
+  // Coșul NU se golește aici — rămâne neschimbat până la confirmarea reală a plății
+  // (paid/invoiced), verificată pe comanda-confirmata.html. Butonul rămâne dezactivat
+  // în timp ce browserul navighează către Stripe.
+  window.location.href = body.data.checkoutUrl;
 };
 
 const initCheckoutForm = () => {
@@ -1029,13 +1158,32 @@ const initCheckoutForm = () => {
     });
   }
 
-  // Formularul nu trimite date către niciun serviciu extern și nu procesează plăți.
-  // Butonul de plată rămâne dezactivat până la integrarea Stripe (server-side).
+  const noteEl = page.querySelector("[data-checkout-payment-note]");
+
+  if (noteEl) {
+    noteEl.textContent = SHOP_CHECKOUT_ENABLED
+      ? "Vânzător: WORLDWIDE CONSULTING LINE SRL. Plata online cu cardul (Stripe)."
+      : "Comenzile online vor fi disponibile în curând.";
+  }
+
   const form = page.querySelector("[data-checkout-form]");
 
   if (form) {
     form.addEventListener("submit", (event) => {
       event.preventDefault();
+
+      // Gardă redundantă, sincronă: chiar dacă butonul ar ajunge activat prin
+      // manipulare manuală a DOM-ului, handler-ul de submit refuză să pornească
+      // orice cerere cât timp comutatorul e "false".
+      if (!SHOP_CHECKOUT_ENABLED) {
+        return;
+      }
+
+      if (!form.reportValidity()) {
+        return;
+      }
+
+      submitCheckout(form);
     });
   }
 };
@@ -1302,6 +1450,137 @@ const renderProductDetailPage = () => {
   });
 };
 
+/* ---------- Randare: comanda-confirmata.html ---------- */
+
+const ORDER_STATUS_POLL_INTERVAL_MS = 2500;
+const ORDER_STATUS_POLL_TIMEOUT_MS = 60000;
+
+const ORDER_STATUS_ICON_CHECK = `<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>`;
+const ORDER_STATUS_ICON_CROSS = `<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>`;
+
+const setOrderStatusPanel = (panel, { icon = null, iconClass = "", title, message }) => {
+  const iconEl = panel.querySelector("[data-order-status-icon]");
+  const titleEl = panel.querySelector("[data-order-status-title]");
+  const messageEl = panel.querySelector("[data-order-status-message]");
+
+  if (iconEl) {
+    if (icon) {
+      iconEl.hidden = false;
+      iconEl.className = `status-icon ${iconClass}`.trim();
+      iconEl.innerHTML = icon;
+    } else {
+      iconEl.hidden = true;
+    }
+  }
+
+  if (titleEl) {
+    titleEl.textContent = title;
+  }
+
+  if (messageEl) {
+    messageEl.textContent = message;
+  }
+};
+
+const fetchOrderStatus = (token) => fetch(
+  `${SHOP_CHECKOUT_API_BASE}/orders/${encodeURIComponent(token)}/status`,
+  { cache: "no-store" }
+).then((response) => {
+  if (response.status === 404) {
+    return { notFound: true };
+  }
+
+  if (!response.ok) {
+    throw new Error("order status request failed");
+  }
+
+  return response.json().then((body) => body?.data ?? null);
+});
+
+// Interoghează GET /orders/:token/status până când plata ajunge într-o stare finală
+// (paid / payment_failed) sau expiră timeout-ul local. Coșul se golește DOAR când
+// backend-ul confirmă `paid: true` — niciodată doar pe baza redirect-ului din browser.
+const pollOrderStatus = async (panel, token) => {
+  const startedAt = Date.now();
+
+  while (Date.now() - startedAt < ORDER_STATUS_POLL_TIMEOUT_MS) {
+    let status;
+
+    try {
+      status = await fetchOrderStatus(token);
+    } catch {
+      setOrderStatusPanel(panel, {
+        icon: ORDER_STATUS_ICON_CROSS,
+        iconClass: "cancelled",
+        title: "Nu am putut verifica starea comenzii",
+        message: "Reîncarcă pagina peste câteva momente sau contactează-ne dacă problema persistă."
+      });
+      return;
+    }
+
+    if (status?.notFound) {
+      setOrderStatusPanel(panel, {
+        icon: ORDER_STATUS_ICON_CROSS,
+        iconClass: "cancelled",
+        title: "Comanda nu a fost găsită",
+        message: "Linkul folosit nu corespunde unei comenzi valide."
+      });
+      return;
+    }
+
+    if (status?.paid) {
+      setOrderStatusPanel(panel, {
+        icon: ORDER_STATUS_ICON_CHECK,
+        iconClass: "success",
+        title: "Plata a fost confirmată",
+        message: `Comanda ta a fost înregistrată și plata a fost confirmată. Total: ${formatMoney((status.totalMinor || 0) / 100)}.`
+      });
+      clearCart();
+      return;
+    }
+
+    if (status?.status === "payment_failed") {
+      setOrderStatusPanel(panel, {
+        icon: ORDER_STATUS_ICON_CROSS,
+        iconClass: "cancelled",
+        title: "Plata nu a putut fi confirmată",
+        message: "Poți relua comanda din coșul tău, care rămâne neschimbat."
+      });
+      return;
+    }
+
+    setOrderStatusPanel(panel, {
+      title: "Verificăm plata…",
+      message: "Te rugăm să aștepți câteva secunde în timp ce confirmăm plata cu banca ta."
+    });
+
+    await new Promise((resolve) => window.setTimeout(resolve, ORDER_STATUS_POLL_INTERVAL_MS));
+  }
+
+  setOrderStatusPanel(panel, {
+    title: "Plata este încă în verificare",
+    message: "Îți vom trimite un e-mail imediat ce plata este confirmată. Poți reveni pe această pagină mai târziu pentru a verifica statusul."
+  });
+};
+
+const initOrderConfirmationPage = () => {
+  const panel = document.querySelector("[data-order-status-panel]");
+
+  // Cât timp SHOP_CHECKOUT_ENABLED este "false", pagina rămâne exact cum e randată
+  // static în HTML (mesajul generic existent) — niciun apel către Worker nu are loc.
+  if (!panel || !SHOP_CHECKOUT_ENABLED) {
+    return;
+  }
+
+  const token = new URLSearchParams(window.location.search).get("token");
+
+  if (!token) {
+    return;
+  }
+
+  pollOrderStatus(panel, token);
+};
+
 /* ---------- Init ---------- */
 
 const renderAll = () => {
@@ -1321,6 +1600,7 @@ const initShop = async () => {
   renderAll();
   renderProductDetailPage();
   initCheckoutForm();
+  initOrderConfirmationPage();
 
   document.addEventListener("click", (event) => {
     if (!(event.target instanceof Element)) {

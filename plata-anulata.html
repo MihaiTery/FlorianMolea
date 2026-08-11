@@ -15,8 +15,9 @@
 </head>
 <body>
   <!--
-    Stripe (viitoare etapă): această pagină va deveni activă (cancel_url) după
-    integrarea Stripe Checkout. Coșul rămâne neschimbat aici — nu este golit.
+    Aceasta este cancel_url-ul real al sesiunii Stripe Checkout (Worker staging),
+    activ doar când SHOP_CHECKOUT_ENABLED (shop.js) este `true`. Coșul rămâne
+    neschimbat aici — pagina nu îl golește în niciun caz, indiferent de comutator.
   -->
   <header class="site-header" data-header>
     <a class="brand" href="/" aria-label="Florian Molea acasa">

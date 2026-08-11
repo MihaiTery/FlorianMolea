@@ -853,6 +853,14 @@ body.cart-open {
   font-weight: 700;
 }
 
+.checkout-submit-error {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(239, 47, 47, 0.1);
+  color: var(--red);
+  font-weight: 700;
+}
+
 .checkout-submit {
   width: 100%;
   min-height: 54px;

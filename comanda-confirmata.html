@@ -15,10 +15,13 @@
 </head>
 <body>
   <!--
-    Stripe (viitoare etapă): această pagină va deveni activă (success_url) după
-    integrarea Stripe Checkout. Confirmarea reală a plății se va face server-side,
-    printr-un webhook Stripe, nu pe baza încărcării acestei pagini în browser.
-    Coșul NU este golit automat aici, deocamdată.
+    Aceasta este success_url-ul real al sesiunii Stripe Checkout (Worker staging).
+    Confirmarea plății se face EXCLUSIV server-side, printr-un webhook Stripe — pagina
+    doar interoghează GET /orders/:token/status și afișează rezultatul, nu presupune
+    plata reușită doar pentru că browserul a ajuns aici. Coșul se golește doar când
+    statusul confirmă `paid: true`. Fluxul e activ doar când SHOP_CHECKOUT_ENABLED
+    (shop.js) este `true`; cât timp e `false`, pagina rămâne conținutul static de mai
+    jos și nu se face niciun apel către Worker.
   -->
   <header class="site-header" data-header>
     <a class="brand" href="/" aria-label="Florian Molea acasa">
@@ -59,12 +62,12 @@
 
   <main id="top" class="status-page">
     <div class="container">
-      <div class="status-panel">
-        <span class="status-icon success" aria-hidden="true">
+      <div class="status-panel" data-order-status-panel>
+        <span class="status-icon success" data-order-status-icon aria-hidden="true">
           <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
         </span>
-        <h1>Comanda ta a fost înregistrată</h1>
-        <p>Aceasta este o pagină pregătită pentru etapa următoare, când plata online cu cardul (Stripe) va fi activă. Momentan, magazinul florianmolea.ro (operat de WORLDWIDE CONSULTING LINE SRL) nu procesează plăți reale, iar această pagină nu confirmă o tranzacție efectivă. După activare, aici vor fi afișate numărul comenzii, produsele, cantitățile, transportul, totalul, adresa de livrare și termenul estimativ de livrare.</p>
+        <h1 data-order-status-title>Comanda ta a fost înregistrată</h1>
+        <p data-order-status-message>Aceasta este o pagină pregătită pentru etapa următoare, când plata online cu cardul (Stripe) va fi activă. Momentan, magazinul florianmolea.ro (operat de WORLDWIDE CONSULTING LINE SRL) nu procesează plăți reale, iar această pagină nu confirmă o tranzacție efectivă. După activare, aici vor fi afișate numărul comenzii, produsele, cantitățile, transportul, totalul, adresa de livrare și termenul estimativ de livrare.</p>
         <div class="status-actions">
           <a class="btn btn-outline" href="/">Acasă</a>
           <a class="btn btn-primary" href="/magazin.html">Vezi magazinul</a>
