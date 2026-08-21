@@ -57,6 +57,42 @@
     [12, 9], [29, 5], [56, 5], [72, 11], [68, 17], [16, 17]
   ];
 
+  // Break / station wagon: plafon lung, aproape pana la spate, spate vertical (nu teșit).
+  var WAGON_OUTLINE = [
+    [3, 34], [3, 14], [8, 8], [60, 6], [72, 12],
+    [80, 18], [84, 22], [84, 32], [78, 34], [10, 34]
+  ];
+
+  var WAGON_GLASS = [
+    [10, 10], [58, 8], [70, 13], [62, 18], [14, 18]
+  ];
+
+  var WHEELS_WAGON = [[20, 34], [66, 34]];
+
+  // Coupe / sport compact: plafon coborat, cabina scurta, profil sportiv.
+  var COUPE_OUTLINE = [
+    [4, 32], [6, 24], [16, 16], [34, 10], [54, 10], [66, 16],
+    [78, 22], [84, 26], [84, 32], [76, 34], [10, 34]
+  ];
+
+  var COUPE_GLASS = [
+    [20, 17], [35, 12], [52, 12], [64, 17], [56, 20], [24, 20]
+  ];
+
+  var WHEELS_COUPE = [[22, 33], [66, 33]];
+
+  // Van / utilitara mica: foarte inalt, caroserie aproape rectangulara.
+  var VAN_OUTLINE = [
+    [2, 34], [2, 6], [8, 4], [70, 4], [78, 8],
+    [84, 14], [84, 32], [78, 34], [8, 34]
+  ];
+
+  var VAN_GLASS = [
+    [6, 8], [70, 7], [76, 12], [70, 16], [8, 16]
+  ];
+
+  var WHEELS_VAN = [[18, 35], [68, 35]];
+
   function drawSilhouette(ctx, x, y, w, h, palette, outline, glass, wheelCenters) {
     var scaledOutline = scalePoints(outline, w, h);
     var scaledGlass = scalePoints(glass, w, h);
@@ -114,13 +150,17 @@
   var Sprites = {
     PALETTE_PLAYER: { body: "#20c36a", bodyDark: "#0f8a4c", highlight: "#8af0bd" },
 
+    // Nicio culoare de aici nu e verde: Golf-ul jucatorului trebuie sa ramana instant
+    // recognoscibil, niciodata confundabil cu un obstacol.
     VARIANT_PALETTES: [
-      { body: "#2f6df6", bodyDark: "#1c46ad", highlight: "#a9c3ff" },
-      { body: "#ff7a3d", bodyDark: "#c9531f", highlight: "#ffcdad" },
-      { body: "#ef2f2f", bodyDark: "#a91d1d", highlight: "#ffb3b3" },
-      { body: "#ffc847", bodyDark: "#c99418", highlight: "#fff0c2" },
-      { body: "#9b6bff", bodyDark: "#6b3fd6", highlight: "#d9c8ff" },
-      { body: "#5f646d", bodyDark: "#3a3d43", highlight: "#c2c6cc" }
+      { body: "#2f6df6", bodyDark: "#1c46ad", highlight: "#a9c3ff" }, // albastru
+      { body: "#ff7a3d", bodyDark: "#c9531f", highlight: "#ffcdad" }, // portocaliu
+      { body: "#ef2f2f", bodyDark: "#a91d1d", highlight: "#ffb3b3" }, // rosu
+      { body: "#ffc847", bodyDark: "#c99418", highlight: "#fff0c2" }, // galben
+      { body: "#9b6bff", bodyDark: "#6b3fd6", highlight: "#d9c8ff" }, // mov
+      { body: "#5f646d", bodyDark: "#3a3d43", highlight: "#c2c6cc" }, // gri
+      { body: "#f2f4f7", bodyDark: "#c7cdd6", highlight: "#ffffff" }, // alb
+      { body: "#2fd9c4", bodyDark: "#1a9c8c", highlight: "#a8f5ea" }  // turcoaz
     ],
 
     drawHatchback: function (ctx, x, y, w, h, palette) {
@@ -132,12 +172,28 @@
     drawSuv: function (ctx, x, y, w, h, palette) {
       drawSilhouette(ctx, x, y, w, h, palette, SUV_OUTLINE, SUV_GLASS, WHEELS_SUV);
     },
-
-    drawCarVariant: function (ctx, x, y, w, h, variantIndex, palette) {
-      var shapes = [Sprites.drawHatchback, Sprites.drawSedan, Sprites.drawSuv];
-      var shape = shapes[variantIndex % shapes.length];
-      shape(ctx, x, y, w, h, palette);
+    drawWagon: function (ctx, x, y, w, h, palette) {
+      drawSilhouette(ctx, x, y, w, h, palette, WAGON_OUTLINE, WAGON_GLASS, WHEELS_WAGON);
     },
+    drawCoupe: function (ctx, x, y, w, h, palette) {
+      drawSilhouette(ctx, x, y, w, h, palette, COUPE_OUTLINE, COUPE_GLASS, WHEELS_COUPE);
+    },
+    drawVan: function (ctx, x, y, w, h, palette) {
+      drawSilhouette(ctx, x, y, w, h, palette, VAN_OUTLINE, VAN_GLASS, WHEELS_VAN);
+    },
+
+    // Fiecare model isi are propriile rapoarte de hitbox (mai mic decat sprite-ul,
+    // niciodata folosit ca lever dinamic de dificultate - vezi joc-obstacles.js).
+    // Modelele "boxy" (van, wagon) au mai putin spatiu gol la margini decat cele
+    // "sportive" (coupe), deci raportul hitbox/sprite reflecta asta.
+    CAR_MODELS: [
+      { key: "hatchback", draw: null, hitboxShrinkX: 0.72, hitboxShrinkY: 0.68 },
+      { key: "sedan", draw: null, hitboxShrinkX: 0.78, hitboxShrinkY: 0.62 },
+      { key: "suv", draw: null, hitboxShrinkX: 0.74, hitboxShrinkY: 0.74 },
+      { key: "wagon", draw: null, hitboxShrinkX: 0.80, hitboxShrinkY: 0.66 },
+      { key: "coupe", draw: null, hitboxShrinkX: 0.70, hitboxShrinkY: 0.60 },
+      { key: "van", draw: null, hitboxShrinkX: 0.82, hitboxShrinkY: 0.80 }
+    ],
 
     drawCone: function (ctx, x, y, w, h) {
       var baseW = w;
@@ -173,6 +229,20 @@
       ]);
     }
   };
+
+  // Leaga fiecare model de functia lui de desenare (nu se pot referi la Sprites.drawX
+  // in interiorul literalului de mai sus, inainte ca Sprites sa existe).
+  var DRAW_BY_KEY = {
+    hatchback: Sprites.drawHatchback,
+    sedan: Sprites.drawSedan,
+    suv: Sprites.drawSuv,
+    wagon: Sprites.drawWagon,
+    coupe: Sprites.drawCoupe,
+    van: Sprites.drawVan
+  };
+  Sprites.CAR_MODELS.forEach(function (model) {
+    model.draw = DRAW_BY_KEY[model.key];
+  });
 
   FMGame.Sprites = Sprites;
 })();

@@ -60,6 +60,7 @@
       <a href="/#social">Social</a>
       <a href="/#recomandari">Recomandari</a>
       <a href="/magazin.html">Magazin</a>
+      <a href="/joc.html" aria-current="page">Joc</a>
       <a class="nav-whatsapp" href="https://wa.me/40768622688?text=Bun%C4%83%20Florian%21%20A%C8%99%20vrea%20s%C4%83%20aflu%20mai%20multe%20despre%20lec%C8%9Biile%20de%20condus." target="_blank" rel="noopener">WhatsApp</a>
     </nav>
   </header>
@@ -77,64 +78,81 @@
       <p class="game-subtitle">Cât de departe ajungi fără să pici traseul?</p>
     </section>
 
-    <section class="game-stage-section container">
-      <div class="game-stage" data-game-stage>
-        <canvas
-          class="game-canvas"
-          data-game-canvas
-          width="960"
-          height="400"
-          role="img"
-          aria-label="Zona de joc: un Golf 8 verde sare peste mașini și evită conurile de pe șosea"
-        ></canvas>
+    <section class="game-stage-section">
+      <div class="game-stage-wrap">
+        <div class="game-stage" data-game-stage>
+          <canvas
+            class="game-canvas"
+            data-game-canvas
+            width="960"
+            height="400"
+            role="img"
+            aria-label="Zona de joc: un Golf 8 verde sare peste mașini și evită conurile de pe șosea"
+          ></canvas>
 
-        <div class="game-hud" data-game-hud hidden aria-hidden="true">
-          <span class="game-hud-score" data-hud-score>SCORE 00000</span>
-          <span class="game-hud-hi" data-hud-hi>HI 00000</span>
+          <div class="game-hud" data-game-hud hidden aria-hidden="true">
+            <span class="game-hud-score" data-hud-score>SCORE 00000</span>
+            <span class="game-hud-hi" data-hud-hi>HI 00000</span>
+          </div>
+
+          <div class="game-overlay game-overlay-start" data-overlay-start>
+            <div class="game-overlay-inner">
+              <p class="game-overlay-eyebrow">Florian Molea — Jocul</p>
+              <p class="game-overlay-line">Sari peste mașini. Evită conurile.</p>
+              <p class="game-overlay-hint game-overlay-hint-desktop">SPACE pentru start</p>
+              <p class="game-overlay-hint game-overlay-hint-mobile">Apasă pentru start</p>
+            </div>
+          </div>
+
+          <div class="game-overlay game-overlay-gameover" data-overlay-gameover hidden>
+            <div class="game-overlay-inner">
+              <p class="game-overlay-badge" data-gameover-badge hidden>Ai intrat în Top 10!</p>
+              <p class="game-overlay-message" data-gameover-message></p>
+              <p class="game-overlay-score" data-gameover-score></p>
+              <p class="game-overlay-hi" data-gameover-hi></p>
+              <button type="button" class="btn btn-primary game-retry-btn" data-retry-btn>Mai încearcă</button>
+              <p class="game-overlay-cta">Poți mai mult? Fă screenshot și provoacă-ți prietenii.</p>
+              <p class="game-overlay-brand">florianmolea.ro</p>
+            </div>
+          </div>
+
+          <div class="game-overlay game-overlay-name" data-overlay-name hidden>
+            <div class="game-overlay-inner">
+              <p class="game-overlay-badge">Ai intrat în Top 10!</p>
+              <p class="game-overlay-line" data-name-entry-score></p>
+              <form class="game-name-form" data-name-entry-form>
+                <label class="visually-hidden" for="game-player-name">Introdu numele</label>
+                <input
+                  id="game-player-name"
+                  class="game-name-input"
+                  type="text"
+                  maxlength="15"
+                  placeholder="Introdu numele"
+                  autocomplete="off"
+                  autocapitalize="words"
+                  data-name-entry-input
+                >
+                <button type="submit" class="btn btn-primary">Salvează</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="game-overlay game-overlay-paused" data-overlay-paused hidden>
+            <div class="game-overlay-inner">
+              <p class="game-overlay-line">Pauză</p>
+            </div>
+          </div>
         </div>
 
-        <div class="game-overlay game-overlay-start" data-overlay-start>
-          <p class="game-overlay-eyebrow">Florian Molea — Jocul</p>
-          <p class="game-overlay-line">Sari peste mașini. Evită conurile.</p>
-          <p class="game-overlay-hint game-overlay-hint-desktop">SPACE pentru start</p>
-          <p class="game-overlay-hint game-overlay-hint-mobile">Apasă pentru start</p>
-        </div>
-
-        <div class="game-overlay game-overlay-gameover" data-overlay-gameover hidden>
-          <p class="game-overlay-badge" data-gameover-badge hidden>Ai intrat în Top 10!</p>
-          <p class="game-overlay-message" data-gameover-message></p>
-          <p class="game-overlay-score" data-gameover-score></p>
-          <p class="game-overlay-hi" data-gameover-hi></p>
-          <button type="button" class="btn btn-primary game-retry-btn" data-retry-btn>Mai încearcă</button>
-          <p class="game-overlay-cta">Poți mai mult? Fă screenshot și provoacă-ți prietenii.</p>
-          <p class="game-overlay-brand">florianmolea.ro</p>
-        </div>
-
-        <div class="game-overlay game-overlay-name" data-overlay-name hidden>
-          <p class="game-overlay-badge">Ai intrat în Top 10!</p>
-          <p class="game-overlay-line" data-name-entry-score></p>
-          <form class="game-name-form" data-name-entry-form>
-            <label class="visually-hidden" for="game-player-name">Introdu numele</label>
-            <input
-              id="game-player-name"
-              class="game-name-input"
-              type="text"
-              maxlength="15"
-              placeholder="Introdu numele"
-              autocomplete="off"
-              autocapitalize="words"
-              data-name-entry-input
-            >
-            <button type="submit" class="btn btn-primary">Salvează</button>
-          </form>
-        </div>
-
-        <div class="game-overlay game-overlay-paused" data-overlay-paused hidden>
-          <p class="game-overlay-line">Pauză</p>
+        <div class="game-controls" data-game-controls>
+          <button type="button" class="game-jump-btn" data-jump-btn aria-label="Sari">
+            <span class="game-jump-btn-icon" aria-hidden="true">↑</span>
+            <span class="game-jump-btn-label" data-jump-btn-label>START</span>
+          </button>
         </div>
       </div>
 
-      <aside class="game-leaderboard" aria-label="Clasament local Top 10">
+      <aside class="game-leaderboard container" aria-label="Clasament local Top 10">
         <h2>Top 10 local</h2>
         <ol class="game-leaderboard-list" data-leaderboard-list></ol>
       </aside>

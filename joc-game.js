@@ -33,6 +33,9 @@
 
   var leaderboardList = document.querySelector("[data-leaderboard-list]");
 
+  var jumpBtn = document.querySelector("[data-jump-btn]");
+  var jumpBtnLabel = jumpBtn && jumpBtn.querySelector("[data-jump-btn-label]");
+
   var player = new FMGame.Player();
   var obstacles = new FMGame.ObstacleManager();
   var ads = new FMGame.AdManager();
@@ -94,6 +97,24 @@
     });
   }
 
+  function updateJumpButton() {
+    if (!jumpBtn) return;
+
+    if (nameEntryVisible) {
+      jumpBtn.disabled = true;
+      return;
+    }
+
+    jumpBtn.disabled = false;
+    var label = "SARI";
+    if (state === STATE.START) {
+      label = "START";
+    } else if (state === STATE.GAMEOVER) {
+      label = "MAI ÎNCEARCĂ";
+    }
+    if (jumpBtnLabel) jumpBtnLabel.textContent = label;
+  }
+
   function startGame() {
     player.reset();
     obstacles.reset();
@@ -106,6 +127,7 @@
     hud.hidden = false;
     showOnly(null);
     updateHud();
+    updateJumpButton();
   }
 
   function currentDifficulty() {
@@ -124,6 +146,7 @@
 
     if (FMGame.Leaderboard.qualifies(finalScore)) {
       nameEntryVisible = true;
+      updateJumpButton();
       if (nameEntryScoreEl) nameEntryScoreEl.textContent = "Scorul tau: " + utils.padScore(finalScore);
       showOnly(overlayName);
       if (nameEntryInput) {
@@ -146,6 +169,7 @@
     if (gameoverHiEl) gameoverHiEl.textContent = "Recordul tau: " + utils.padScore(FMGame.Leaderboard.getHighScore());
     if (gameoverBadgeEl) gameoverBadgeEl.hidden = !justQualified;
     showOnly(overlayGameover);
+    updateJumpButton();
   }
 
   nameEntryForm && nameEntryForm.addEventListener("submit", function (event) {
@@ -160,11 +184,15 @@
     startGame();
   });
 
+  jumpBtn && jumpBtn.addEventListener("click", function () {
+    handlePrimaryInput();
+  });
+
   function handlePrimaryInput() {
     if (state === STATE.START) {
       startGame();
     } else if (state === STATE.PLAYING) {
-      player.jump();
+      player.jump(currentDifficulty());
     } else if (state === STATE.GAMEOVER && !nameEntryVisible) {
       startGame();
     }
@@ -294,5 +322,6 @@
   renderLeaderboard();
   updateHud();
   showOnly(overlayStart);
+  updateJumpButton();
   window.requestAnimationFrame(loop);
 })();

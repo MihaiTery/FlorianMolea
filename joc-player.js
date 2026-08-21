@@ -12,6 +12,12 @@
     this.phase = "grounded"; // grounded | rising | hover | falling
     this.hoverTimer = 0;
     this.squash = 0; // mica animatie la aterizare
+
+    // Fizica efectiva a saltului curent (poate fi usor asistata la viteza mica -
+    // vezi jump(); ramane constanta pe durata unui singur salt, niciodata pe durata
+    // altui salt, ca sa nu existe doua "moduri" de fizica in acelasi timp).
+    this.effectiveJumpForce = CONFIG.JUMP_FORCE;
+    this.effectiveHoverTime = CONFIG.HOVER_TIME;
   }
 
   Player.prototype.reset = function () {
@@ -20,17 +26,28 @@
     this.phase = "grounded";
     this.hoverTimer = 0;
     this.squash = 0;
+    this.effectiveJumpForce = CONFIG.JUMP_FORCE;
+    this.effectiveHoverTime = CONFIG.HOVER_TIME;
   };
 
   Player.prototype.isJumping = function () {
     return this.phase !== "grounded";
   };
 
-  Player.prototype.jump = function () {
+  // difficultyT: 0..1, acelasi raport de dificultate/viteza folosit si de obstacole
+  // (0 = INITIAL_SPEED, 1 = MAX_SPEED). Determina cat de asistat e saltul curent -
+  // interpolare continua, nu un mod separat de fizica.
+  Player.prototype.jump = function (difficultyT) {
     // Un singur salt per apasare: nu se poate re-declansa cat timp e deja in aer (fara hold-to-jump).
     if (this.phase !== "grounded") return false;
+
+    var mult = FMGame.getJumpAssistMultipliers(difficultyT);
+
+    this.effectiveJumpForce = CONFIG.JUMP_FORCE * mult.forceMultiplier;
+    this.effectiveHoverTime = CONFIG.HOVER_TIME * mult.hoverMultiplier;
+
     this.phase = "rising";
-    this.velocity = CONFIG.JUMP_FORCE;
+    this.velocity = this.effectiveJumpForce;
     return true;
   };
 
@@ -41,7 +58,7 @@
       if (this.rise >= CONFIG.LANE_GAP) {
         this.rise = CONFIG.LANE_GAP;
         this.phase = "hover";
-        this.hoverTimer = CONFIG.HOVER_TIME;
+        this.hoverTimer = this.effectiveHoverTime;
       }
     } else if (this.phase === "hover") {
       this.hoverTimer -= dt;

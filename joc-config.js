@@ -42,12 +42,12 @@
     PLAYER_HITBOX_WIDTH: 58,
     PLAYER_HITBOX_HEIGHT: 24,
 
+    // Dimensiunea sprite-ului e comuna tuturor modelelor; rapoartele de hitbox insa
+    // sunt specifice fiecarui model (vezi FMGame.Sprites.CAR_MODELS in joc-sprites.js).
     CAR_SPRITE_WIDTH_MIN: 78,
     CAR_SPRITE_WIDTH_MAX: 94,
     CAR_SPRITE_HEIGHT_MIN: 34,
     CAR_SPRITE_HEIGHT_MAX: 42,
-    CAR_HITBOX_SHRINK_X: 0.72,
-    CAR_HITBOX_SHRINK_Y: 0.68,
 
     CONE_SPRITE_WIDTH: 26,
     CONE_SPRITE_HEIGHT: 32,
@@ -59,15 +59,38 @@
     MAX_SPEED: 620,
     SPEED_RAMP_SECONDS: 90,
 
+    // Jump assist la viteza mica: la INITIAL_SPEED, distanta parcursa in timpul saltului
+    // e mica, deci masina ramane "in zona periculoasa" mult mai mult timp relativ la
+    // durata (fixa) a saltului decat la viteza mare. Compensam prelungind usor forta si
+    // mai ales hover-ul saltului la viteza mica, si revenim continuu la fizica normala
+    // pe masura ce raportul de dificultate (== raportul de viteza) creste. La
+    // JUMP_ASSIST_END_SPEED_RATIO assist-ul e deja complet disparut (1.0).
+    LOW_SPEED_JUMP_FORCE_MULTIPLIER: 1.1,
+    LOW_SPEED_JUMP_HOVER_MULTIPLIER: 2.5,
+    JUMP_ASSIST_END_SPEED_RATIO: 0.35,
+
     OBSTACLE_MIN_GAP_TIME_START: 1.45,
     OBSTACLE_MIN_GAP_TIME_FLOOR: 0.85,
     OBSTACLE_GAP_RANDOM_EXTRA: 0.9,
 
+    // Grace period la pornire: gap-ul minim dintre obstacole e multiplicat suplimentar
+    // in primele START_GRACE_PERIOD_SECONDS, apoi revine continuu (nu brusc) la
+    // comportamentul normal dat de OBSTACLE_MIN_GAP_TIME_*.
+    START_GRACE_PERIOD_SECONDS: 10,
+    START_OBSTACLE_GAP_MULTIPLIER: 1.6,
+
     COMBO_UNLOCK_T: 0.12, // combinatii permise abia dupa ~12% din rampa de dificultate
     COMBO_CHANCE_MAX: 0.35,
-    COMBO_SAFETY_FACTOR: 1.2, // marja suplimentara peste durata saltului pt. distanta minima combo
+    COMBO_SAFETY_FACTOR: 1.2, // marja de siguranta (in unitati de JUMP_DURATION_SECONDS) ori
+    // de cate ori un obstacol de tip "masina" (banda 1 sau banda 2) e urmat/precedat de un
+    // alt obstacol care ar putea cere actiunea opusa - vezi ObstacleManager.
 
-    AD_INTERVAL_SECONDS: 10,
+    // Banda 2: pool mixt de obstacole. La inceput predomina conurile (nu forteaza jump);
+    // masinile pe banda 2 devin treptat mai frecvente pe masura ce creste dificultatea.
+    UPPER_LANE_CAR_CHANCE_START: 0.12,
+    UPPER_LANE_CAR_CHANCE_MAX: 0.45,
+
+    AD_INTERVAL_SECONDS: 2, // TEMPORAR - test reclame; valoarea normala e 10, de restaurat dupa test
     AD_SPEED_X: 0, // reclamele se misca exact cu viteza lumii (world speed), setat runtime
 
     LEADERBOARD_SIZE: 10,
@@ -80,17 +103,23 @@
     STORAGE_HIGHSCORE: "florianmolea_game_highscore_v1",
 
     ADS_CONFIG_URL: "data/game-ads.json",
-    ADS_IMAGE_BASE: "images/game-ads/",
+    // TEMPORAR - test reclame: gol, ca sa putem folosi direct logo-urile de parteneri
+    // deja existente la radacina proiectului (fara sa le copiem). Valoarea normala e
+    // "images/game-ads/", de restaurat dupa test (impreuna cu data/game-ads.json).
+    ADS_IMAGE_BASE: "",
 
     SCORE_DIGITS: 5,
   };
 
-  // Durata totala a saltului (calculata prin simulare, ca sa ramana corecta
-  // chiar daca GRAVITY / JUMP_FORCE / LANE_GAP se modifica ulterior).
-  function computeJumpDurationSeconds() {
+  // Durata totala a unui salt cu forta/hover date (calculata prin simulare, ca sa
+  // ramana corecta chiar daca GRAVITY / JUMP_FORCE / LANE_GAP se modifica ulterior).
+  // Reutilizata atat pentru durata de baza cat si pentru durata "asistata" la viteza
+  // mica (vezi getJumpDurationSeconds mai jos) - o singura sursa de adevar pentru
+  // fizica saltului, ca sa nu poata diverge intre player.js si obstacole.
+  function simulateJumpDuration(jumpForce, hoverTime) {
     var dt = 1 / 240;
     var t = 0;
-    var velocity = CONFIG.JUMP_FORCE;
+    var velocity = jumpForce;
     var rise = 0;
     var phase = "rising";
     var hoverTimer = 0;
@@ -103,7 +132,7 @@
         if (rise >= CONFIG.LANE_GAP) {
           rise = CONFIG.LANE_GAP;
           phase = "hover";
-          hoverTimer = CONFIG.HOVER_TIME;
+          hoverTimer = hoverTime;
         }
       } else if (phase === "hover") {
         hoverTimer -= dt;
@@ -126,9 +155,26 @@
     return t;
   }
 
-  CONFIG.JUMP_DURATION_SECONDS = computeJumpDurationSeconds();
+  CONFIG.JUMP_DURATION_SECONDS = simulateJumpDuration(CONFIG.JUMP_FORCE, CONFIG.HOVER_TIME);
 
   FMGame.CONFIG = CONFIG;
+
+  // difficultyT: 0..1 (0 = INITIAL_SPEED, 1 = MAX_SPEED). Interpolare continua unica
+  // pentru jump assist - folosita atat de Player (fizica reala a saltului curent) cat
+  // si de ObstacleManager (ca sa calculeze distanta minima sigura intre obstacole care
+  // cer actiuni opuse, indiferent de banda).
+  FMGame.getJumpAssistMultipliers = function (difficultyT) {
+    var t = FMGame.utils.clamp((difficultyT || 0) / CONFIG.JUMP_ASSIST_END_SPEED_RATIO, 0, 1);
+    return {
+      forceMultiplier: FMGame.utils.lerp(CONFIG.LOW_SPEED_JUMP_FORCE_MULTIPLIER, 1, t),
+      hoverMultiplier: FMGame.utils.lerp(CONFIG.LOW_SPEED_JUMP_HOVER_MULTIPLIER, 1, t)
+    };
+  };
+
+  FMGame.getJumpDurationSeconds = function (difficultyT) {
+    var mult = FMGame.getJumpAssistMultipliers(difficultyT);
+    return simulateJumpDuration(CONFIG.JUMP_FORCE * mult.forceMultiplier, CONFIG.HOVER_TIME * mult.hoverMultiplier);
+  };
 
   FMGame.GAMEOVER_MESSAGES = [
     "Ai picat traseul 😅",

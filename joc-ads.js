@@ -45,6 +45,8 @@
     if (this.ads.length === 0) return null;
     if (this.ads.length === 1) {
       this.lastAdIndex = 0;
+      // eslint-disable-next-line no-console
+      console.log("[FM GAME ADS]", this.ads[0].image); // TEMPORAR - doar pentru testarea reclamelor
       return this.ads[0];
     }
     var index;
@@ -52,6 +54,8 @@
       index = FMGame.utils.randomInt(0, this.ads.length - 1);
     } while (index === this.lastAdIndex);
     this.lastAdIndex = index;
+    // eslint-disable-next-line no-console
+    console.log("[FM GAME ADS]", this.ads[index].image); // TEMPORAR - doar pentru testarea reclamelor
     return this.ads[index];
   };
 
@@ -124,7 +128,20 @@
 
     var image = board.ad ? this.getImage(board.ad.image) : null;
     if (image && image.loaded && !image.errored) {
-      ctx.drawImage(image.el, Math.round(x + 6), Math.round(y + 6), BOARD_WIDTH - 12, BOARD_HEIGHT - 12);
+      // "contain": pastram raportul de aspect al logo-ului, nu il intindem - il incadram
+      // centrat in zona panoului, cu fundalul deschis la culoare vizibil ca margine.
+      var contentX = x + 6;
+      var contentY = y + 6;
+      var contentW = BOARD_WIDTH - 12;
+      var contentH = BOARD_HEIGHT - 12;
+      var naturalW = image.el.naturalWidth || contentW;
+      var naturalH = image.el.naturalHeight || contentH;
+      var scale = Math.min(contentW / naturalW, contentH / naturalH);
+      var drawW = naturalW * scale;
+      var drawH = naturalH * scale;
+      var drawX = contentX + (contentW - drawW) / 2;
+      var drawY = contentY + (contentH - drawH) / 2;
+      ctx.drawImage(image.el, Math.round(drawX), Math.round(drawY), Math.round(drawW), Math.round(drawH));
     } else if (!image || !image.errored) {
       ctx.fillStyle = "#d8cdb8";
       ctx.fillRect(Math.round(x + 6), Math.round(y + 6), BOARD_WIDTH - 12, BOARD_HEIGHT - 12);
