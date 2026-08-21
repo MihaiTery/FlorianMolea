@@ -1,0 +1,321 @@
+/* Florian Molea - Jocul: stiluri specifice paginii /joc. Mobile-first. */
+
+.game-page {
+  padding-bottom: 56px;
+}
+
+.game-page-head {
+  padding: 28px 0 18px;
+  text-align: center;
+}
+
+.game-page-head .eyebrow {
+  margin-bottom: 8px;
+}
+
+.game-title {
+  font-size: clamp(1.9rem, 7vw, 3.2rem);
+  line-height: 1.02;
+  margin-bottom: 8px;
+}
+
+.game-subtitle {
+  max-width: 520px;
+  margin: 0 auto;
+  color: var(--muted);
+  font-size: clamp(0.98rem, 2.4vw, 1.15rem);
+  font-weight: 700;
+}
+
+.game-stage-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---------- Stage / canvas ---------- */
+
+.game-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 960 / 400;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: #4b4f58;
+  box-shadow: var(--shadow);
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.game-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.game-hud[hidden] {
+  display: none;
+}
+
+.game-hud {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 14px;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 3vw, 1.05rem);
+  letter-spacing: 1px;
+  color: #fff4df;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+/* ---------- Overlays ---------- */
+
+.game-overlay[hidden] {
+  display: none;
+}
+
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(180deg, rgba(17, 17, 17, 0.72), rgba(17, 17, 17, 0.86));
+}
+
+.game-overlay-eyebrow {
+  margin: 0;
+  font-size: clamp(1.1rem, 4.5vw, 1.6rem);
+  font-weight: 900;
+}
+
+.game-overlay-line {
+  margin: 0;
+  font-size: clamp(0.92rem, 3.4vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.game-overlay-hint {
+  margin-top: 10px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+
+.game-overlay-hint-desktop {
+  display: none;
+}
+
+.game-overlay-hint-mobile {
+  animation: game-hint-pulse 1.6s ease-in-out infinite;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .game-overlay-hint-desktop {
+    display: block;
+  }
+  .game-overlay-hint-mobile {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-overlay-hint-mobile {
+    animation: none;
+  }
+}
+
+@keyframes game-hint-pulse {
+  0%, 100% { opacity: 0.7; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
+}
+
+.game-overlay-badge {
+  margin: 0 0 2px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #062814;
+  font-weight: 900;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.game-overlay-message {
+  margin: 0;
+  font-size: clamp(1.15rem, 4.6vw, 1.7rem);
+  font-weight: 900;
+}
+
+.game-overlay-score {
+  margin: 0;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(1.5rem, 7vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.game-overlay-hi {
+  margin: 0 0 4px;
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  color: var(--yellow);
+  font-weight: 700;
+}
+
+.game-retry-btn {
+  margin-top: 4px;
+  min-height: 48px;
+  padding-inline: 28px;
+}
+
+.game-overlay-cta {
+  margin: 6px 0 0;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.game-overlay-brand {
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.game-name-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.game-name-input {
+  flex: 1 1 160px;
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.game-name-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.game-name-input:focus-visible,
+.game-retry-btn:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+.game-overlay-paused {
+  background: rgba(17, 17, 17, 0.88);
+}
+
+/* ---------- Leaderboard ---------- */
+
+.game-leaderboard {
+  padding: 18px;
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.game-leaderboard h2 {
+  margin-bottom: 12px;
+  font-size: 1.15rem;
+}
+
+.game-leaderboard-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: game-rank;
+}
+
+.game-leaderboard-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--cream);
+  font-weight: 700;
+}
+
+.game-leaderboard-list li:not(.game-leaderboard-empty)::before {
+  counter-increment: game-rank;
+  content: counter(game-rank) ".";
+  min-width: 20px;
+  color: var(--orange-text);
+  font-weight: 900;
+}
+
+.game-leaderboard-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.game-leaderboard-score {
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--orange-text);
+}
+
+.game-leaderboard-empty {
+  color: var(--muted);
+  font-weight: 500;
+  background: transparent;
+}
+
+/* ---------- Larger viewports ---------- */
+
+@media (min-width: 760px) {
+  .game-stage-section {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .game-stage {
+    flex: 1 1 auto;
+  }
+
+  .game-leaderboard {
+    flex: 0 0 260px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .game-stage-section {
+    gap: 28px;
+  }
+}

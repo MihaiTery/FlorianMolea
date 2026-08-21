@@ -1,0 +1,630 @@
+/* Stiluri dedicate paginii /EDF (Eau de Floryan — instructiuni si informatii tehnice).
+   Foloseste tokenii definiti in style.css (--ink, --muted, --paper, --line, --radius-*).
+   Nu este referentiat din alta pagina — sigur de editat fara impact global. */
+
+:root {
+  --edf-pink: #ffd6f2;
+  --edf-lilac: #e3d9ff;
+  --edf-mint: #d7f7ec;
+  --edf-sky: #d9ecff;
+  --edf-danger: #c9282f;
+  --edf-danger-bg: #fdeceb;
+  --edf-placeholder-bg: #fff8e8;
+  --edf-placeholder-border: #e8c974;
+}
+
+.edf-page {
+  padding-bottom: 40px;
+}
+
+.edf-section {
+  padding: 44px 0;
+}
+
+.edf-section + .edf-section {
+  border-top: 1px solid var(--line);
+}
+
+.edf-section-narrow {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.edf-eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, var(--edf-pink), var(--edf-lilac), var(--edf-sky));
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.edf-h2 {
+  margin: 0 0 18px;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  line-height: 1.15;
+}
+
+/* Hero */
+.edf-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 0 32px;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 214, 242, 0.55), transparent 55%),
+    radial-gradient(circle at 88% 10%, rgba(217, 236, 255, 0.6), transparent 50%),
+    radial-gradient(circle at 50% 100%, rgba(227, 217, 255, 0.45), transparent 55%),
+    var(--paper);
+}
+
+.edf-hero-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.edf-hero-brand {
+  margin: 0;
+  font-size: clamp(1.9rem, 7vw, 2.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.edf-hero-subtitle {
+  margin: 8px 0 14px;
+  font-size: clamp(1.05rem, 3.4vw, 1.3rem);
+  font-weight: 800;
+  color: #343941;
+}
+
+.edf-hero-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+/* Pasi de utilizare */
+.edf-steps {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.edf-step {
+  position: relative;
+  padding: 22px 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.edf-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--edf-lilac), var(--edf-sky));
+  font-weight: 900;
+  font-size: 1.05rem;
+}
+
+.edf-step h3 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.edf-step p {
+  margin: 0 0 8px;
+  color: #343941;
+  font-size: 0.95rem;
+}
+
+.edf-step ul {
+  margin: 8px 0;
+  padding-left: 20px;
+  color: #343941;
+  font-size: 0.95rem;
+}
+
+.edf-step-strong {
+  color: var(--edf-danger);
+  font-weight: 900;
+}
+
+/* Nu pulverizati pe */
+.edf-forbid-title {
+  margin: 0 0 6px;
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  line-height: 1.05;
+  text-align: center;
+  color: var(--edf-danger);
+}
+
+.edf-forbid-lead {
+  margin: 0 0 26px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.edf-forbid-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.edf-forbid-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 12px;
+  border: 1px solid rgba(201, 40, 47, 0.22);
+  border-radius: var(--radius-md);
+  background: var(--edf-danger-bg);
+  text-align: center;
+}
+
+.edf-forbid-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+}
+
+.edf-forbid-icon svg:first-child {
+  color: #171717;
+}
+
+.edf-forbid-icon svg.edf-forbid-slash {
+  position: absolute;
+  inset: 0;
+  color: var(--edf-danger);
+}
+
+.edf-forbid-card span {
+  font-weight: 800;
+  font-size: 0.92rem;
+}
+
+.edf-forbid-note {
+  margin: 22px auto 0;
+  max-width: 520px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+/* Depozitare */
+.edf-storage-box {
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.edf-storage-box p {
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+
+.edf-storage-box p:last-of-type {
+  margin-bottom: 0;
+}
+
+.edf-storage-warnings {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.edf-storage-warning {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+.edf-storage-warning svg {
+  color: var(--muted);
+}
+
+.edf-storage-warning span {
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+/* Centru toxicologic */
+.edf-toxic-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 18px 20px;
+  border: 1px solid rgba(201, 40, 47, 0.28);
+  border-radius: var(--radius-md);
+  background: var(--edf-danger-bg);
+}
+
+.edf-toxic-box h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.edf-toxic-phone {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--edf-danger);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.edf-cross-note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.edf-note-pending {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px dashed var(--edf-placeholder-border);
+  border-radius: var(--radius-sm);
+  background: var(--edf-placeholder-bg);
+  color: #6b5a1f;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* Carduri generice (expunere accidentala) */
+.edf-card-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.edf-info-card {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+}
+
+.edf-info-card h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.edf-placeholder-tag {
+  display: inline-block;
+  padding: 6px 10px;
+  border: 1px dashed var(--edf-placeholder-border);
+  border-radius: 8px;
+  background: var(--edf-placeholder-bg);
+  color: #6b5a1f;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.edf-placeholder-tag-block {
+  display: block;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: normal;
+}
+
+/* Selector arome */
+.edf-scent-select-wrap label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.edf-scent-select {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 22px) calc(50% - 3px), calc(100% - 16px) calc(50% - 3px);
+  background-size: 7px 7px, 7px 7px;
+  background-repeat: no-repeat;
+}
+
+.edf-scent-panel {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.edf-scent-panel-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 12px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.edf-scent-panel-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.edf-scent-panel-header .edf-formula {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.edf-clp-top {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.edf-clp-badge {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.edf-clp-badge span {
+  display: block;
+  margin-bottom: 2px;
+  font-weight: 900;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
+.edf-clp-badge strong {
+  font-size: 1rem;
+  word-break: break-word;
+}
+
+.edf-clp-block {
+  margin-bottom: 16px;
+}
+
+.edf-clp-block:last-child {
+  margin-bottom: 0;
+}
+
+.edf-clp-block h4 {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
+.edf-clp-block ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.edf-clp-block li {
+  margin-bottom: 4px;
+  font-size: 0.94rem;
+}
+
+.edf-clp-classifications {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Pictograme CLP (GHS07 / GHS09) */
+.edf-pictogram-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.edf-pictogram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.edf-pictogram svg {
+  display: block;
+  width: 44px;
+  height: 44px;
+}
+
+.edf-pictogram-code {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
+@media (min-width: 480px) {
+  .edf-pictogram svg {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+.edf-accordion {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.edf-accordion summary {
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.edf-accordion ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+
+.edf-accordion li {
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+.edf-exposure-note {
+  margin-top: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--edf-mint);
+}
+
+.edf-exposure-note h4 {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #2a3b34;
+}
+
+.edf-exposure-note p {
+  margin: 0 0 4px;
+  font-size: 0.94rem;
+}
+
+.edf-exposure-note p:last-child {
+  margin-bottom: 0;
+}
+
+.edf-card-grid-safety {
+  margin-top: 16px;
+}
+
+/* Documente */
+.edf-doc-list {
+  display: grid;
+  gap: 10px;
+}
+
+.edf-doc-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+}
+
+.edf-doc-row strong {
+  font-size: 0.98rem;
+}
+
+.edf-doc-status {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--edf-placeholder-bg);
+  border: 1px solid var(--edf-placeholder-border);
+  color: #6b5a1f;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+/* Producator */
+.edf-manufacturer-box {
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.edf-manufacturer-box p {
+  margin: 0 0 6px;
+}
+
+.edf-manufacturer-name {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.edf-manufacturer-formula-note {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.edf-operator-note {
+  padding: 18px 0 4px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 720px) {
+  .edf-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .edf-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .edf-section {
+    padding: 34px 0;
+  }
+}
