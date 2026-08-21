@@ -256,6 +256,27 @@
   letter-spacing: 0.04em;
 }
 
+/* Pe cardul de Game Over, telefonul arata branding-ul florianmolea.ro in locul
+   badge-ului "Ai intrat in Top 10!" (relevant mai ales pentru screenshot-uri
+   distribuite pe social - vezi si .game-overlay-brand mai jos in acelasi card). */
+.game-overlay-badge-desktop,
+.game-overlay-badge-mobile {
+  display: none;
+}
+
+.game-overlay-badge-mobile:not([hidden]) {
+  display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .game-overlay-badge-mobile:not([hidden]) {
+    display: none;
+  }
+  .game-overlay-badge-desktop:not([hidden]) {
+    display: block;
+  }
+}
+
 .game-overlay-logo {
   width: 64px;
   height: 64px;

@@ -127,7 +127,7 @@
     UPPER_LANE_CAR_CHANCE_START: 0.35,
     UPPER_LANE_CAR_CHANCE_MAX: 0.55,
 
-    AD_INTERVAL_SECONDS: 2, // TEMPORAR - test reclame; valoarea normala e 10, de restaurat dupa test
+    AD_INTERVAL_SECONDS: 10,
     AD_SPEED_X: 0, // reclamele se misca exact cu viteza lumii (world speed), setat runtime
 
     LEADERBOARD_SIZE: 10,
@@ -140,9 +140,10 @@
     STORAGE_HIGHSCORE: "florianmolea_game_highscore_v1",
 
     ADS_CONFIG_URL: "data/game-ads.json",
-    // TEMPORAR - test reclame: gol, ca sa putem folosi direct logo-urile de parteneri
-    // deja existente la radacina proiectului (fara sa le copiem). Valoarea normala e
-    // "images/game-ads/", de restaurat dupa test (impreuna cu data/game-ads.json).
+    // Gol intentionat: reclamele curente refolosesc logo-urile de parteneri deja
+    // existente la radacina proiectului (cebia-logo.svg, fiftys-logo.jpg), fara sa le
+    // duplice intr-un folder dedicat. Daca adaugi reclame cu imagini intr-un folder
+    // separat (ex. images/game-ads/), pune calea aici ca prefix comun.
     ADS_IMAGE_BASE: "",
 
     SCORE_DIGITS: 5,

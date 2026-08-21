@@ -1,6 +1,9 @@
 // Florian Molea - Jocul: panouri publicitare pixel-art, parte din decor (fara collision, fara click).
-// Config: data/game-ads.json -> [{ "image": "banner-01.webp", "alt": "..." }, ...]
-// Pentru a adauga o reclama noua: pune imaginea in images/game-ads/ si adauga filename-ul in JSON.
+// Config: data/game-ads.json -> array de intrari, fiecare fie cu imagine, fie cu text:
+//   { "image": "cebia-logo.svg" }
+//   { "text": "Chestionare Permis Tavi Pertea" }
+// Pentru a adauga o reclama noua cu imagine: pune fisierul conform ADS_IMAGE_BASE (vezi
+// joc-config.js) si adauga { "image": "nume-fisier" } in JSON. Pentru text, doar { "text": "..." }.
 (function () {
   "use strict";
 
@@ -12,6 +15,27 @@
   var BOARD_TOP = CONFIG.AD_BOARD_TOP_MARGIN; // muchia de sus a panoului, in Zona A (roadside)
   var BOARD_BOTTOM = BOARD_TOP + BOARD_HEIGHT;
   var LEG_HEIGHT = Math.max(0, CONFIG.ROAD_TOP - BOARD_BOTTOM); // se opreste exact la marginea soselei, niciodata peste ea
+
+  // Imparte "text" pe mai multe randuri, fiecare incapand in "maxWidth" (px, la fontul
+  // curent setat pe ctx). Simplu, cuvant-cu-cuvant - suficient pentru textele scurte de tip
+  // reclama; daca un singur cuvant e mai lat decat maxWidth, il lasam sa depaseasca usor
+  // (mai bine decat sa-l rupem in mijloc).
+  function wrapText(ctx, text, maxWidth) {
+    var words = text.trim().split(/\s+/);
+    var lines = [];
+    var current = "";
+    for (var i = 0; i < words.length; i++) {
+      var candidate = current ? current + " " + words[i] : words[i];
+      if (current && ctx.measureText(candidate).width > maxWidth) {
+        lines.push(current);
+        current = words[i];
+      } else {
+        current = candidate;
+      }
+    }
+    if (current) lines.push(current);
+    return lines;
+  }
 
   function AdManager() {
     this.ads = [];
@@ -32,7 +56,9 @@
       .then(function (data) {
         if (!Array.isArray(data)) throw new Error("ads config not an array");
         self.ads = data.filter(function (entry) {
-          return entry && typeof entry.image === "string" && entry.image.trim().length > 0;
+          var hasImage = entry && typeof entry.image === "string" && entry.image.trim().length > 0;
+          var hasText = entry && typeof entry.text === "string" && entry.text.trim().length > 0;
+          return hasImage || hasText;
         });
       })
       .catch(function () {
@@ -47,8 +73,6 @@
     if (this.ads.length === 0) return null;
     if (this.ads.length === 1) {
       this.lastAdIndex = 0;
-      // eslint-disable-next-line no-console
-      console.log("[FM GAME ADS]", this.ads[0].image); // TEMPORAR - doar pentru testarea reclamelor
       return this.ads[0];
     }
     var index;
@@ -56,8 +80,6 @@
       index = FMGame.utils.randomInt(0, this.ads.length - 1);
     } while (index === this.lastAdIndex);
     this.lastAdIndex = index;
-    // eslint-disable-next-line no-console
-    console.log("[FM GAME ADS]", this.ads[index].image); // TEMPORAR - doar pentru testarea reclamelor
     return this.ads[index];
   };
 
@@ -132,33 +154,84 @@
     ctx.fillStyle = "#fff4df";
     ctx.fillRect(Math.round(x + 4), Math.round(y + 4), BOARD_WIDTH - 8, BOARD_HEIGHT - 8);
 
-    var image = board.ad ? this.getImage(board.ad.image) : null;
-    if (image && image.loaded && !image.errored) {
-      // "contain": pastram raportul de aspect al logo-ului, nu il intindem - il incadram
-      // centrat in zona panoului, cu fundalul deschis la culoare vizibil ca margine.
-      var contentX = x + 6;
-      var contentY = y + 6;
-      var contentW = BOARD_WIDTH - 12;
-      var contentH = BOARD_HEIGHT - 12;
-      var naturalW = image.el.naturalWidth || contentW;
-      var naturalH = image.el.naturalHeight || contentH;
-      var scale = Math.min(contentW / naturalW, contentH / naturalH);
-      var drawW = naturalW * scale;
-      var drawH = naturalH * scale;
-      var drawX = contentX + (contentW - drawW) / 2;
-      var drawY = contentY + (contentH - drawH) / 2;
-      ctx.drawImage(image.el, Math.round(drawX), Math.round(drawY), Math.round(drawW), Math.round(drawH));
-    } else if (!image || !image.errored) {
-      ctx.fillStyle = "#d8cdb8";
-      ctx.fillRect(Math.round(x + 6), Math.round(y + 6), BOARD_WIDTH - 12, BOARD_HEIGHT - 12);
-      ctx.fillStyle = "#b8480f";
-      ctx.font = "bold 13px Inter, sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText("AD", Math.round(x + BOARD_WIDTH / 2), Math.round(y + BOARD_HEIGHT / 2));
-      ctx.textAlign = "left";
-      ctx.textBaseline = "alphabetic";
+    var contentX = x + 6;
+    var contentY = y + 6;
+    var contentW = BOARD_WIDTH - 12;
+    var contentH = BOARD_HEIGHT - 12;
+
+    var ad = board.ad;
+    var hasImage = ad && typeof ad.image === "string" && ad.image.trim().length > 0;
+    var hasText = ad && typeof ad.text === "string" && ad.text.trim().length > 0;
+
+    if (hasImage) {
+      var image = this.getImage(ad.image);
+      if (image.loaded && !image.errored) {
+        // "contain": pastram raportul de aspect al logo-ului, nu il intindem - il incadram
+        // centrat in zona panoului, cu fundalul deschis la culoare vizibil ca margine.
+        var naturalW = image.el.naturalWidth || contentW;
+        var naturalH = image.el.naturalHeight || contentH;
+        var scale = Math.min(contentW / naturalW, contentH / naturalH);
+        var drawW = naturalW * scale;
+        var drawH = naturalH * scale;
+        var drawX = contentX + (contentW - drawW) / 2;
+        var drawY = contentY + (contentH - drawH) / 2;
+        ctx.drawImage(image.el, Math.round(drawX), Math.round(drawY), Math.round(drawW), Math.round(drawH));
+      } else if (!image.errored) {
+        this.drawPlaceholder(ctx, contentX, contentY, contentW, contentH);
+      }
+      // imagine cu eroare (404, fisier lipsa etc.) -> nu desenam nimic peste fundalul
+      // neutru deja pus mai sus - esec graceful, fara alt continut care sa induca in eroare.
+    } else if (hasText) {
+      this.drawTextAd(ctx, ad.text, contentX, contentY, contentW, contentH);
+    } else {
+      this.drawPlaceholder(ctx, contentX, contentY, contentW, contentH);
     }
+  };
+
+  AdManager.prototype.drawPlaceholder = function (ctx, contentX, contentY, contentW, contentH) {
+    ctx.fillStyle = "#d8cdb8";
+    ctx.fillRect(Math.round(contentX), Math.round(contentY), contentW, contentH);
+    ctx.fillStyle = "#b8480f";
+    ctx.font = "bold 13px Inter, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("AD", Math.round(contentX + contentW / 2), Math.round(contentY + contentH / 2));
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
+  };
+
+  // Reclama tip text (fara imagine): text centrat, ingrijit incadrat pe mai multe randuri
+  // daca e nevoie, ca sa ramana lizibil in zona panoului fara sa depaseasca marginile.
+  AdManager.prototype.drawTextAd = function (ctx, text, contentX, contentY, contentW, contentH) {
+    var fontSize = 13;
+    var lineHeight = fontSize + 3;
+    var font = "bold " + fontSize + "px Inter, sans-serif";
+    ctx.font = font;
+
+    var lines = wrapText(ctx, text, contentW - 6);
+    // Daca tot nu incape pe verticala, micsoram fontul o singura data si reimpartim.
+    if (lines.length * lineHeight > contentH - 4) {
+      fontSize = 11;
+      lineHeight = fontSize + 2;
+      font = "bold " + fontSize + "px Inter, sans-serif";
+      ctx.font = font;
+      lines = wrapText(ctx, text, contentW - 6);
+    }
+
+    ctx.fillStyle = "#171717";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    var blockHeight = lines.length * lineHeight;
+    var startY = contentY + contentH / 2 - blockHeight / 2 + lineHeight / 2;
+    var centerX = contentX + contentW / 2;
+
+    for (var i = 0; i < lines.length; i++) {
+      ctx.fillText(lines[i], Math.round(centerX), Math.round(startY + i * lineHeight));
+    }
+
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
   };
 
   FMGame.AdManager = AdManager;

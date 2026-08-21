@@ -25,6 +25,7 @@
   var gameoverScoreEl = stage.querySelector("[data-gameover-score]");
   var gameoverHiEl = stage.querySelector("[data-gameover-hi]");
   var gameoverBadgeEl = stage.querySelector("[data-gameover-badge]");
+  var gameoverBadgeMobileEl = stage.querySelector("[data-gameover-badge-mobile]");
   var gameoverRecordEl = stage.querySelector("[data-gameover-record]");
   var retryBtn = stage.querySelector("[data-retry-btn]");
 
@@ -172,6 +173,7 @@
     if (gameoverScoreEl) gameoverScoreEl.textContent = "Scor: " + utils.padScore(finalScore);
     if (gameoverHiEl) gameoverHiEl.textContent = "Recordul tau: " + utils.padScore(FMGame.Leaderboard.getHighScore());
     if (gameoverBadgeEl) gameoverBadgeEl.hidden = !justQualified;
+    if (gameoverBadgeMobileEl) gameoverBadgeMobileEl.hidden = !justQualified;
     if (gameoverRecordEl) gameoverRecordEl.hidden = !lastRunWasNewRecord;
     showOnly(overlayGameover);
     updateJumpButton();
