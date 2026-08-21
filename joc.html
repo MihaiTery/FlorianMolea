@@ -85,10 +85,13 @@
             class="game-canvas"
             data-game-canvas
             width="960"
-            height="400"
+            height="580"
             role="img"
             aria-label="Zona de joc: un Golf 8 verde sare peste mașini și evită conurile de pe șosea"
           ></canvas>
+          <!-- Atributele width/height de mai sus sunt doar placeholder-ul initial (inainte
+               ca JS sa ruleze) - rezolutia reala e stabilita de setupCanvas() in joc-game.js,
+               pe baza CONFIG.CANVAS_WIDTH/CANVAS_HEIGHT (diferite pe mobil vs desktop). -->
 
           <div class="game-hud" data-game-hud hidden aria-hidden="true">
             <span class="game-hud-score" data-hud-score>SCORE 00000</span>
@@ -105,14 +108,19 @@
           </div>
 
           <div class="game-overlay game-overlay-gameover" data-overlay-gameover hidden>
-            <div class="game-overlay-inner">
+            <div class="game-overlay-inner game-overlay-inner-gameover">
               <p class="game-overlay-badge" data-gameover-badge hidden>Ai intrat în Top 10!</p>
+              <picture class="game-overlay-logo">
+                <source srcset="image-sm.webp" type="image/webp">
+                <img src="image-sm.png" alt="Florian Molea" width="64" height="64" loading="lazy" decoding="async">
+              </picture>
               <p class="game-overlay-message" data-gameover-message></p>
               <p class="game-overlay-score" data-gameover-score></p>
+              <p class="game-overlay-record-badge" data-gameover-record hidden>Record nou!</p>
               <p class="game-overlay-hi" data-gameover-hi></p>
-              <button type="button" class="btn btn-primary game-retry-btn" data-retry-btn>Mai încearcă</button>
-              <p class="game-overlay-cta">Poți mai mult? Fă screenshot și provoacă-ți prietenii.</p>
+              <p class="game-overlay-cta">Fă screenshot și provoacă-ți prietenii.</p>
               <p class="game-overlay-brand">florianmolea.ro</p>
+              <button type="button" class="btn btn-primary game-retry-btn" data-retry-btn>Mai încearcă</button>
             </div>
           </div>
 

@@ -25,6 +25,7 @@
   var gameoverScoreEl = stage.querySelector("[data-gameover-score]");
   var gameoverHiEl = stage.querySelector("[data-gameover-hi]");
   var gameoverBadgeEl = stage.querySelector("[data-gameover-badge]");
+  var gameoverRecordEl = stage.querySelector("[data-gameover-record]");
   var retryBtn = stage.querySelector("[data-retry-btn]");
 
   var nameEntryScoreEl = stage.querySelector("[data-name-entry-score]");
@@ -51,6 +52,7 @@
   var score = 0;
   var lastTimestamp = null;
   var decorOffset = 0;
+  var lastRunWasNewRecord = false;
 
   function setupCanvas() {
     var dpr = Math.max(1, window.devicePixelRatio || 1);
@@ -141,7 +143,9 @@
   function endGame() {
     state = STATE.GAMEOVER;
     var finalScore = score;
+    var previousHighScore = FMGame.Leaderboard.getHighScore();
     FMGame.Leaderboard.updateHighScore(finalScore);
+    lastRunWasNewRecord = finalScore > 0 && finalScore > previousHighScore;
     updateHud();
 
     if (FMGame.Leaderboard.qualifies(finalScore)) {
@@ -168,6 +172,7 @@
     if (gameoverScoreEl) gameoverScoreEl.textContent = "Scor: " + utils.padScore(finalScore);
     if (gameoverHiEl) gameoverHiEl.textContent = "Recordul tau: " + utils.padScore(FMGame.Leaderboard.getHighScore());
     if (gameoverBadgeEl) gameoverBadgeEl.hidden = !justQualified;
+    if (gameoverRecordEl) gameoverRecordEl.hidden = !lastRunWasNewRecord;
     showOnly(overlayGameover);
     updateJumpButton();
   }
@@ -239,13 +244,15 @@
   function drawBackground(speed, dt) {
     decorOffset = (decorOffset + speed * dt * 0.3) % 120;
 
+    // Zona A (roadside/fundal): fundalul unde apar panourile publicitare - niciodata
+    // peste carosabil.
     ctx.fillStyle = "#fff4df";
     ctx.fillRect(0, 0, CONFIG.CANVAS_WIDTH, CONFIG.SKY_HEIGHT);
-    ctx.fillStyle = "rgba(255, 200, 71, 0.35)";
-    for (var i = -1; i < CONFIG.CANVAS_WIDTH / 120 + 1; i++) {
-      var bx = i * 120 - decorOffset;
-      ctx.fillRect(bx, CONFIG.SKY_HEIGHT - 26, 46, 20);
-    }
+
+    // Margine/trotuar ingust chiar deasupra soselei, separa vizual Zona A de drum.
+    var shoulderHeight = 10;
+    ctx.fillStyle = "#e3d6b8";
+    ctx.fillRect(0, CONFIG.ROAD_TOP - shoulderHeight, CONFIG.CANVAS_WIDTH, shoulderHeight);
 
     ctx.fillStyle = "#8fc76b";
     ctx.fillRect(0, CONFIG.ROAD_BOTTOM, CONFIG.CANVAS_WIDTH, CONFIG.CANVAS_HEIGHT - CONFIG.ROAD_BOTTOM);

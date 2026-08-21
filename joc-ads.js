@@ -7,9 +7,11 @@
   var FMGame = window.FMGame = window.FMGame || {};
   var CONFIG = FMGame.CONFIG;
 
-  var BOARD_WIDTH = 150;
-  var BOARD_HEIGHT = 96;
-  var BOARD_Y = CONFIG.SKY_HEIGHT / 2; // centrata in fasia de cer/decor de deasupra soselei
+  var BOARD_WIDTH = CONFIG.AD_BOARD_WIDTH;
+  var BOARD_HEIGHT = CONFIG.AD_BOARD_HEIGHT;
+  var BOARD_TOP = CONFIG.AD_BOARD_TOP_MARGIN; // muchia de sus a panoului, in Zona A (roadside)
+  var BOARD_BOTTOM = BOARD_TOP + BOARD_HEIGHT;
+  var LEG_HEIGHT = Math.max(0, CONFIG.ROAD_TOP - BOARD_BOTTOM); // se opreste exact la marginea soselei, niciodata peste ea
 
   function AdManager() {
     this.ads = [];
@@ -113,13 +115,17 @@
 
   AdManager.prototype.drawBoard = function (ctx, board) {
     var x = board.x;
-    var y = BOARD_Y - BOARD_HEIGHT / 2;
+    var y = BOARD_TOP;
     var legWidth = 8;
-    var legHeight = CONFIG.SKY_HEIGHT + 14;
 
-    ctx.fillStyle = "#8a7358";
-    ctx.fillRect(Math.round(x + 18), Math.round(y + BOARD_HEIGHT - 6), legWidth, legHeight);
-    ctx.fillRect(Math.round(x + BOARD_WIDTH - 26), Math.round(y + BOARD_HEIGHT - 6), legWidth, legHeight);
+    // Picioarele panoului ajung exact pana la muchia soselei (CONFIG.ROAD_TOP), niciodata
+    // mai jos - panoul e intotdeauna in intregime in Zona A (roadside), niciodata peste
+    // carosabil/benzi/masini/con/Golf.
+    if (LEG_HEIGHT > 0) {
+      ctx.fillStyle = "#8a7358";
+      ctx.fillRect(Math.round(x + 18), Math.round(y + BOARD_HEIGHT - 6), legWidth, LEG_HEIGHT + 6);
+      ctx.fillRect(Math.round(x + BOARD_WIDTH - 26), Math.round(y + BOARD_HEIGHT - 6), legWidth, LEG_HEIGHT + 6);
+    }
 
     ctx.fillStyle = "#171717";
     ctx.fillRect(Math.round(x), Math.round(y), BOARD_WIDTH, BOARD_HEIGHT);

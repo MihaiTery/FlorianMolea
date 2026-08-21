@@ -86,28 +86,39 @@
     this.items.push(makeCone(x));
   };
 
-  // x-ul celei mai indepartate masini deja existente pe banda dat (sau -Infinity daca
-  // nu exista niciuna) - folosit ca sa nu plasam niciodata o masina noua prea aproape
-  // de o masina deja "in coada" pe banda opusa (vezi safeCarSpawnX).
-  ObstacleManager.prototype.getFarthestCarX = function (laneY) {
+  // x-ul celui mai indepartat obstacol deja existent pe banda data (sau -Infinity daca
+  // nu exista niciunul) - folosit ca sa nu plasam niciodata un obstacol nou prea aproape
+  // de unul deja "in coada" pe banda opusa (vezi safeSpawnX). Conteaza AICI orice obstacol
+  // de pe acea banda, nu doar masinile: un con pe banda 2 cere exact aceeasi actiune
+  // ("nu sari") ca o masina pe banda 2 - amandoua pot intra in conflict cu o masina pe
+  // banda 1, care cere mereu jump.
+  ObstacleManager.prototype.getFarthestX = function (laneY) {
     var maxX = -Infinity;
     for (var i = 0; i < this.items.length; i++) {
       var item = this.items[i];
-      if (item.type === "car" && item.y === laneY && item.x > maxX) maxX = item.x;
+      if (item.y === laneY && item.x > maxX) maxX = item.x;
     }
     return maxX;
   };
 
-  // Garanteaza geometric (nu doar prin timing) ca o masina noua, pe banda "laneY",
-  // apare la cel putin "durata saltului * marja de siguranta" distanta de orice masina
-  // deja existenta pe banda opusa - indiferent daca acea masina a fost plasata acum o
-  // clipa sau ca parte a unei combinatii anterioare. Verificare explicita "zid imposibil"
-  // (sectiunea 10): fara aceasta, o masina impinsa mai departe (spawnX + dangerGap) de o
-  // combinatie ar putea ajunge, dupa ce lumea deruleaza, la o distanta aproape nula fata
-  // de o masina noua, independenta, spawnata pe banda opusa la un moment ulterior.
-  ObstacleManager.prototype.safeCarSpawnX = function (baseX, laneY, difficultyT, speed) {
+  // Garanteaza geometric (nu doar prin timing) ca un obstacol nou, pe banda "laneY",
+  // apare la cel putin "durata saltului * marja de siguranta" distanta de orice obstacol
+  // deja existent pe banda opusa - indiferent daca acela a fost plasat acum o clipa sau
+  // ca parte a unei combinatii anterioare, si indiferent daca e con sau masina. Verificare
+  // explicita "zid imposibil": fara aceasta, un obstacol impins mai departe (spawnX +
+  // dangerGap) de o combinatie anterioara ar putea ajunge, dupa ce lumea deruleaza, la o
+  // distanta aproape nula fata de un obstacol nou, independent, spawnat pe banda opusa.
+  //
+  // Se aplica pe AMBELE benzi (nu doar cand plasam o masina): un con pe banda 2 langa o
+  // masina pe banda 1 la acelasi X e la fel de imposibil de evitat ca doua masini - jucatorul
+  // trebuie sa sara peste masina exact cand conul e la aceeasi pozitie, deci nu exista nicio
+  // solutie fizica. Doar spacing-ul PE ACEEASI banda (masina-masina pe banda 1, sau
+  // con/masina-con/masina pe banda 2) nu are nevoie de aceasta protectie - acolo e suficient
+  // gap-ul normal (OBSTACLE_MIN_GAP_TIME_*), pentru ca nu exista niciodata o cerere de
+  // actiune opusa intre doua obstacole de pe aceeasi banda.
+  ObstacleManager.prototype.safeSpawnX = function (baseX, laneY, difficultyT, speed) {
     var oppositeLaneY = laneY === CONFIG.LANE1_Y ? CONFIG.LANE2_Y : CONFIG.LANE1_Y;
-    var farthestOpposite = this.getFarthestCarX(oppositeLaneY);
+    var farthestOpposite = this.getFarthestX(oppositeLaneY);
     if (farthestOpposite === -Infinity) return baseX;
     var dangerGap = FMGame.getJumpDurationSeconds(difficultyT) * speed * CONFIG.COMBO_SAFETY_FACTOR;
     return Math.max(baseX, farthestOpposite + dangerGap);
@@ -123,27 +134,28 @@
 
     var self = this;
     function placeLane1Car() {
-      var x = self.safeCarSpawnX(baseSpawnX, CONFIG.LANE1_Y, difficultyT, speed);
+      var x = self.safeSpawnX(baseSpawnX, CONFIG.LANE1_Y, difficultyT, speed);
       self.spawnCarAt(x, CONFIG.LANE1_Y);
     }
     function placeLane2(upperType) {
+      // Atat conul cat si masina trec prin safeSpawnX - un con nu e "mereu sigur",
+      // devine periculos exact atunci cand e langa o masina pe banda 1 care forteaza jump.
+      var x = self.safeSpawnX(baseSpawnX, CONFIG.LANE2_Y, difficultyT, speed);
       if (upperType === "car") {
-        var x = self.safeCarSpawnX(baseSpawnX, CONFIG.LANE2_Y, difficultyT, speed);
         self.spawnCarAt(x, CONFIG.LANE2_Y);
       } else {
-        // Conurile nu cer niciodata jump, deci nu au nevoie de aceasta protectie -
-        // raman langa marginea normala de spawn.
-        self.spawnConeAt(baseSpawnX);
+        self.spawnConeAt(x);
       }
     }
 
     var roll = Math.random();
     if (roll < comboChance) {
-      // Masina pe banda 1 (cere jump) + con-sau-masina pe banda 2 (poate cere sa NU
-      // sari). Fiecare element e plasat prin safeCarSpawnX, care - dupa ce primul
-      // element e deja in lista - impinge automat al doilea la distanta de siguranta,
-      // indiferent de ordine. Rezultat: mereu o secventa corecta - sar, aterizez, *apoi*
-      // ajung la al doilea obstacol (sau invers, daca al doilea nu cere deloc jump).
+      // Masina pe banda 1 (cere jump) + con-sau-masina pe banda 2 (cere sa NU sari).
+      // Fiecare element e plasat prin safeSpawnX, care - dupa ce primul element e deja
+      // in lista - impinge automat al doilea la distanta de siguranta, indiferent de
+      // ordine si indiferent de tipul celui de pe banda 2. Rezultat: mereu o secventa
+      // corecta - sar, aterizez, *apoi* ajung la al doilea obstacol (sau invers, daca
+      // primul intalnit nu cere deloc jump).
       var upperType = pickUpperLaneType(difficultyT);
       if (Math.random() < 0.5) {
         placeLane1Car();

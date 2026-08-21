@@ -4,26 +4,29 @@
   padding-bottom: 40px;
 }
 
+/* Mobil: intro text minimizat la maximum, ca gameplay-ul sa primeasca prioritatea de
+   spatiu vertical (aproape fullscreen). Pe desktop redevine mai generos - vezi media
+   query-ul de mai jos. */
 .game-page-head {
-  padding: 14px 0 10px;
+  padding: 8px 0 6px;
   text-align: center;
 }
 
 .game-page-head .eyebrow {
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .game-title {
-  font-size: clamp(1.5rem, 6vw, 3.2rem);
+  font-size: clamp(1.25rem, 5.5vw, 3.2rem);
   line-height: 1.02;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .game-subtitle {
   max-width: 520px;
   margin: 0 auto;
   color: var(--muted);
-  font-size: clamp(0.88rem, 2.4vw, 1.15rem);
+  font-size: clamp(0.8rem, 2.2vw, 1.15rem);
   font-weight: 700;
 }
 
@@ -31,6 +34,20 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+@media (min-width: 760px) {
+  .game-page-head {
+    padding: 14px 0 10px;
+  }
+
+  .game-page-head .eyebrow {
+    margin-bottom: 4px;
+  }
+
+  .game-title {
+    margin-bottom: 4px;
+  }
 }
 
 /* ---------- Stage wrap (full-bleed on mobile, framed card on desktop) ---------- */
@@ -46,7 +63,10 @@
 .game-stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 960 / 400;
+  /* 960/580 - trebuie sa ramana sincronizat cu geometria mobila din joc-config.js
+     (IS_DESKTOP_LAYOUT=false: CANVAS_WIDTH=960, CANVAS_HEIGHT=580). Semnificativ mai
+     inalt decat vechiul 960/400, ca sa nu mai avem un joc lat si scund pe telefon. */
+  aspect-ratio: 960 / 580;
   overflow: hidden;
   background: #4b4f58;
   touch-action: none;
@@ -236,6 +256,19 @@
   letter-spacing: 0.04em;
 }
 
+.game-overlay-logo {
+  width: 64px;
+  height: 64px;
+  margin: 0 0 2px;
+}
+
+.game-overlay-logo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+}
+
 .game-overlay-message {
   margin: 0;
   font-size: clamp(1.15rem, 4.6vw, 1.7rem);
@@ -250,6 +283,18 @@
   letter-spacing: 1px;
 }
 
+.game-overlay-record-badge {
+  margin: 0;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--yellow);
+  color: #3d2a00;
+  font-weight: 900;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .game-overlay-hi {
   margin: 0 0 4px;
   font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -259,7 +304,7 @@
 }
 
 .game-retry-btn {
-  margin-top: 4px;
+  margin-top: 10px;
   min-height: 48px;
   padding-inline: 28px;
 }
@@ -389,6 +434,12 @@
     flex: 1 1 auto;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow);
+  }
+
+  .game-stage {
+    /* 960/530 - trebuie sa ramana sincronizat cu geometria desktop din joc-config.js
+       (IS_DESKTOP_LAYOUT=true: CANVAS_WIDTH=960, CANVAS_HEIGHT=530). */
+    aspect-ratio: 960 / 530;
   }
 
   .game-leaderboard {

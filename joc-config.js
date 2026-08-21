@@ -6,27 +6,63 @@
 
   var GRAVITY = 2600; // px/s^2 (unitati logice canvas)
   var JUMP_FORCE = 850; // px/s, viteza initiala a saltului
-  var LANE_GAP = 130; // distanta pe verticala intre banda 1 si banda 2
+  var LANE_GAP = 130; // distanta pe verticala intre banda 1 si banda 2 (fizica saltului - NU se modifica pe breakpoint)
   var HOVER_TIME = 0.12; // pauza scurta in varful saltului, pentru senzatia de salt controlat
 
-  var CANVAS_WIDTH = 960;
-  var CANVAS_HEIGHT = 400;
-  var ROAD_TOP = 60;
-  var ROAD_DIVIDER_Y = 200;
-  var ROAD_BOTTOM = 340;
-  var LANE2_Y = 130; // banda 2 (sus): conurile apar aici
-  var LANE1_Y = 260; // banda 1 (jos): pozitia de repaus a masinii si banda masinilor adverse
+  // Decidem O SINGURA DATA, la incarcarea paginii, daca folosim layout-ul mobil sau cel
+  // desktop pentru geometria canvas-ului - acelasi prag (760px) ca breakpoint-ul din
+  // joc.css. Alegerea NU se re-evalueaza la resize (evita "teleportarea" gameplay-ului
+  // in mijlocul unei partide daca utilizatorul roteste telefonul sau redimensioneaza
+  // fereastra); un reload simplu preia noul layout daca e cazul.
+  var IS_DESKTOP_LAYOUT = (function () {
+    try {
+      return typeof window.matchMedia === "function" && window.matchMedia("(min-width: 760px)").matches;
+    } catch (err) {
+      return true;
+    }
+  })();
+
+  var CANVAS_WIDTH = 960; // latimea logica ramane identica pe toate device-urile - pastreaza
+  // pacing-ul orizontal (timpul de reactie pana la un obstacol) neschimbat indiferent de layout.
+
+  // Zona A (roadside/fundal, unde apar panourile publicitare) - inaltime diferita pe
+  // breakpoint, ca sa avem loc de un panou lizibil FARA sa se suprapuna peste HUD (care
+  // are o dimensiune aproape fixa in px CSS, deci ocupa un interval logic mai mare cand
+  // canvas-ul e afisat mai comprimat, pe mobil).
+  var ROAD_TOP = IS_DESKTOP_LAYOUT ? 210 : 260;
+
+  // Zona B (banda 2) + Zona C (banda 1): fiecare banda are aceeasi "grosime" vizuala
+  // (LANE_BAND) pe toate device-urile - doar zona A (roadside) si pozitia lor absoluta
+  // se schimba. LANE_BAND = LANE_GAP => benzile sunt perfect centrate si diferenta dintre
+  // LANE1_Y si LANE2_Y ramane mereu exact LANE_GAP, indiferent de ROAD_TOP.
+  var LANE_BAND = LANE_GAP;
+  var GROUND_HEIGHT = 60;
+
+  var LANE2_Y = ROAD_TOP + LANE_BAND / 2; // banda 2 (sus): conuri + masini
+  var ROAD_DIVIDER_Y = ROAD_TOP + LANE_BAND;
+  var LANE1_Y = ROAD_DIVIDER_Y + LANE_BAND / 2; // banda 1 (jos): pozitia de repaus a masinii
+  var ROAD_BOTTOM = ROAD_DIVIDER_Y + LANE_BAND;
+  var CANVAS_HEIGHT = ROAD_BOTTOM + GROUND_HEIGHT;
+
   var PLAYER_X = 170;
 
   var CONFIG = {
     DEBUG_GAME: false,
+    IS_DESKTOP_LAYOUT: IS_DESKTOP_LAYOUT,
 
     CANVAS_WIDTH: CANVAS_WIDTH,
     CANVAS_HEIGHT: CANVAS_HEIGHT,
-    SKY_HEIGHT: ROAD_TOP,
+    SKY_HEIGHT: ROAD_TOP, // alias istoric - egal cu ROAD_TOP, folosit de drawBackground/AdManager
     ROAD_TOP: ROAD_TOP,
     ROAD_DIVIDER_Y: ROAD_DIVIDER_Y,
     ROAD_BOTTOM: ROAD_BOTTOM,
+
+    // Zona A (roadside): panourile publicitare. TOP_MARGIN e ales suficient de mare
+    // cat sa nu se suprapuna cu HUD-ul (care e pozitionat in CSS, la o dimensiune
+    // aproape fixa in px - vezi .game-hud din joc.css), pe ambele breakpoint-uri.
+    AD_BOARD_WIDTH: 160,
+    AD_BOARD_HEIGHT: 96,
+    AD_BOARD_TOP_MARGIN: 85,
 
     GRAVITY: GRAVITY,
     JUMP_FORCE: JUMP_FORCE,
@@ -85,10 +121,11 @@
     // de cate ori un obstacol de tip "masina" (banda 1 sau banda 2) e urmat/precedat de un
     // alt obstacol care ar putea cere actiunea opusa - vezi ObstacleManager.
 
-    // Banda 2: pool mixt de obstacole. La inceput predomina conurile (nu forteaza jump);
-    // masinile pe banda 2 devin treptat mai frecvente pe masura ce creste dificultatea.
-    UPPER_LANE_CAR_CHANCE_START: 0.12,
-    UPPER_LANE_CAR_CHANCE_MAX: 0.45,
+    // Banda 2: pool mixt de obstacole, folosit identic pe toate device-urile (nicio
+    // ramura mobile-vs-desktop). Conurile predomina usor la inceput, dar masinile
+    // trebuie sa fie evidente inca din primele secunde - nu doar 5-10%.
+    UPPER_LANE_CAR_CHANCE_START: 0.35,
+    UPPER_LANE_CAR_CHANCE_MAX: 0.55,
 
     AD_INTERVAL_SECONDS: 2, // TEMPORAR - test reclame; valoarea normala e 10, de restaurat dupa test
     AD_SPEED_X: 0, // reclamele se misca exact cu viteza lumii (world speed), setat runtime
