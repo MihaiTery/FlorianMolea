@@ -776,6 +776,12 @@ a.youtube-preview:hover {
   margin-bottom: 14px;
 }
 
+/* Logo-uri albe pe fundal transparent (ex. Quantorius): inversate ca sa ramana
+   lizibile pe fundalul deschis al partner-card, fara sa cerem un fisier separat. */
+.partner-logo--invert {
+  filter: invert(1);
+}
+
 .faq-section {
   background: #fff;
 }

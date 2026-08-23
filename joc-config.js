@@ -60,8 +60,13 @@
     // Zona A (roadside): panourile publicitare. TOP_MARGIN e ales suficient de mare
     // cat sa nu se suprapuna cu HUD-ul (care e pozitionat in CSS, la o dimensiune
     // aproape fixa in px - vezi .game-hud din joc.css), pe ambele breakpoint-uri.
-    AD_BOARD_WIDTH: 160,
-    AD_BOARD_HEIGHT: 96,
+    // WIDTH/HEIGHT marite cu 20% fata de original (160x96); TOP_MARGIN neschimbat, deci
+    // marginea de sus a panoului (si distanta pana la HUD) ramane identica - doar
+    // "picioarele" panoului se scurteaza usor (raman pozitive pe ambele layout-uri:
+    // ROAD_TOP 210 desktop / 260 mobil), fara sa afecteze CANVAS_WIDTH/HEIGHT sau
+    // aspect-ratio-ul din joc.css (care nu depind de dimensiunea panourilor).
+    AD_BOARD_WIDTH: 192,
+    AD_BOARD_HEIGHT: 115,
     AD_BOARD_TOP_MARGIN: 85,
 
     GRAVITY: GRAVITY,
