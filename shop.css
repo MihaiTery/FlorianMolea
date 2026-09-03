@@ -408,14 +408,21 @@
   gap: 14px;
 }
 
-.shop-promo-visual img {
+.shop-promo-visual picture {
+  display: block;
   width: 30%;
   max-width: 130px;
+}
+
+.shop-promo-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
   border-radius: var(--radius-md);
   box-shadow: 0 14px 32px rgba(23, 23, 23, 0.1);
 }
 
-.shop-promo-visual img:nth-child(2) {
+.shop-promo-visual picture:nth-child(2) {
   margin-top: -18px;
 }
 
@@ -427,7 +434,7 @@
 }
 
 @media (max-width: 640px) {
-  .shop-promo-visual img:nth-child(2) {
+  .shop-promo-visual picture:nth-child(2) {
     margin-top: 0;
   }
 }
