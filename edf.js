@@ -66,8 +66,8 @@
       inhalationNote: false
     },
     {
-      id: "crispy-strips",
-      name: "Crispy Strips",
+      id: "merdenea",
+      name: "Merdenea",
       manufacturerFormula: "Vanesica Black",
       ufi: "TVN1-P0DY-W00J-CC9T",
       signalWord: "ATENȚIE",

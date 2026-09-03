@@ -4,7 +4,7 @@ Checklist simplu, acționabil, al datelor și pașilor rămași înainte de acti
 
 ## 0. Defect tehnic găsit în audit (neblocant juridic, dar de reparat înainte de lansare)
 
-- [ ] `products.json` referă imagini inexistente pe disc pentru toate cele 5 produse (ex. `images/products/placeholder-first-drive.svg`), în timp ce `images/products/` conține alte fișiere placeholder (`placeholder-black-ice.svg`, `placeholder-bubble-gum.svg`, `placeholder-ocean.svg`, `placeholder-parfum.svg`, `placeholder-vanilie.svg`), cu denumiri care nu se potrivesc 1:1 cu sloturile produselor curente. Rezultat: imaginile produselor apar sparte pe `magazin.html` și `produs.html`. Defectul este anterior acestei implementări juridice și nu a fost corectat aici (nu ține de conformitate legală, iar alegerea imaginii corecte per produs este o decizie de conținut/design, nu una pe care să o iau unilateral). Necesită fie imagini reale per produs, fie o mapare explicită confirmată a placeholderelor existente.
+- [x] Rezolvat: fotografii reale au fost adăugate în `images/products/` (`<slug>-nobg.png` pentru carduri/pagina de produs, `<slug>-bg.png` disponibil ca variantă lifestyle neconectată încă) și `products.json` / seed-ul `worker/seeds/0001_products.sql` au fost actualizate să refere aceste fișiere în loc de placeholderele SVG vechi.
 
 ## 1. Date de completat pentru WORLDWIDE CONSULTING LINE SRL (vânzător)
 
@@ -26,7 +26,7 @@ După completare: actualizează `data/legal-config.json`, apoi paginile `informa
 
 ## 2. Date de cerut de la VANESICA FRESH SRL (producător), per produs Eau de Floryan
 
-Pentru fiecare din cele 5 produse active (`parfum-first-drive`, `parfum-cuban-leaf`, `parfum-crispy`, `parfum-bubblegum`, `parfum-octopus`):
+Pentru fiecare din cele 5 produse active (`parfum-first-drive`, `parfum-cuban-leaf`, `parfum-merdenea`, `parfum-bubblegum`, `parfum-octopus`):
 
 - [ ] Adresa electronică oficială a producătorului (`manufacturers.json` → `vanesica-fresh.electronicAddress`) — comună pentru toate produsele
 - [ ] SDS (fișa cu date de securitate) actualizată

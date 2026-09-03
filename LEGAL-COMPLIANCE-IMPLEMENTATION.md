@@ -95,7 +95,7 @@ Nu au fost modificate: `worker/**` (cod și migrații D1 existente), `pre-releas
 
 ## 6. Produse blocate pentru modul live și motivul
 
-Toate cele 5 produse active (`parfum-first-drive`, `parfum-cuban-leaf`, `parfum-crispy`, `parfum-bubblegum`, `parfum-octopus`) ar fi blocate dacă `IS_LIVE_COMMERCE` ar fi `true` acum, deoarece `validateCommerceCompliance()` raportează lipsă pentru fiecare: adresă electronică producător, identificator produs, cantitate netă, instrucțiuni de utilizare, avertismente, status CLP explicit și confirmarea documentației producătorului (`safety.documentationStatus` este `"pending"`, nu `"confirmed"`). Verificat prin rulare directă a funcției de validare (Node, în afara browserului) — vezi secțiunea Teste.
+Toate cele 5 produse active (`parfum-first-drive`, `parfum-cuban-leaf`, `parfum-merdenea`, `parfum-bubblegum`, `parfum-octopus`) ar fi blocate dacă `IS_LIVE_COMMERCE` ar fi `true` acum, deoarece `validateCommerceCompliance()` raportează lipsă pentru fiecare: adresă electronică producător, identificator produs, cantitate netă, instrucțiuni de utilizare, avertismente, status CLP explicit și confirmarea documentației producătorului (`safety.documentationStatus` este `"pending"`, nu `"confirmed"`). Verificat prin rulare directă a funcției de validare (Node, în afara browserului) — vezi secțiunea Teste.
 
 Nu este un defect: reflectă corect faptul că documentația VANESICA FRESH SRL nu a fost încă primită. Magazinul rămâne oricum inaccesibil public din cauza mecanismului `pre-release`, deci nu există niciun risc de vânzare neconformă în starea curentă.
 
