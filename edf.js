@@ -1,4 +1,4 @@
-/* Config local pentru pagina /EDF (Eau de Floryan — instructiuni si informatii tehnice).
+/* Config local pentru pagina /edf (Eau de Floryan — instructiuni si informatii tehnice).
    Nu este folosit de nicio alta pagina. Datele CLP/UFI provin din documentatia
    producatorului Vanesica Fresh SRL pentru fiecare formula corespunzatoare. */
 (function () {
