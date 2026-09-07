@@ -17,23 +17,34 @@
     "sellerId": "worldwide-consulting-line",
     "commercialBrand": "Eau de Floryan",
     "productType": "Parfum auto",
-    "productIdentifier": null,
-    "netQuantity": null,
+    "productIdentifier": "parfum-first-drive",
+    "netQuantity": "50 ml",
     "safety": {
-      "documentationStatus": "pending",
-      "usageInstructions": [],
+      "documentationStatus": "confirmed",
+      "usageInstructions": [
+        "Pulverizați o cantitate redusă pe covorașele automobilului sau pe un suport de odorizant din carton.",
+        "Nu pulverizați produsul direct în aer.",
+        "Nu utilizați produsul în timpul conducerii."
+      ],
       "storageInstructions": [],
-      "warnings": [],
+      "warnings": [
+        "EUH208 — Conține 2-(4-tert-Butylbenzyl) propionaldehyde, Lysmeral extra, Eugenol, Hexil-cinamaldehidă, Linalool. Poate provoca o reacție alergică."
+      ],
       "clp": {
-        "applicable": null,
+        "applicable": true,
         "isHazardous": null,
-        "ufi": null,
-        "signalWord": null,
-        "pictograms": [],
+        "ufi": "VEJ1-E0T3-N00R-WQ07",
+        "signalWord": "ATENȚIE",
+        "pictograms": ["GHS07"],
         "hazardStatements": [],
-        "supplementalHazardStatements": [],
-        "precautionaryStatements": [],
-        "pcnConfirmedForRomania": null
+        "supplementalHazardStatements": [
+          "EUH208 — Conține 2-(4-tert-Butylbenzyl) propionaldehyde, Lysmeral extra, Eugenol, Hexil-cinamaldehidă, Linalool. Poate provoca o reacție alergică."
+        ],
+        "precautionaryStatements": [
+          "P102 — A nu se lăsa la îndemâna copiilor.",
+          "P501 — Aruncați conținutul/recipientul în conformitate cu reglementările privind deșeurile periculoase sau ambalajele și, respectiv, deșeurile de ambalaje."
+        ],
+        "pcnConfirmedForRomania": true
       }
     }
   },
@@ -55,23 +66,36 @@
     "sellerId": "worldwide-consulting-line",
     "commercialBrand": "Eau de Floryan",
     "productType": "Parfum auto",
-    "productIdentifier": null,
-    "netQuantity": null,
+    "productIdentifier": "parfum-cuban-leaf",
+    "netQuantity": "50 ml",
     "safety": {
-      "documentationStatus": "pending",
-      "usageInstructions": [],
+      "documentationStatus": "confirmed",
+      "usageInstructions": [
+        "Pulverizați o cantitate redusă pe covorașele automobilului sau pe un suport de odorizant din carton.",
+        "Nu pulverizați produsul direct în aer.",
+        "Nu utilizați produsul în timpul conducerii."
+      ],
       "storageInstructions": [],
-      "warnings": [],
+      "warnings": [
+        "H317 — Poate provoca o reacție alergică a pielii."
+      ],
       "clp": {
-        "applicable": null,
-        "isHazardous": null,
-        "ufi": null,
-        "signalWord": null,
-        "pictograms": [],
-        "hazardStatements": [],
+        "applicable": true,
+        "isHazardous": true,
+        "ufi": "FUH1-V0YA-H009-89WS",
+        "signalWord": "ATENȚIE",
+        "pictograms": ["GHS07", "GHS09"],
+        "hazardStatements": [
+          "H317 — Poate provoca o reacție alergică a pielii."
+        ],
         "supplementalHazardStatements": [],
-        "precautionaryStatements": [],
-        "pcnConfirmedForRomania": null
+        "precautionaryStatements": [
+          "P101 — Dacă este necesară consultarea medicului, țineți la îndemână recipientul sau eticheta produsului.",
+          "P102 — A nu se lăsa la îndemâna copiilor.",
+          "P302+P352 — ÎN CAZ DE CONTACT CU PIELEA: spălați cu multă apă.",
+          "P501 — Aruncați conținutul/recipientul în conformitate cu sistemul de colectare selectivă aplicat în municipiul dvs."
+        ],
+        "pcnConfirmedForRomania": true
       }
     }
   },
@@ -93,23 +117,37 @@
     "sellerId": "worldwide-consulting-line",
     "commercialBrand": "Eau de Floryan",
     "productType": "Parfum auto",
-    "productIdentifier": null,
-    "netQuantity": null,
+    "productIdentifier": "parfum-merdenea",
+    "netQuantity": "50 ml",
     "safety": {
-      "documentationStatus": "pending",
-      "usageInstructions": [],
+      "documentationStatus": "confirmed",
+      "usageInstructions": [
+        "Pulverizați o cantitate redusă pe covorașele automobilului sau pe un suport de odorizant din carton.",
+        "Nu pulverizați produsul direct în aer.",
+        "Nu utilizați produsul în timpul conducerii."
+      ],
       "storageInstructions": [],
-      "warnings": [],
+      "warnings": [
+        "H317 — Poate provoca o reacție alergică a pielii."
+      ],
       "clp": {
-        "applicable": null,
-        "isHazardous": null,
-        "ufi": null,
-        "signalWord": null,
-        "pictograms": [],
-        "hazardStatements": [],
+        "applicable": true,
+        "isHazardous": true,
+        "ufi": "TVN1-P0DY-W00J-CC9T",
+        "signalWord": "ATENȚIE",
+        "pictograms": ["GHS07", "GHS09"],
+        "hazardStatements": [
+          "H317 — Poate provoca o reacție alergică a pielii."
+        ],
         "supplementalHazardStatements": [],
-        "precautionaryStatements": [],
-        "pcnConfirmedForRomania": null
+        "precautionaryStatements": [
+          "P101 — Dacă este necesară consultarea medicului, țineți la îndemână recipientul sau eticheta produsului.",
+          "P102 — A nu se lăsa la îndemâna copiilor.",
+          "P261 — Evitați să inspirați praful/fumul/gazul/ceața/vaporii/spray-ul.",
+          "P302+P352 — ÎN CAZ DE CONTACT CU PIELEA: spălați cu multă apă.",
+          "P501 — Aruncați conținutul/recipientul în conformitate cu sistemul de colectare selectivă aplicat în municipiul dvs."
+        ],
+        "pcnConfirmedForRomania": true
       }
     }
   },
@@ -131,23 +169,38 @@
     "sellerId": "worldwide-consulting-line",
     "commercialBrand": "Eau de Floryan",
     "productType": "Parfum auto",
-    "productIdentifier": null,
-    "netQuantity": null,
+    "productIdentifier": "parfum-bubblegum",
+    "netQuantity": "50 ml",
     "safety": {
-      "documentationStatus": "pending",
-      "usageInstructions": [],
+      "documentationStatus": "confirmed",
+      "usageInstructions": [
+        "Pulverizați o cantitate redusă pe covorașele automobilului sau pe un suport de odorizant din carton.",
+        "Nu pulverizați produsul direct în aer.",
+        "Nu utilizați produsul în timpul conducerii."
+      ],
       "storageInstructions": [],
-      "warnings": [],
+      "warnings": [
+        "H412 — Nociv pentru mediul acvatic cu efecte pe termen lung.",
+        "H317 — Poate provoca o reacție alergică a pielii."
+      ],
       "clp": {
-        "applicable": null,
-        "isHazardous": null,
-        "ufi": null,
-        "signalWord": null,
-        "pictograms": [],
-        "hazardStatements": [],
+        "applicable": true,
+        "isHazardous": true,
+        "ufi": "0JP1-Q0X5-C00H-N2YA",
+        "signalWord": "ATENȚIE",
+        "pictograms": ["GHS07"],
+        "hazardStatements": [
+          "H412 — Nociv pentru mediul acvatic cu efecte pe termen lung.",
+          "H317 — Poate provoca o reacție alergică a pielii."
+        ],
         "supplementalHazardStatements": [],
-        "precautionaryStatements": [],
-        "pcnConfirmedForRomania": null
+        "precautionaryStatements": [
+          "P101 — Dacă este necesară consultarea medicului, țineți la îndemână recipientul sau eticheta produsului.",
+          "P102 — A nu se lăsa la îndemâna copiilor.",
+          "P302+P352 — ÎN CAZ DE CONTACT CU PIELEA: spălați cu multă apă.",
+          "P501 — Aruncați conținutul/recipientul în conformitate cu sistemul de colectare selectivă aplicat în municipiul dvs."
+        ],
+        "pcnConfirmedForRomania": true
       }
     }
   },
@@ -169,23 +222,37 @@
     "sellerId": "worldwide-consulting-line",
     "commercialBrand": "Eau de Floryan",
     "productType": "Parfum auto",
-    "productIdentifier": null,
-    "netQuantity": null,
+    "productIdentifier": "parfum-octopus",
+    "netQuantity": "50 ml",
     "safety": {
-      "documentationStatus": "pending",
-      "usageInstructions": [],
+      "documentationStatus": "confirmed",
+      "usageInstructions": [
+        "Pulverizați o cantitate redusă pe covorașele automobilului sau pe un suport de odorizant din carton.",
+        "Nu pulverizați produsul direct în aer.",
+        "Nu utilizați produsul în timpul conducerii."
+      ],
       "storageInstructions": [],
-      "warnings": [],
+      "warnings": [
+        "H412 — Nociv pentru mediul acvatic cu efecte pe termen lung.",
+        "H317 — Poate provoca o reacție alergică a pielii."
+      ],
       "clp": {
-        "applicable": null,
-        "isHazardous": null,
-        "ufi": null,
-        "signalWord": null,
-        "pictograms": [],
-        "hazardStatements": [],
+        "applicable": true,
+        "isHazardous": true,
+        "ufi": "VTK1-H0UF-J00P-G5A8",
+        "signalWord": "ATENȚIE",
+        "pictograms": ["GHS07"],
+        "hazardStatements": [
+          "H412 — Nociv pentru mediul acvatic cu efecte pe termen lung.",
+          "H317 — Poate provoca o reacție alergică a pielii."
+        ],
         "supplementalHazardStatements": [],
-        "precautionaryStatements": [],
-        "pcnConfirmedForRomania": null
+        "precautionaryStatements": [
+          "P102 — A nu se lăsa la îndemâna copiilor.",
+          "P302+P352 — ÎN CAZ DE CONTACT CU PIELEA: spălați cu multă apă.",
+          "P501 — Aruncați conținutul/recipientul în conformitate cu reglementările privind deșeurile periculoase sau ambalajele și, respectiv, deșeurile de ambalaje."
+        ],
+        "pcnConfirmedForRomania": true
       }
     }
   }
