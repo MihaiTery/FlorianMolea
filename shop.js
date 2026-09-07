@@ -808,6 +808,23 @@ const wireProductCardEvents = (grid) => {
     input.value = String(Number.isFinite(value) && value >= 1 ? Math.min(value, max) : 1);
   };
 
+  const addProductToCartFromCard = (card, productId, qtyInput) => {
+    const quantity = Math.max(1, Math.trunc(Number(qtyInput.value)) || 1);
+    const result = addToCart(productId, quantity);
+    const feedback = card.querySelector("[data-add-feedback]");
+    const feedbackText = card.querySelector("[data-add-feedback-text]");
+    const product = getProductById(productId);
+
+    feedback.hidden = false;
+
+    if (result.ok) {
+      feedbackText.textContent = "Adăugat în coș.";
+      announce(`${product.shortName || product.name} a fost adăugat în coș.`);
+    } else {
+      feedbackText.textContent = "Cantitatea maximă disponibilă este deja în coș.";
+    }
+  };
+
   grid.addEventListener("click", (event) => {
     const card = event.target.closest("[data-product-card]");
 
@@ -830,20 +847,19 @@ const wireProductCardEvents = (grid) => {
     }
 
     if (event.target.closest("[data-add-to-cart]")) {
-      const quantity = Math.max(1, Math.trunc(Number(qtyInput.value)) || 1);
-      const result = addToCart(productId, quantity);
-      const feedback = card.querySelector("[data-add-feedback]");
-      const feedbackText = card.querySelector("[data-add-feedback-text]");
-      const product = getProductById(productId);
+      addProductToCartFromCard(card, productId, qtyInput);
+      return;
+    }
 
-      feedback.hidden = false;
+    // Link-ul de detalii trebuie să navigheze normal, fără să declanșeze
+    // adăugarea rapidă în coș a restului cardului.
+    if (event.target.closest(".shop-card-details-link")) {
+      return;
+    }
 
-      if (result.ok) {
-        feedbackText.textContent = "Adăugat în coș.";
-        announce(`${product.shortName || product.name} a fost adăugat în coș.`);
-      } else {
-        feedbackText.textContent = "Cantitatea maximă disponibilă este deja în coș.";
-      }
+    // Restul zonei de control (input de cantitate, buton dezactivat etc.) nu
+    // trebuie să declanșeze adăugarea rapidă — doar acțiunile ei proprii de mai sus.
+    if (event.target.closest(".shop-card-controls")) {
       return;
     }
 
@@ -855,6 +871,12 @@ const wireProductCardEvents = (grid) => {
           items: [{ item_id: product.id, item_name: product.name, price: product.price }]
         });
       }
+    }
+
+    // Click oriunde altundeva pe cardul unui produs cumpărabil = adăugare rapidă
+    // în coș, cu cantitatea curent selectată în input.
+    if (qtyInput) {
+      addProductToCartFromCard(card, productId, qtyInput);
     }
   });
 
