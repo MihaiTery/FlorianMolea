@@ -13,9 +13,9 @@ const SHOP_CONFIG = {
 // documentația de siguranță VANESICA FRESH SRL este confirmată ("documentationStatus":
 // "confirmed") pentru toate produsele active — vezi COMPLIANCE-TODO.md. În modul live,
 // produsele cu date critice incomplete nu mai pot fi adăugate în coș (secțiunea 17).
-const IS_LIVE_COMMERCE = false;
+const IS_LIVE_COMMERCE = true;
 
-// Comutator separat pentru fluxul de plată online (Stripe, mediul de staging).
+// Comutator separat pentru fluxul de plată online (Stripe, mediul de production).
 // Nu are legătură cu IS_LIVE_COMMERCE (acela gestionează conformitatea datelor de
 // produs). Cât timp rămâne "false": butonul de comandă rămâne dezactivat, NU se
 // trimite niciun POST /checkout/session, iar niciun vizitator public nu poate crea
@@ -23,11 +23,11 @@ const IS_LIVE_COMMERCE = false;
 // testabil vizual. Singurul mod de a-l activa este să editezi manual valoarea de mai
 // jos, local — nu există niciun query parameter, flag din localStorage sau alt
 // mecanism public care îl poate activa de la distanță.
-const SHOP_CHECKOUT_ENABLED = false;
+const SHOP_CHECKOUT_ENABLED = true;
 
-// URL-ul API-ului Worker de staging. Relevant doar când SHOP_CHECKOUT_ENABLED = true.
+// URL-ul API-ului Worker de production. Relevant doar când SHOP_CHECKOUT_ENABLED = true.
 // Înlocuiește cu URL-ul real după primul `wrangler deploy --env staging`.
-const SHOP_CHECKOUT_API_BASE = "https://florianmolea-shop-api-staging.florianmolea.workers.dev";
+const SHOP_CHECKOUT_API_BASE = "https://api.florianmolea.ro";
 
 const LEGAL_DATA_URLS = {
   legalConfig: "data/legal-config.json",
