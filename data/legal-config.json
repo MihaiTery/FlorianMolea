@@ -1,5 +1,5 @@
 {
-  "_comment": "Sursa unica de adevar pentru datele juridice ale magazinului florianmolea.ro. Nu duplica aceste date manual in pagini — citeste din acest fisier sau din documentul echivalent generat din el. Campurile null sunt date reale, oficiale, inca neconfirmate — nu le inlocui cu presupuneri, vezi COMPLIANCE-TODO.md.",
+  "_comment": "Sursa unica de adevar pentru datele juridice ale magazinului florianmolea.ro. Nu duplica aceste date manual in pagini — citeste din acest fisier sau din documentul echivalent generat din el. Campurile null ramase (authorizedActivities, cele doua postalCode) sunt date reale, oficiale, inca neconfirmate — nu le inlocui cu presupuneri, vezi COMPLIANCE-TODO.md.",
   "seller": {
     "id": "worldwide-consulting-line",
     "legalName": "WORLDWIDE CONSULTING LINE SRL",
@@ -16,17 +16,30 @@
       "country": "România"
     },
     "role": "Operator al magazinului online, vânzător și distribuitor al produselor",
-    "phone": null,
-    "email": null,
-    "vatStatus": null,
+    "phone": "+40 738 641 599",
+    "email": "eaudefloryan@proton.me",
+    "vatStatus": "neplătitoare de TVA",
     "authorizedActivities": [],
-    "dispatchAddress": null,
-    "returnAddress": null,
-    "customerSupportSchedule": null
+    "authorizedActivitiesNote": "Coduri CAEN în curs de actualizare — de completat aici de îndată ce sunt confirmate.",
+    "dispatchAddress": {
+      "street": "Str. Coralului nr. 1, sc. 1, bl. 1, et. 1, ap. 15",
+      "city": "Bragadiru",
+      "county": "Ilfov",
+      "postalCode": null,
+      "country": "România"
+    },
+    "returnAddress": {
+      "street": "Str. Coralului nr. 1, sc. 1, bl. 1, et. 1, ap. 15",
+      "city": "Bragadiru",
+      "county": "Ilfov",
+      "postalCode": null,
+      "country": "România"
+    },
+    "customerSupportSchedule": "Zilnic, în zilele lucrătoare, 10:00-14:00"
   },
   "consumerProtection": {
     "anpcConsumerPhone": "021 9551",
-    "salPlatformUrl": "https://anpc.ro/",
+    "salPlatformUrl": "https://reclamatiisal.anpc.ro",
     "salPlatformName": "Platforma SAL – ANPC",
     "salBadgeWidth": 250,
     "salBadgeHeight": 62,
@@ -41,28 +54,30 @@
     "shippingFee": 25,
     "freeShippingMinQuantity": 2,
     "freeShippingRuleDescription": "Transport gratuit la minimum două produse în comandă, inclusiv două bucăți ale aceluiași produs.",
-    "courierName": null,
-    "shippingProcessingTime": null,
-    "shippingEstimate": null,
+    "courierName": "Woot",
+    "shippingProcessingTime": "1-2 zile lucrătoare",
+    "shippingEstimate": "1-3 zile lucrătoare",
     "withdrawalPeriodDays": 14
   },
   "paymentsAndInvoicing": {
     "paymentProcessor": "Stripe",
     "invoicingProvider": "Oblio",
-    "liveCommerceEnabled": false,
-    "liveCommerceNote": "Magazinul este în pre-lansare: checkout-ul, plata online și facturarea nu sunt încă active. A se vedea COMPLIANCE-TODO.md."
+    "liveCommerceEnabled": true,
+    "liveCommerceNote": "Magazinul este live: checkout-ul și plata online prin Stripe sunt active (SHOP_CHECKOUT_ENABLED = true în shop.js)."
   },
   "documentVersions": {
-    "termsVersion": "1.0.0",
-    "returnsPolicyVersion": "1.0.0",
-    "privacyPolicyVersion": "1.0.0",
+    "termsVersion": "1.1.0",
+    "returnsPolicyVersion": "1.1.0",
+    "privacyPolicyVersion": "1.1.0",
     "cookiesPolicyVersion": "1.0.0",
-    "legalEffectiveDate": "2026-08-01"
+    "legalEffectiveDate": "2026-09-09"
   },
   "contact": {
-    "complaintsEmail": null,
-    "returnsEmail": null,
-    "privacyEmail": null,
-    "generalContactNote": "Datele de contact directe (telefon, e-mail) vor fi publicate după confirmarea lor de către WORLDWIDE CONSULTING LINE SRL."
+    "complaintsEmail": "eaudefloryan@proton.me",
+    "returnsEmail": "eaudefloryan@proton.me",
+    "privacyEmail": "eaudefloryan@proton.me",
+    "phone": "+40 738 641 599",
+    "emailProvider": "Proton (Proton Mail)",
+    "generalContactNote": "O singură adresă de contact (telefon + e-mail) este folosită pentru comenzi, retururi, reclamații și solicitări privind protecția datelor."
   }
 }

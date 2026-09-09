@@ -8,21 +8,21 @@ Checklist simplu, acționabil, al datelor și pașilor rămași înainte de acti
 
 ## 1. Date de completat pentru WORLDWIDE CONSULTING LINE SRL (vânzător)
 
-- [ ] Telefon de contact (`legal-config.json` → `seller.phone`)
-- [ ] E-mail de contact (`seller.email`)
-- [ ] Program de relații cu clienții (`seller.customerSupportSchedule`)
-- [ ] Statut TVA / regim de plătitor (`seller.vatStatus`)
-- [ ] Codurile CAEN autorizate relevante pentru comerțul online (`seller.authorizedActivities`)
-- [ ] Adresa de expediere a comenzilor (`seller.dispatchAddress`)
-- [ ] Adresa de retur a produselor (`seller.returnAddress`)
-- [ ] E-mail dedicat retururilor (`contact.returnsEmail`)
-- [ ] E-mail dedicat protecției datelor / confidențialitate (`contact.privacyEmail`)
-- [ ] E-mail dedicat reclamațiilor (`contact.complaintsEmail`)
-- [ ] Denumirea curierului partener (`commerce.courierName`)
-- [ ] Timpul de procesare a comenzilor (`commerce.shippingProcessingTime`)
-- [ ] Termenul estimativ de livrare (`commerce.shippingEstimate`)
+- [x] Telefon de contact (`legal-config.json` → `seller.phone`) — +40 738 641 599
+- [x] E-mail de contact (`seller.email`) — eaudefloryan@proton.me
+- [x] Program de relații cu clienții (`seller.customerSupportSchedule`) — zilnic, în zilele lucrătoare, 10:00-14:00
+- [x] Statut TVA / regim de plătitor (`seller.vatStatus`) — neplătitoare de TVA
+- [ ] Codurile CAEN autorizate relevante pentru comerțul online (`seller.authorizedActivities`) — în curs de actualizare (nu s-a completat, la cererea explicită a utilizatorului)
+- [x] Adresa de expediere a comenzilor (`seller.dispatchAddress`) — Str. Coralului nr. 1, sc. 1, bl. 1, et. 1, ap. 15, Bragadiru, jud. Ilfov (cod poștal neconfirmat încă)
+- [x] Adresa de retur a produselor (`seller.returnAddress`) — idem adresa de expediere
+- [x] E-mail dedicat retururilor (`contact.returnsEmail`) — eaudefloryan@proton.me (aceeași adresă unică, la cererea utilizatorului)
+- [x] E-mail dedicat protecției datelor / confidențialitate (`contact.privacyEmail`) — eaudefloryan@proton.me
+- [x] E-mail dedicat reclamațiilor (`contact.complaintsEmail`) — eaudefloryan@proton.me
+- [x] Denumirea curierului partener (`commerce.courierName`) — Woot (woot.ro), contract semnat
+- [x] Timpul de procesare a comenzilor (`commerce.shippingProcessingTime`) — 1-2 zile lucrătoare
+- [x] Termenul estimativ de livrare (`commerce.shippingEstimate`) — 1-3 zile lucrătoare
 
-După completare: actualizează `data/legal-config.json`, apoi paginile `informatii-legale.html`, `livrare-si-plata.html`, `retur-si-retragere.html`, `contact-si-reclamatii.html` (secțiunile care afișează în prezent „va fi publicat după confirmare”).
+Actualizat 2026-09-09 în `data/legal-config.json` și propagat în `informatii-legale.html`, `livrare-si-plata.html`, `retur-si-retragere.html`, `contact-si-reclamatii.html`, `privacy-policy.html`, `terms-and-conditions.html` (documente urcate la versiunea 1.1.0). Rămâne de completat doar codul CAEN, când e disponibil, și codul poștal al adresei din Bragadiru.
 
 ## 2. Date de cerut de la VANESICA FRESH SRL (producător), per produs Eau de Floryan
 
@@ -50,21 +50,21 @@ Pentru fiecare din cele 5 produse active (`parfum-first-drive`, `parfum-cuban-le
 
 ## 3. Activare mod live
 
-- [ ] După completarea datelor din secțiunile 1 și 2 pentru un produs, verifică `validateCommerceCompliance()` (`shop.js`) pentru acel produs — trebuie să raporteze `compliant: true`.
-- [ ] Setează `IS_LIVE_COMMERCE = true` în `shop.js` **doar** după ce toate produsele active sunt conforme, sau acceptă ca produsele neconforme să rămână blocate cu mesajul „Produs în curs de pregătire”.
-- [ ] Elimină funcționalitatea temporară „pre-release” (teaser slider din `index.html`, clasele `pre-release-locked`, fișierul `pre-release.js`) conform pașilor din `pre-release.txt`, când magazinul este pregătit de lansare publică.
+- [x] `IS_LIVE_COMMERCE = true` și `SHOP_CHECKOUT_ENABLED = true` în `shop.js` — magazinul este live, plata prin Stripe activă.
+- [x] Funcționalitatea „pre-release” a fost eliminată (confirmat: niciun fișier/clasă `pre-release*` nu mai există în repo, commit `53167be`).
+- [ ] Notă: `terms-and-conditions.html` conținea încă, până la 2026-09-09, o mențiune de „pre-lansare, plată neactivă” rămasă de la implementarea inițială — a fost eliminată/corectată în această sesiune. Verifică dacă alte pagini (ex. `checkout.html`) mai au mențiuni similare depășite.
 
 ## 4. SAL / ANPC
 
 - [x] Pictograma oficială SAL furnizată de utilizator, integrată în `images/legal/sal-anpc-badge.png` + `.webp` (index.html, contact-si-reclamatii.html). Rezoluție nativă 500×124 px; afișată la 250×62 px pentru a păstra proporția reală (ghidul generic cere 250×50 / raport 5:1, dar activul oficial primit are raport ~4:1 — s-a preferat proporția corectă, nedistorsionată, față de forțarea cifrei „50”). Nu s-a redesenat sigla.
-- [ ] Confirmă/verifică link-ul exact către platforma SAL curentă a ANPC. În prezent website-ul trimite către `https://anpc.ro/` (domeniul oficial cunoscut), fără o pagină internă specifică — verifică dacă ANPC publică un URL dedicat platformei SAL și actualizează `data/legal-config.json` → `consumerProtection.salPlatformUrl`, apoi propagă în `terms-and-conditions.html` și `contact-si-reclamatii.html`.
+- [x] Link-ul platformei SAL a fost verificat și actualizat 2026-09-09: platforma națională dedicată este `https://reclamatiisal.anpc.ro` (confirmată live; urmare a OPANPC 270/2026, care a actualizat cadrul SAL și a eliminat referirile la fosta platformă europeană SOL/ODR, desființată prin Regulamentul (UE) 2024/3228). Actualizat în `data/legal-config.json` → `consumerProtection.salPlatformUrl` și propagat în `index.html`, `terms-and-conditions.html`, `contact-si-reclamatii.html`.
 
 ## 5. Stripe / Oblio / Worker
 
-- [ ] Vezi secțiunea dedicată din `LEGAL-COMPLIANCE-IMPLEMENTATION.md` pentru modificările tehnice necesare în Worker/D1 înainte de activarea plăților live (versiuni de documente acceptate, webhook Stripe, integrare Oblio).
+- [ ] Vezi secțiunea dedicată din `LEGAL-COMPLIANCE-IMPLEMENTATION.md` pentru modificările tehnice necesare în Worker/D1 înainte de activarea plăților live (versiuni de documente acceptate, webhook Stripe, integrare Oblio). Notă: acel document descrie webhook-ul Stripe ca neimplementat, dar codul curent (`worker/src/routes/stripeWebhook.js`) arată o implementare completă — documentul tehnic pare depășit și ar trebui revizuit separat de zona legală.
 
 ## 6. Alte verificări manuale
 
-- [ ] Verifică juridic conținutul complet al `termeni-si-conditii.html`, `retur-si-retragere.html` și `conformitatea-produselor.html` cu un consultant juridic înainte de lansarea comercială (documentul a fost redactat pe baza cerințelor primite, dar nu înlocuiește un aviz juridic).
-- [ ] Confirmă regimul TVA aplicabil și modul de afișare a prețurilor (cu/fără TVA inclus) înainte de activarea facturării Oblio.
-- [ ] Verifică denumirea exactă și disponibilitatea mărcilor „FlorianMolea” și „Eau de Floryan” (înregistrare OSIM, dacă este cazul).
+- [x] Conținutul `termeni-si-conditii.html`, `retur-si-retragere.html` și `conformitatea-produselor.html` a fost verificat și validat de avocat (confirmat de utilizator, 2026-09-09).
+- [x] Regimul TVA confirmat: WORLDWIDE CONSULTING LINE SRL nu este plătitoare de TVA; prețurile afișate nu includ TVA. Reflectat în `terms-and-conditions.html` și `informatii-legale.html`.
+- [ ] Marca „FlorianMolea” / „Eau de Floryan”: documentația pentru depunerea la OSIM este în curs de întocmire (confirmat de utilizator, 2026-09-09) — de urmărit până la depunere și înregistrare efectivă.
